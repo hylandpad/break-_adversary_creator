@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer components{
+    .break-adversary-header {
+        @apply flex justify-between bg-gradient-to-r from-orange-400 to-pink-600 py-1 px-1 rounded-r-2xl
+    }
+    .break-header-text{
+        @apply text-lg text-stone-50 font-bold
+    }
+    .adversary-lead-in{
+        @apply font-bold pr-1
+    }
+    .fading-header{
+        @apply bg-gradient-to-r to-transparent text-stone-50 font-bold pl-2
+    }
+    .trait{
+        @apply text-sm bg-slate-600 text-stone-200 font-bold p-1 m-1 rounded-md
+    }
+}
+
+.svg-icon{
+    width: var(--fa-width, 1.25em);
+    display:inline;
+}
+
+select:focus {
+    color: black;
+    background-color: white;
+}
+
+.bar-segment {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-focus:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+.faded-hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    margin: .5rem 0;
+}

@@ -1,0 +1,201 @@
+<head>
+    <link href="output.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/7bbfb304a9.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-gray-300 flex">
+    <div class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
+        <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
+                    class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
+                onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span></div>
+        <div class="header break-adversary-header">
+            <h3 class="break-header-text"><input id="adversary-name" placeholder="New Adversary" type="text" class="basis-xl"></h3>
+            <span class="w-50%"></span>
+            <span class="basis-sm text-right p-1 rounded-xl">
+                <span class="text-stone-50 font-bold px-2 mr-2 rounded-md">
+                <select id="menace" class="bg-pink-600">
+                    <option value="mook">Mook</option>
+                    <option value="boss">Boss</option>
+                    <option value="megaboss">Megaboss</option>
+                </select></span>
+                <span class="font-bold text-blue-950 p-1 rounded-md"><label for="rank">RANK  </label><input id="rank" class="w-10" id="rank" value=0 type="number" min="0 max=15"></span>
+            </span>
+        </div>
+        <div id="stats-card" class="main">
+            <div class="stats-card">
+                <h3 class="fading-header from-slate-600">ADVERSARY INFO</h3>
+                <div class="my-3"><label for="adversary-type"><strong>Type: </strong></label><select id="adversary-type">
+                    <option value="beast">Beast</option>
+                    <option value="celestial">Celestial</option>
+                    <option value="folk">Folk</option>
+                    <option value="monster">Monster</option>
+                </select> : <input id="adversary-subtype" class="w-30" type="text" placeholder="Subtype"> | <label for="size"><strong>Size: </strong></label><select id="size">
+                    <option value="tiny">Tiny</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="massive">Massive</option>
+                </select> |
+                    <strong>Allegiance:</strong> <span id="allegiance">Unaligned</span>
+            </div>
+                <hr class="faded-hr" />
+                <textarea placeholder="brief description here." class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+            </div>
+            <div class="stats-container">
+                <div class="stat-block combat-values">
+                    <h3 class="fading-header from-slate-600">COMBAT VALUES</h3>
+                    <div class="stat-grid mx-2 my-4">
+                        <span class="stat-item"><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i>
+                            +<span id="atk-bonus">2</span></span>
+                        <span class="stat-item"><i class="text-red-600 fa-solid fa-heart"></i> <span id="hearts">2</span></span>
+                        <span class="stat-item"><i class="fa-solid fa-shield"></i> <span id="defense">14</span></span>
+                        <span class="stat-item"><i class="fa-solid fa-person-running"></i> 
+                        <select id="speed">
+                            <option value="slow">Slow</option>
+                            <option value="average">Average</option>
+                            <option value="fast">Fast</option>
+                            <option value="veryfast">Very Fast</option>
+                        </select></span>
+                    </div>
+                </div>
+
+                <div class="stat-block aptitudes">
+                    <h3 class="fading-header from-slate-600">APTITUDES / TRAITS</h3>
+                    <div class="max-w-4xl w-full  p-8">
+
+                        <!-- Visualization Area -->
+                        <div class="space-y-6 mb-2">
+                            <!-- The Single Combined Bar -->
+                            <div class="relative">
+                                <div id="bar-container"
+                                    class="w-full h-7 bg-slate-100 rounded-md flex overflow-hidden border border-slate-200 shadow-inner">
+                                    <!-- Segments will be injected here -->
+                                </div>
+                            </div>
+
+                            <!-- Percentages Display -->
+                            <div id="label-container" class="flex w-full text-xs font-bold text-slate-600 px-1">
+                                <!-- Labels will be injected here -->
+                            </div>
+                        </div>
+
+                        <!-- Inputs Section -->
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-2">
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-wider text-red-600">Might</label>
+                                <input type="number" id="input-0" value="10"
+                                    class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                    placeholder="0">
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-wider text-orange-600">Deftness</label>
+                                <input type="number" id="input-1" value="10"
+                                    class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                    placeholder="0">
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-wider text-green-600">Grit</label>
+                                <input type="number" id="input-2" value="10"
+                                    class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                    placeholder="0">
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-wider text-blue-600">Insight</label>
+                                <input type="number" id="input-3" value="10"
+                                    class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                    placeholder="0">
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-[10px] font-bold uppercase tracking-wider text-purple-600">Aura</label>
+                                <input type="number" id="input-4" value="10"
+                                    class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="italic text-stone-400">Traits</p>
+                    <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
+                        <p class="text-stone-400 text-center italic m-2">Click to Add Traits</p>
+                        <div id="trait-container"></div>
+                        <button class="bg-blue-700 text-white text-4xl rounded-full size-10 flex items-center justify-center pb-2 hover:bg-blue-800">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="abilities-section">
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text">ABILITIES</h3>
+                </div>
+                <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
+                    <p class="text-stone-400 text-center italic m-2">Click to Add Abilities</p>
+                    <div id="ability-container"></div>
+                    <button class="bg-blue-700 text-white text-4xl rounded-full size-10 flex items-center justify-center pb-2 hover:bg-blue-800">+</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="info-card" class="main hidden">
+            <div class="quick-facts-section">
+                <h3 class="fading-header from-slate-600">QUICK FACTS</h3>
+                <div class="bg-amber-200 rounded-md p-2 m-1">
+                    <p><strong>Habitat:</strong> Mana-rich environments, such as wizarding structures or magical biomes.</p>
+                <p><strong>Communication:</strong> Incessant buzzing.</p>
+                <p><strong>Tactics:</strong> Instinctual creatures that primarily seek mana. They are sometimes
+                    weaponized against arcane foes in "Buzz Bombs".</p>
+                <p><strong>Indicators:</strong> Rusty imbued items, a single Bizzer moving along a wall, that horrible
+                    buzzing noise.</p>
+                </div>
+                
+            </div>
+
+            <div class="yield-section">
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text">YIELD</h3>
+                </div>
+                <p><strong>Arcane Powder:</strong> 1 Unit of Arcane Powder.</p>
+                <p><strong>Buzz Bombs:</strong> 2 Buzz Bombs (Thrown Weapon range, 1 Heart swarm) can be created if the
+                    swarm is captured unharmed in a glass jar.</p>
+            </div>
+
+            <div class="mood-table-section">
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text">MOOD TABLE</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Mood</th>
+                            <th>Situation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1-5</td>
+                            <td>Docile</td>
+                            <td>Sleeping off a satisfying meal. Tread lightly.</td>
+                        </tr>
+                        <tr>
+                            <td>6-14</td>
+                            <td>Disinterested</td>
+                            <td>Busy eating a pack or cart. The aggrieved traveler may offer the PCs a reward for
+                                chasing the Chompa off.</td>
+                        </tr>
+                        <tr>
+                            <td>15-20</td>
+                            <td>Hangry</td>
+                            <td>Starving, will attack the PCs.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div w-25%></div>
+</body>
+<script src="main.js" type="text/javascript"></script>
