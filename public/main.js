@@ -1,3 +1,5 @@
+// Aptitude bar visualization
+
 const barContainer = document.getElementById('bar-container');
         const labelContainer = document.getElementById('label-container');
         let inputs = Array.from({length: 5}, (_, i) => document.getElementById(`input-${i}`));
@@ -49,6 +51,8 @@ const barContainer = document.getElementById('bar-container');
 
         window.onload = updateVisualization;
 
+// Nav menu dynamic hide/show 
+
 function show_hide_card(nav_item){
     main = document.querySelectorAll('.main')
     console.log(main)
@@ -62,21 +66,8 @@ function show_hide_card(nav_item){
     
 }
 
-document.querySelectorAll('.toggle-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const targetId = button.getAttribute('data-target');
-    const targetElement = document.getElementById(targetId);
-
-    if (targetElement) {
-      targetElement.classList.toggle('hidden');
-
-      const isHidden = targetElement.classList.contains('hidden');
-      button.textContent = isHidden ? "Edit" : "Save/Close";
-    }
-  });
-});
-
-// rank:[attack bonus,hearts,primary stat, secondary stat]
+// Used to help track changes to adversary stats across rank changes
+// rank:[attack bonus,hearts,primary stat value, secondary stat value (p.432 phb)]
 rank_stats = {
     0:[0,1,6,6],
     1:[1,2,8,7],
@@ -101,7 +92,7 @@ class Adversary {
 
     constructor(data = {}){
         // creature metadata
-        this.name = data.name || "Untitled Adversary";
+        this.name = data.name || null;
         this.menace = data.menace || "Mook";
         this.rank = data.rank || 0;
         this.size = data.size || "Medium";
@@ -123,6 +114,8 @@ class Adversary {
         this.moods = data.moods
     }
 
+    // Update the data model with base aptitudes based on primary aptitudes
+    // use this method to assist in calculations of aptitude changes from size, rank or traits
     _calculateAptitudes() {
         const primary_val = rank_stats[this.rank][2]
         const secondary_val = rank_stats[this.rank][3]
@@ -146,21 +139,79 @@ class Adversary {
         this.aptitudes = base_aptitudes
     }
 
+    // adjustment methods should probably be integrated directly into calculate aptitudes method at some point
+    // keeping them separate for now to work through any low hanging fruit bugs
+    
+    _adjust_primary_aptitudes(attr=None){
+        //add passed argument to the primary attributes array on the adversary object
+        const toggles = document.querySelectorAll('input[id$="-primary"]')
+        toggles.forEach(toggle => {
+            let attr = toggle.id.split('-')[0]
+            if (this.primary_aptitudes.includes(attr)){
+                toggle.checked=true
+            }else{
+                toggle.checked=false
+            }
+        })
+    }
+    
+    _adjust_rank(){
+        const rankElement = document.getElementById('rank')
+        this.rank = rankElement.value
+        this._calculateAptitudes()
+        this._adjust_size()
+        this.hearts = rank_stats[this.rank][1]
+        this.atkbonus = rank_stats[this.rank][0]
+        update_ui(adversary)
+    }
+
     _adjust_size(){
-    //Get all current aptitude values
-    // prior to doing any math at all, recalculate base aptitudes by running _calculateAptitudes to set BACK to a baseline then do one of the following:
-    // for tiny add +3 defense rating, -1 might, +1 deft to baseline
-    // for small, add +1 Deft, -1 Might + 1 Def to baseline based on rank
-    // for medium ensure baseline based on rank
-    // for large add +1 might, -defense to baseline based on rank
-    // for massive add +2 Might, -2 defense to baseline, add Massive Species abilities (Sweep Attack and Focus Attack)
-    // for colossal, there will need to be a lot of extensive customization - earmark for future
-    // After this, rerun _adjustTraits so that new traits are re-incorporated
+        const sizeElement = document.getElementById('size')
+        this.size = sizeElement.value.toLowerCase()
+        //Get all current aptitude values
+        // prior to doing any math at all, recalculate base aptitudes by running _calculateAptitudes to set BACK to a baseline then do one of the following:
+        this._calculateAptitudes()
+        let modified_aptitudes = {...this.aptitudes}
+        // for tiny add +3 defense rating, -1 might, +1 deft to baseline
+        if (this.size == 'tiny'){
+            modified_aptitudes.deftness++
+            modified_aptitudes.might--
+            this.defense = 13
+        }
+        // for small, add +1 Deft, -1 Might + 1 Def to baseline based on rank
+        else if (this.size == 'small'){
+            modified_aptitudes.deftness++
+            modified_aptitudes.might--
+            this.defense = 11
+        }
+        // for medium ensure baseline based on rank
+        else if (this.size == 'medium'){
+            this.defense = 10
+        }
+        // for large add +1 might, -defense to baseline based on rank
+        else if (this.size == 'large'){
+            modified_aptitudes.might++
+            this.defense = 9
+        }
+        // for massive add +2 Might, -2 defense to baseline, add Massive Species abilities (Sweep Attack and Focus Attack)
+        else if(this.size == 'massive'){
+            modified_aptitudes.might = modified_aptitudes.might + 2
+            this.defense = 9
+            // add traits to adversary data model
+        }
+        // set new traits
+        this.aptitudes = modified_aptitudes
+        // for colossal, there will need to be a lot of extensive customization - earmark for future
+        // After this, rerun _adjustTraits so that new traits are re-incorporated
+        update_ui(adversary)
     }
 
     _adjust_traits(){
     //Do later
+        update_ui(adversary)
     }
+
+    // Confirms data being injected into Adversary class is of the correct type/class
 
     _validateArray(dataItem, targetClass) {
         if (dataItem === null || dataItem === undefined) return [];
@@ -169,6 +220,9 @@ class Adversary {
     }
 }
 
+// Class definitions
+
+// Abilities are functionally the same as items, except they dont take up space, have no monetary value and may have an alignment value. 
 class Ability {
     constructor(ability_name,ability_description,alignment=0){
         this.ability_name = ability_name;
@@ -177,6 +231,7 @@ class Ability {
     }
 }
 
+// These can influence aptitudes, health, speed, defense or atkbonus. The addition of any trait will need to be factored into the model and UI changes
 class Trait {
     constructor(trait_name,modifier,operator,value){
         this.trait_name = trait_name;
@@ -186,6 +241,7 @@ class Trait {
     }
 }
 
+// Generic item class - can be used as Loot or as equipment a vendor is looking to sell or as equipment the creature has on it
 class Item {
     constructor(item_name,item_type,item_subtype,item_description,slots=1,value){
         this.item_name = item_name;
@@ -197,6 +253,7 @@ class Item {
     }
 }
 
+// fun tidbits
 class Fact{
     constructor(fact_type,fact_text){
         this.fact_type = fact_type;
@@ -204,6 +261,7 @@ class Fact{
     }
 }
 
+// Rollable mood table - need to work on how to structure this. Probably a matrix?
 class MoodTable{
     constructor(rolls,moods,moods_text){
         // do this later
@@ -211,8 +269,9 @@ class MoodTable{
     }
 }
 
+// Load page with some preformatted adversary data
 var adversary = new Adversary({
-    name:'New Adversary',
+    name: null,
     menace:'boss',
     rank:1,
     size:'medium',
@@ -232,22 +291,31 @@ var adversary = new Adversary({
     moods:{}
 })
 
-adversary._calculateAptitudes()
+// make changes on the page to represent changes in the data structure for the current adversary
 
 function update_ui(adversary){
     document.getElementById('adversary-name').value = adversary.name
     document.getElementById('menace').value = adversary.menace
     document.getElementById('rank').value = adversary.rank
     document.getElementById('size').value = adversary.size
+    document.getElementById('hearts').innerHTML = adversary.hearts
     document.getElementById('atk-bonus').innerHTML = adversary.atkbonus
     document.getElementById('defense').innerHTML = adversary.defense
     document.getElementById('speed').value = adversary.speed
     document.getElementById('adversary-type').value = adversary.creature_type
     document.getElementById('adversary-subtype').value = adversary.creature_subtype
     document.getElementById('input-0').value = adversary.aptitudes.might
+    if (adversary.primary_aptitudes.includes('might')){document.getElementById('might-primary').checked = true}
     document.getElementById('input-1').value = adversary.aptitudes.deftness
+    if (adversary.primary_aptitudes.includes('deftness')){document.getElementById('deftness-primary').checked = true}
     document.getElementById('input-2').value = adversary.aptitudes.grit
+    if (adversary.primary_aptitudes.includes('grit')){document.getElementById('grit-primary').checked = true}
     document.getElementById('input-3').value = adversary.aptitudes.insight
+    if (adversary.primary_aptitudes.includes('insight')){document.getElementById('insight-primary').checked = true}
     document.getElementById('input-4').value = adversary.aptitudes.aura
+    if (adversary.primary_aptitudes.includes('aura')){document.getElementById('aura-primary').checked = true}
+    updateVisualization()
 }
+
+adversary._calculateAptitudes()
 update_ui(adversary)
