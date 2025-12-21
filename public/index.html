@@ -20,7 +20,7 @@
                         <option value="megaboss">Megaboss</option>
                     </select></span>
                 <span class="font-bold text-blue-950 p-1 rounded-md"><label for="rank">RANK </label><input id="rank"
-                        class="w-10" id="rank" value=0 type="number" min=0 max=15
+                        class="w-10" id="rank" value=0 type="number" min=0
                         onchange="adversary._adjust_rank()"></span>
             </span>
         </div>
@@ -240,12 +240,12 @@
                 <h3 class="break-header-text"><input id="trait-name" placeholder="New Trait" type="text"
                         class="basis-xl"></h3>
             </div>
-            <input type="radio" id="trait-add" name="trait-modifier" value="Add"><label for="trait-add"> Add </label>
-            <input type="radio" id="trait-subtract" name="trait-modifier" value="Subtract"><label for="trait-subtract">
+            <input type="radio" id="trait-add" name="trait-operator" value="add" checked><label for="trait-add"> Add </label>
+            <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label for="trait-subtract">
                 Subtract </label>
-            | <label for="trait-number">Amount: </label><input min=1 value=1 class="w-10" id="trait-number"
+            | <label for="trait-value">Amount: </label><input min=1 value=1 class="w-10" id="trait-value"
                 type="number">
-            <select>
+            <select id="trait-modifier">
                 <option value="might">Might</option>
                 <option value="deftness">Deftness</option>
                 <option value="grit">Grit</option>
@@ -257,7 +257,7 @@
                 <option value="speed">Speed</option>
             </select>
             <br />
-            <button id="btnAddTrait" class="text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2">Add</button>
+            <button onclick="adversary._add_trait()" id="btnAddTrait" class="text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2">Add</button>
         </div>
         <div id="ability-add">
             <div class="header break-adversary-header">

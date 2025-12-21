@@ -88,6 +88,14 @@ rank_stats = {
 
 }
 
+// Instead of hard setting the max rank at 15, I generated it based on the number of ranks in rank_stats 
+// this way if high-level enemies or prestige enemies are introduced (or I add the ability to just make higher rank enemies)
+// it will be easier to implement dynamically
+function set_max_rank(){
+    const max_rank = Object.keys(rank_stats).length - 1
+    document.getElementById('rank').max = max_rank
+}
+
 class Adversary {
 
     constructor(data = {}){
@@ -257,6 +265,28 @@ class Adversary {
         const normalized = Array.isArray(dataItem) ? dataItem : [dataItem];
         return normalized.filter(item => item instanceof targetClass);
     }
+
+    _add_trait(){
+        // create trait in adversary object
+        var name = document.getElementById('trait-name').value
+        var operator = document.querySelector(`input[name='trait-operator']:checked`).value
+        var value = document.getElementById('trait-value').value
+        var modifier = document.getElementById('trait-modifier').value
+        var new_trait = new Trait(name,modifier,operator,value)
+        this.traits.push(new_trait)
+        //reserved for having traits make an impact on the data object itself
+
+        //add trait to page by clearing out container div and constructing new traits based 
+        // on trait array in adversary
+        const trait_container = document.getElementById('trait-container')
+        trait_container.innerHTML = ''
+        adversary.traits.forEach(trait => {
+            var trait_span = document.createElement('span')
+            trait_span.innerHTML = `${trait.trait_name} : ${(trait.operator == 'add' ? '+' : '-')}${trait.value} ${trait.modifier.toUpperCase()}`
+            trait_span.classList.add('trait-span')
+            trait_container.appendChild(trait_span)
+        })
+    }
 }
 
 // Class definitions
@@ -359,5 +389,6 @@ function update_ui(adversary){
 }
 
 adversary._calculate_aptitudes()
+set_max_rank()
 //window.onload = updateVisualization;
 update_ui(adversary)
