@@ -144,15 +144,16 @@ class Adversary {
     
     _adjust_primary_aptitudes(attr=None){
         //add passed argument to the primary attributes array on the adversary object
-        const toggles = document.querySelectorAll('input[id$="-primary"]')
-        toggles.forEach(toggle => {
-            let attr = toggle.id.split('-')[0]
-            if (this.primary_aptitudes.includes(attr)){
-                toggle.checked=true
-            }else{
-                toggle.checked=false
+        if (document.getElementById(`${attr}-primary`).checked){
+            this.primary_aptitudes.push(attr)
+        }else{
+            const i = this.primary_aptitudes.indexOf(attr)
+            if(i > -1){
+                this.primary_aptitudes.splice(i,1)
             }
-        })
+        }
+        this._calculateAptitudes()
+        update_ui(adversary)
     }
     
     _adjust_rank(){
@@ -281,7 +282,7 @@ var adversary = new Adversary({
     speed: 'average',
     creature_type: 'monster',
     creature_subtype: null,
-    primary_aptitudes: ["grit","deftness","might"],
+    primary_aptitudes: [],
     description: null,
     traits:[],
     abilities :[],
@@ -305,15 +306,16 @@ function update_ui(adversary){
     document.getElementById('adversary-type').value = adversary.creature_type
     document.getElementById('adversary-subtype').value = adversary.creature_subtype
     document.getElementById('input-0').value = adversary.aptitudes.might
-    if (adversary.primary_aptitudes.includes('might')){document.getElementById('might-primary').checked = true}
+    if (adversary.primary_aptitudes.includes('might')){document.getElementById('might-primary').checked=true}
     document.getElementById('input-1').value = adversary.aptitudes.deftness
-    if (adversary.primary_aptitudes.includes('deftness')){document.getElementById('deftness-primary').checked = true}
+    if (adversary.primary_aptitudes.includes('deftness')){document.getElementById('deftness-primary').checked=true}
     document.getElementById('input-2').value = adversary.aptitudes.grit
-    if (adversary.primary_aptitudes.includes('grit')){document.getElementById('grit-primary').checked = true}
+    if (adversary.primary_aptitudes.includes('grit')){document.getElementById('grit-primary').checked=true}
     document.getElementById('input-3').value = adversary.aptitudes.insight
-    if (adversary.primary_aptitudes.includes('insight')){document.getElementById('insight-primary').checked = true}
+    if (adversary.primary_aptitudes.includes('insight')){document.getElementById('insight-primary').checked=true}
     document.getElementById('input-4').value = adversary.aptitudes.aura
-    if (adversary.primary_aptitudes.includes('aura')){document.getElementById('aura-primary').checked = true}
+    if (adversary.primary_aptitudes.includes('aura')){document.getElementById('aura-primary').checked=true}
+
     updateVisualization()
 }
 
