@@ -1,55 +1,55 @@
 // Aptitude bar visualization
 
 const barContainer = document.getElementById('bar-container');
-        const labelContainer = document.getElementById('label-container');
-        let inputs = Array.from({length: 5}, (_, i) => document.getElementById(`input-${i}`));
-        const resetBtn = document.getElementById('reset-btn');
-        const equalizeBtn = document.getElementById('equalize-btn');
+const labelContainer = document.getElementById('label-container');
+let inputs = Array.from({length: 5}, (_, i) => document.getElementById(`input-${i}`));
+const resetBtn = document.getElementById('reset-btn');
+const equalizeBtn = document.getElementById('equalize-btn');
 
-        const colors = [
-            'bg-red-500',    // Might
-            'bg-orange-500', // Deftness
-            'bg-green-500',    // Grit
-            'bg-blue-500',  // Insight
-            'bg-purple-500'    // Aura
-        ];
+const colors = [
+    'bg-red-500',    // Might
+    'bg-orange-500', // Deftness
+    'bg-green-500',    // Grit
+    'bg-blue-500',  // Insight
+    'bg-purple-500'    // Aura
+];
 
-        const titles = ['Might', 'Deftness', 'Grit', 'Insight', 'Aura'];
+const titles = ['Might', 'Deftness', 'Grit', 'Insight', 'Aura'];
 
-        function updateVisualization() {
-            const values = inputs.map(input => Math.max(0, parseFloat(input.value) || 0));
-            const total = values.reduce((acc, val) => acc + val, 0);
-            
-            barContainer.innerHTML = '';
-            labelContainer.innerHTML = '';
+function updateVisualization() {
+    const values = inputs.map(input => Math.max(0, parseFloat(input.value) || 0));
+    const total = values.reduce((acc, val) => acc + val, 0);
+    
+    barContainer.innerHTML = '';
+    labelContainer.innerHTML = '';
 
-            if (total === 0) {
-                const emptyMsg = document.createElement('div');
-                emptyMsg.className = 'w-full h-full flex items-center justify-center text-slate-400 text-sm italic';
-                emptyMsg.textContent = 'Enter attribute values to calculate balance';
-                barContainer.appendChild(emptyMsg);
-                return;
-            }
+    if (total === 0) {
+        const emptyMsg = document.createElement('div');
+        emptyMsg.className = 'w-full h-full flex items-center justify-center text-slate-400 text-sm italic';
+        emptyMsg.textContent = 'Enter attribute values to calculate balance';
+        barContainer.appendChild(emptyMsg);
+        return;
+    }
 
-            values.forEach((val, i) => {
-                const percentage = (val / total) * 100;
+    values.forEach((val, i) => {
+        const percentage = (val / total) * 100;
 
-                // Create Segment
-                if (percentage > 0) {
-                    const segment = document.createElement('div');
-                    segment.className = `bar-segment h-full ${colors[i]} border-r border-white/20 last:border-0`;
-                    segment.style.width = `${percentage}%`;
-                    segment.title = `${titles[i]}: ${val} (${percentage.toFixed(1)}%)`;
-                    barContainer.appendChild(segment);
-                }
-            });
+        // Create Segment
+        if (percentage > 0) {
+            const segment = document.createElement('div');
+            segment.className = `bar-segment h-full ${colors[i]} border-r border-white/20 last:border-0`;
+            segment.style.width = `${percentage}%`;
+            segment.title = `${titles[i]}: ${val} (${percentage.toFixed(1)}%)`;
+            barContainer.appendChild(segment);
         }
+    });
+}
 
-        inputs.forEach(input => {
-            input.addEventListener('input', updateVisualization);
-        });
+inputs.forEach(input => {
+    input.addEventListener('input', updateVisualization);
+});
 
-        window.onload = updateVisualization;
+        
 
 // Nav menu dynamic hide/show 
 
@@ -114,7 +114,7 @@ class Adversary {
         this.moods = data.moods
     }
 
-    // Update the data model with base aptitudes based on primary aptitudes
+    // Update the data object with base aptitudes based on primary aptitudes
     // use this method to assist in calculations of aptitude changes from size, rank or traits
     _calculateAptitudes() {
         const primary_val = rank_stats[this.rank][2]
@@ -316,8 +316,10 @@ function update_ui(adversary){
     document.getElementById('input-4').value = adversary.aptitudes.aura
     if (adversary.primary_aptitudes.includes('aura')){document.getElementById('aura-primary').checked=true}
 
+    //update the data bars
     updateVisualization()
 }
 
 adversary._calculateAptitudes()
+//window.onload = updateVisualization;
 update_ui(adversary)
