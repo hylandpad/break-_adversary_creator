@@ -116,7 +116,7 @@ class Adversary {
 
     // Update the data object with base aptitudes based on primary aptitudes
     // use this method to assist in calculations of aptitude changes from size, rank or traits
-    _calculateAptitudes() {
+    _calculate_aptitudes() {
         const primary_val = rank_stats[this.rank][2]
         const secondary_val = rank_stats[this.rank][3]
 
@@ -152,17 +152,52 @@ class Adversary {
                 this.primary_aptitudes.splice(i,1)
             }
         }
-        this._calculateAptitudes()
+        this._calculate_aptitudes()
+        this._adjust_size()
         update_ui(adversary)
     }
     
     _adjust_rank(){
         const rankElement = document.getElementById('rank')
         this.rank = rankElement.value
-        this._calculateAptitudes()
-        this._adjust_size()
         this.hearts = rank_stats[this.rank][1]
         this.atkbonus = rank_stats[this.rank][0]
+        // recalculate all attributes
+        this._calculate_aptitudes()
+        this._adjust_size()
+        update_ui(adversary)
+    }
+
+    _adjust_speed(){
+        const speedElement = document.getElementById('speed')
+        this.speed = speedElement.value
+        this._calculate_defense()
+    }
+
+    _calculate_defense(){
+        //need to rework this so that both speed and size can be adjusted and effect each
+        let def = 10
+        
+        if(this.speed == 'fast'){
+            def = def + 2
+        }else if(this.speed == 'veryfast'){
+            def = def + 4
+        }
+
+        if(this.size == 'tiny'){
+            def = def + 3
+        }else if(this.size == 'small'){
+            def = def + 1
+        }    
+        else if(this.size == 'large'){
+            def = def - 1
+        }else if(this.size == 'massive'){
+            def = def - 2
+        }
+        
+        // Add space where traits will influence defense
+        // iterate over all traits that use defense as a modifier and add as necessary
+        this.defense = def
         update_ui(adversary)
     }
 
@@ -170,41 +205,44 @@ class Adversary {
         const sizeElement = document.getElementById('size')
         this.size = sizeElement.value.toLowerCase()
         //Get all current aptitude values
-        // prior to doing any math at all, recalculate base aptitudes by running _calculateAptitudes to set BACK to a baseline then do one of the following:
-        this._calculateAptitudes()
+        // prior to doing any math at all, recalculate base aptitudes by running _calculate_aptitudes to set BACK to a baseline then do one of the following:
+        this._calculate_aptitudes()
         let modified_aptitudes = {...this.aptitudes}
         // for tiny add +3 defense rating, -1 might, +1 deft to baseline
         if (this.size == 'tiny'){
             modified_aptitudes.deftness++
             modified_aptitudes.might--
-            this.defense = 13
+            
         }
         // for small, add +1 Deft, -1 Might + 1 Def to baseline based on rank
         else if (this.size == 'small'){
             modified_aptitudes.deftness++
             modified_aptitudes.might--
-            this.defense = 11
+            
         }
         // for medium ensure baseline based on rank
         else if (this.size == 'medium'){
             this.defense = 10
+            
         }
         // for large add +1 might, -defense to baseline based on rank
         else if (this.size == 'large'){
             modified_aptitudes.might++
             this.defense = 9
+            
         }
         // for massive add +2 Might, -2 defense to baseline, add Massive Species abilities (Sweep Attack and Focus Attack)
         else if(this.size == 'massive'){
             modified_aptitudes.might = modified_aptitudes.might + 2
             this.defense = 9
+            
             // add traits to adversary data model
         }
         // set new traits
         this.aptitudes = modified_aptitudes
         // for colossal, there will need to be a lot of extensive customization - earmark for future
         // After this, rerun _adjustTraits so that new traits are re-incorporated
-        update_ui(adversary)
+        this._calculate_defense()
     }
 
     _adjust_traits(){
@@ -320,6 +358,6 @@ function update_ui(adversary){
     updateVisualization()
 }
 
-adversary._calculateAptitudes()
+adversary._calculate_aptitudes()
 //window.onload = updateVisualization;
 update_ui(adversary)
