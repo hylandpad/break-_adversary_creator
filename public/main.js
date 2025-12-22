@@ -135,7 +135,7 @@ class Adversary {
             'insight':0,
             'aura':0
         }
-
+        // Increase value for primary attributes
         const aptitudeKeys = Object.keys(base_aptitudes)
         aptitudeKeys.forEach(key => {
             if (this.primary_aptitudes.includes(key)){
@@ -145,6 +145,17 @@ class Adversary {
             }
         })
         this.aptitudes = base_aptitudes
+        // add in trait-based aptitude modifiers
+        aptitudeKeys.forEach(key =>{
+            adversary.traits.forEach(this_trait => 
+                {if (this_trait.modifier == key)
+                    {
+                        this_trait.operator == 'add' ?
+                        this.aptitudes[key] =  parseInt(this.aptitudes[key]) + parseInt(this_trait.value) :
+                        this.aptitudes[key] =  parseInt(this.aptitudes[key]) - parseInt(this_trait.value)
+                    }
+                })
+        })
     }
 
     // adjustment methods should probably be integrated directly into calculate aptitudes method at some point
@@ -179,11 +190,11 @@ class Adversary {
     _adjust_speed(){
         const speedElement = document.getElementById('speed')
         this.speed = speedElement.value
+        // add a spot for trait-based speed mods
         this._calculate_defense()
     }
 
     _calculate_defense(){
-        //need to rework this so that both speed and size can be adjusted and effect each
         let def = 10
         
         if(this.speed == 'fast'){
@@ -275,17 +286,30 @@ class Adversary {
         var new_trait = new Trait(name,modifier,operator,value)
         this.traits.push(new_trait)
         //reserved for having traits make an impact on the data object itself
+        this._calculate_traits()
+    }
 
+    _remove_trait(name){
+        const trait_to_remove = adversary.traits.indexOf(adversary.traits.find(trait => trait.trait_name === name))
+        adversary.traits.splice(trait_to_remove,1)
+        this._calculate_traits()
+    }
+
+    _calculate_traits(){
         //add trait to page by clearing out container div and constructing new traits based 
         // on trait array in adversary
         const trait_container = document.getElementById('trait-container')
         trait_container.innerHTML = ''
         adversary.traits.forEach(trait => {
             var trait_span = document.createElement('span')
-            trait_span.innerHTML = `${trait.trait_name} : ${(trait.operator == 'add' ? '+' : '-')}${trait.value} ${trait.modifier.toUpperCase()}`
+            trait_span.innerHTML = `${(trait.trait_name?trait.trait_name:'Unnamed').toUpperCase()} : ${(trait.operator == 'add' ? '+' : '-')}${trait.value} ${trait.modifier.toUpperCase()}`
             trait_span.classList.add('trait-span')
+            trait_span.id = (`trait-${trait.trait_name?trait.trait_name:'Unnamed'}-${trait.modifier}-${trait.operator}-${trait.value}`).toLowerCase()
+            trait_span.setAttribute('onclick',`adversary._remove_trait('${trait.trait_name}')`)
             trait_container.appendChild(trait_span)
         })
+        this._calculate_aptitudes()
+        update_ui(adversary)
     }
 }
 

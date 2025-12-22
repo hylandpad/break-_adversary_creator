@@ -152,10 +152,10 @@
                     </div>
                     <p class="italic text-stone-400">Traits</p>
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
-                        <div class="flex" id="trait-container">
+                        <div class="flex">
                             <button
                                 class="bg-blue-700 text-white text-4xl rounded-full size-10 flex items-center justify-center pb-2 hover:bg-blue-800">+</button>
-                            <span class="text-stone-400 text-center italic m-2">Click '+' to Add Traits</span>
+                            <span id="trait-container" class="text-stone-400 text-center italic m-2">Click '+' to Add Traits</span>
                         </div>
                     </div>
                 </div>
@@ -236,29 +236,30 @@
     </div>
     <div class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
         <div id="trait-add">
-            <div class="header break-adversary-header">
-                <h3 class="break-header-text"><input id="trait-name" placeholder="New Trait" type="text"
-                        class="basis-xl"></h3>
-            </div>
-            <input type="radio" id="trait-add" name="trait-operator" value="add" checked><label for="trait-add"> Add </label>
-            <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label for="trait-subtract">
-                Subtract </label>
-            | <label for="trait-value">Amount: </label><input min=1 value=1 class="w-10" id="trait-value"
-                type="number">
-            <select id="trait-modifier">
-                <option value="might">Might</option>
-                <option value="deftness">Deftness</option>
-                <option value="grit">Grit</option>
-                <option value="insight">Insight</option>
-                <option value="aura">Aura</option>
-                <option value="hearts">Hearts</option>
-                <option value="defense">Defense</option>
-                <option value="attack">Attack Bonus</option>
-                <option value="speed">Speed</option>
-            </select>
-            <br />
-            <button onclick="adversary._add_trait()" id="btnAddTrait" class="text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2">Add</button>
-        </div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text"><input id="trait-name" placeholder="New Trait" type="text"
+                                class="basis-xl"></h3>
+                    </div>
+                    
+<input type="radio" id="trait-add" name="trait-operator" value="add" checked><label for="trait-add"> Add </label>
+                    <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label for="trait-subtract">
+                        Subtract </label>
+                    | <label for="trait-value">Amount: </label><input min=1 value=1 class="w-10" id="trait-value"
+                        type="number">
+                    <select id="trait-modifier">
+                        <option value="might">Might</option>
+                        <option value="deftness">Deftness</option>
+                        <option value="grit">Grit</option>
+                        <option value="insight">Insight</option>
+                        <option value="aura">Aura</option>
+                        <option value="hearts">Hearts</option>
+                        <option value="defense">Defense</option>
+                        <option value="attack">Attack Bonus</option>
+                        <option value="speed">Speed</option>
+                    </select>
+                    <br />
+                    <button onclick="adversary._add_trait()" id="btnAddTrait" class="text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2">Add</button>
+                </div>
         <div id="ability-add">
             <div class="header break-adversary-header">
                 <h3 class="break-header-text"><input id="trait-name" placeholder="New Ability" type="text"
