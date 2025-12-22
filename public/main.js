@@ -122,6 +122,9 @@ class Adversary {
         this.moods = data.moods
     }
 
+    _adjust_name(){
+        this.name = document.getElementById('adversary-name').value
+    }
     // Update the data object with base aptitudes based on primary aptitudes
     // use this method to assist in calculations of aptitude changes from size, rank or traits
     _calculate_aptitudes() {
@@ -145,7 +148,11 @@ class Adversary {
             }
         })
         this.aptitudes = base_aptitudes
+        
         // add in trait-based aptitude modifiers
+        // I think I am going to need to do this differently - I think recalculating with this as 
+        // a base number is screwing stuff up. I either have to do ALL of the calculations here, 
+        // or break them up even more discretely
         aptitudeKeys.forEach(key =>{
             adversary.traits.forEach(this_trait => 
                 {if (this_trait.modifier == key)
@@ -285,17 +292,16 @@ class Adversary {
         var modifier = document.getElementById('trait-modifier').value
         var new_trait = new Trait(name,modifier,operator,value)
         this.traits.push(new_trait)
-        //reserved for having traits make an impact on the data object itself
-        this._calculate_traits()
+        this._adjust_traits()
     }
 
     _remove_trait(name){
         const trait_to_remove = adversary.traits.indexOf(adversary.traits.find(trait => trait.trait_name === name))
         adversary.traits.splice(trait_to_remove,1)
-        this._calculate_traits()
+        this._adjust_traits()
     }
 
-    _calculate_traits(){
+    _adjust_traits(){
         //add trait to page by clearing out container div and constructing new traits based 
         // on trait array in adversary
         const trait_container = document.getElementById('trait-container')
