@@ -159,6 +159,15 @@ class Adversary {
     _adjust_description() {
         this.description = document.getElementById('adversary-description').value
     }
+
+    _calculate_atkbonus(){
+        adversary.gear.forEach(this_item => {
+            if (this_item.atkbonus > 0) {
+                this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
+            }
+        })
+    }
+
     // Update the data object with base aptitudes based on primary aptitudes
     // use this method to assist in calculations of aptitude changes from size, rank or traits
     _calculate_aptitudes() {
@@ -221,6 +230,7 @@ class Adversary {
         // recalculate all attributes
         this._calculate_aptitudes()
         this._adjust_size()
+        this._calculate_atkbonus()
         update_ui(adversary)
     }
 
@@ -388,6 +398,10 @@ class Adversary {
             item_speed
         )
         this.gear.push(new_gear_item)
+        this._adjust_gear()
+    }
+
+        _adjust_gear(){
         const gear_container = document.getElementById('gear-container')
         gear_container.innerHTML = ''
         adversary.gear.forEach(item => {
@@ -411,10 +425,22 @@ class Adversary {
             </div>
             `
             gear_container.insertAdjacentHTML('beforeend',gear_block)
+            const gear_div = document.getElementById(`${item.item_name}-${item.item_type}-${item.item_subtype}`) 
+            gear_div.setAttribute('onclick', `adversary._remove_gear('${item.item_name}')`)
         })
         this._calculate_aptitudes()
         this._calculate_defense()
+        this._calculate_atkbonus()
         update_ui(adversary)
+    }
+
+    _remove_gear(){
+        const gear_to_remove = adversary.gear.indexOf(adversary.gear.find(gear => gear.item_name === name))
+        this.gear.splice(gear_to_remove, 1)
+        this._calculate_defense()
+        this._calculate_atkbonus()
+        this._adjust_gear()
+        this._adjust_rank()
     }
 }
 
@@ -451,11 +477,11 @@ class Passive {
 // Generic item class - can be used as Loot or as equipment or as items a vendor is looking to sell
 class Item {
     constructor(item_name, item_type, item_subtype, item_description = '', slots = 1, denomination, value, defense = null, atkbonus = null, speed=null) {
-        this.item_name = item_name;
-        this.item_type = item_type;
-        this.item_subtype = item_subtype;
-        this.item_description = item_description;
-        this.slots = slots;
+        this.item_name = item_name || 'Unnamed Item';
+        this.item_type = item_type || 'Generic Type';
+        this.item_subtype = item_subtype || 'Generic Subtype';
+        this.item_description = item_description || 'None';
+        this.slots = slots || 1;
         this.denomination = denomination;
         this.value = value;
         this.defense = defense;

@@ -14,7 +14,6 @@
     --color-orange-600: oklch(64.6% 0.222 41.116);
     --color-amber-200: oklch(92.4% 0.12 95.746);
     --color-amber-400: oklch(82.8% 0.189 84.429);
-    --color-lime-400: oklch(84.1% 0.238 128.85);
     --color-lime-500: oklch(76.8% 0.233 130.85);
     --color-green-500: oklch(72.3% 0.219 149.579);
     --color-green-600: oklch(62.7% 0.194 149.214);
@@ -28,7 +27,6 @@
     --color-slate-50: oklch(98.4% 0.003 247.858);
     --color-slate-100: oklch(96.8% 0.007 247.896);
     --color-slate-200: oklch(92.9% 0.013 255.508);
-    --color-slate-300: oklch(86.9% 0.022 252.894);
     --color-slate-400: oklch(70.4% 0.04 256.788);
     --color-slate-600: oklch(44.6% 0.043 257.281);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -39,11 +37,8 @@
     --color-stone-600: oklch(44.4% 0.011 73.639);
     --color-white: #fff;
     --spacing: 0.25rem;
-    --container-3xs: 16rem;
-    --container-xs: 20rem;
     --container-sm: 24rem;
     --container-md: 28rem;
-    --container-lg: 32rem;
     --container-xl: 36rem;
     --container-4xl: 56rem;
     --text-xs: 0.75rem;
@@ -303,11 +298,11 @@
   .w-full {
     width: 100%;
   }
+  .w-sm {
+    width: var(--container-sm);
+  }
   .max-w-4xl {
     max-width: var(--container-4xl);
-  }
-  .max-w-md {
-    max-width: var(--container-md);
   }
   .max-w-sm {
     max-width: var(--container-sm);
@@ -318,12 +313,6 @@
   .basis-1\/3 {
     flex-basis: calc(1/3 * 100%);
   }
-  .basis-3xs {
-    flex-basis: var(--container-3xs);
-  }
-  .basis-lg {
-    flex-basis: var(--container-lg);
-  }
   .basis-md {
     flex-basis: var(--container-md);
   }
@@ -332,9 +321,6 @@
   }
   .basis-xl {
     flex-basis: var(--container-xl);
-  }
-  .basis-xs {
-    flex-basis: var(--container-xs);
   }
   .border-collapse {
     border-collapse: collapse;
@@ -435,9 +421,6 @@
   .bg-green-500 {
     background-color: var(--color-green-500);
   }
-  .bg-lime-400 {
-    background-color: var(--color-lime-400);
-  }
   .bg-lime-500 {
     background-color: var(--color-lime-500);
   }
@@ -461,9 +444,6 @@
   }
   .bg-slate-200 {
     background-color: var(--color-slate-200);
-  }
-  .bg-slate-300 {
-    background-color: var(--color-slate-300);
   }
   .bg-slate-400 {
     background-color: var(--color-slate-400);
@@ -502,17 +482,8 @@
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
   }
-  .pl-1 {
-    padding-left: calc(var(--spacing) * 1);
-  }
   .pl-3 {
     padding-left: calc(var(--spacing) * 3);
-  }
-  .pl-5 {
-    padding-left: calc(var(--spacing) * 5);
-  }
-  .text-left {
-    text-align: left;
   }
   .text-right {
     text-align: right;
