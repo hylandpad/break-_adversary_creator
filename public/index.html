@@ -1,6 +1,8 @@
+<html land="en">
 <head>
     <link href="output.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7bbfb304a9.js" crossorigin="anonymous"></script>
+    <title>Break!! Adversary Creator</title>
 </head>
 
 <body class="bg-gray-300 flex">
@@ -164,20 +166,6 @@
 
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
                         <div class="flex flex-wrap" id="gear-container">
-                            <div class="gear-item bg-slate-600 rounded-md p-3">
-                                <div id="header" class="text-white"><span class="font-bold">Weapon Name</span> (<span
-                                        class="italic">Great Weapon</span>)</div>
-                                <div class="gear-content bg-slate-200 p-1 rounded-md">
-                                    <div><img class="svg-icon"
-                                            src="images/sword-fill-svgrepo-com.svg"></i><span>+1</span></div>
-                                    <div id="description" class="italic">Description text</div>
-                                </div>
-                                <div class="text-stone-200 italic flex" id="footer">
-                                    <div class="basis-1/3">Slots : 1</div>
-                                    <div class="spacer basis-1/3"></div>
-                                    <div class="basis-1/3 text-right">20 Coin</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <button class="btn">Add Gear</button>
@@ -290,12 +278,12 @@
                 class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
             <button id="btnAddAbility" class="btn">Add</button>
         </div>
-        <div id="gear-add">
+        <div id="gear-add" class="mb-4">
             <div class="header break-adversary-header">
                 <h3 class="break-header-text"><input id="gear-name" placeholder="New Gear" type="gear" class="basis-xl">
                 </h3>
             </div>
-            <label for="gear-item-type">Item Type / Subtype:</label>
+            <label class="font-bold" for="gear-item-type">Item Type / Subtype:</label>
 
             <select id="gear-item-type">
                 <option value="weapon">Weapon</option>
@@ -305,31 +293,32 @@
                 <option value="mount">Mount</option>
             </select> / <input id="gear-item-subtype" type="text" placeholder="IE-Great Weapon">
             <div class="mb-2">
-                <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input class="w-15 w-10 bg-slate-400 rounded-md pl-3" id="gear-item-atkbonus"
+                <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="w-15 w-10 bg-slate-400 rounded-md pl-3" id="gear-item-atkbonus"
                     type="number"> 
-                <i class="fa-solid fa-shield"></i><input class="w-15 w-10 bg-slate-400 rounded-md pl-3" id="gear-item-defense" type="number"> 
+                <i class="fa-solid fa-shield"></i><input min='0' class="w-15 w-10 bg-slate-400 rounded-md pl-3" id="gear-item-defense" type="number"> 
                 <i class="fa-solid fa-person-running"></i><input class="w-15 w-10 bg-slate-400 rounded-md pl-3" id="gear-item-speed" type="number">
             </div>
             <textarea id="gear-item-description" placeholder="brief description here."
                 class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
             <div >
                 <div class="flex">
-                    <div class="basis-sm rounded-md"><label for="gear-slots">Slots: </label><input min=1 class="w-10 bg-slate-400 rounded-md pl-3" id="gear-slots"
+                    <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min=1 class="w-10 bg-slate-400 rounded-md pl-3" id="gear-item-slots"
                             type="number"></div>
                     <div class="spacer basis-md"></div>
                     <div class="basis-md">
+                        <label for="gear-item-value">Value: </label><input type="number" value=1
+                            id="gear-item-value" class="w-15 w-10 bg-slate-400 rounded-md pl-3">
                         <input type="radio" id="gear-item-stones" name="gear-item-denomination" value="stones"><label
                             for="gear-item-stones"> Stones </label>
                         <input type="radio" id="gear-items-coins" name="gear-item-denomination" value="coins"
                             checked><label for="gear-item-coins"> Coins </label>
                         <input type="radio" id="gear-items-gems" name="gear-item-denomination" value="gems"><label
                             for="gear-item-gems">
-                            Gems </label> |<label for="gear-item-value"> Value: </label><input type="number" value=1
-                            id="gear-item-value">
+                            Gems </label>
                     </div>
                 </div>
             </div>
-            <button id="btnAddGear" class="btn">Add</button>
+            <button id="btnAddGear" onclick="adversary._add_gear()" class="btn">Add</button>
         </div>
         <div id="loot-add">
             <div class="header break-adversary-header">
@@ -434,4 +423,6 @@
     </div>
     </div>
 </body>
+<footer></footer>
 <script src="main.js" type="text/javascript"></script>
+</html>

@@ -130,6 +130,7 @@ class Adversary {
         this.creature_type = data.creature_type || "Monster";
         this.creature_subtype = data.creature_subtype || null;
         this.primary_aptitudes = data.primary_aptitudes
+        this.gear = data.gear || []
         this.description = data.description || null;
         // structured data objects
         this.aptitudes = data.aptitudes || []
@@ -226,7 +227,7 @@ class Adversary {
     _adjust_speed() {
         const speedElement = document.getElementById('speed')
         this.speed = speedElement.value
-        // add a spot for trait-based speed mods
+        // add a spot for trait and item-based speed mods
         this._calculate_defense()
     }
 
@@ -250,13 +251,19 @@ class Adversary {
             def = def - 2
         }
         this.defense = def
-        // Add space where traits will influence defense
+        // Add space where traits and items will influence defense
         // iterate over all traits that use defense as a modifier and add as necessary
         adversary.passives.forEach(this_trait => {
             if (this_trait.modifier == 'defense') {
                 this_trait.operator == 'add' ?
                     this.defense = parseInt(this.defense) + parseInt(this_trait.value) :
                     this.defense = parseInt(this.defense) - parseInt(this_trait.value)
+            }
+        })
+
+        adversary.gear.forEach(this_item => {
+            if (this_item.defense > 0) {
+                this.defense = parseInt(this.defense) + parseInt(this_item.defense)
             }
         })
 
@@ -362,9 +369,52 @@ class Adversary {
         const item_description = document.getElementById('gear-item-description').value;
         const denomination = document.querySelector(`input[name='gear-item-denomination']:checked`).value
         const item_value = document.getElementById('gear-item-value').value;
+        const item_slots = document.getElementById('gear-item-slots').value
         // optional gear attributes that may affect combat stats
-
-
+        const item_defense = document.getElementById('gear-item-defense').value ? document.getElementById('gear-item-defense').value : null
+        const item_atkbonus = document.getElementById('gear-item-atkbonus').value ? document.getElementById('gear-item-atkbonus').value : null
+        const item_speed = document.getElementById('gear-item-speed').value ? document.getElementById('gear-item-speed').value : null
+        
+        var new_gear_item = new Item(
+            item_name,
+            item_type,
+            item_subtype,
+            item_description,
+            item_slots,
+            denomination,
+            item_value,
+            item_defense,
+            item_atkbonus,
+            item_speed
+        )
+        this.gear.push(new_gear_item)
+        const gear_container = document.getElementById('gear-container')
+        gear_container.innerHTML = ''
+        adversary.gear.forEach(item => {
+            const gear_block = `
+            <div id="${item.item_name}-${item.item_type}-${item.item_subtype}" class="gear-item bg-slate-600 rounded-md p-3 mr-4 mb-4 max-w-sm">
+                <div class="text-white"><span class="font-bold">${item.item_name}</span> (<span
+                        class="italic">${item.item_subtype}</span>)</div>
+                <div class="gear-content bg-slate-200 p-1 rounded-md">
+                    <div>
+                        ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
+                        ${item.defense > 0 ? `<i class="fa-solid fa-shield"></i><span>+${item.defense}</span>` : ''}
+                        ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
+                    </div>
+                    <div id="description" class="italic">${item.item_description}</div>
+                </div>
+                <div class="text-stone-200 italic flex" id="footer">
+                    <div class="basis-1/3">Slots : ${item.slots}</div>
+                    <div class="spacer basis-1/3"></div>
+                    <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
+                </div>
+            </div>
+            `
+            gear_container.insertAdjacentHTML('beforeend',gear_block)
+        })
+        this._calculate_aptitudes()
+        this._calculate_defense()
+        update_ui(adversary)
     }
 }
 
@@ -400,7 +450,7 @@ class Passive {
 
 // Generic item class - can be used as Loot or as equipment or as items a vendor is looking to sell
 class Item {
-    constructor(item_name, item_type, item_subtype, item_description = '', slots = 1, denomination, value, defense = null, atkbonus = null, speed_reduction = null, speed_increase = null, speed_set = null) {
+    constructor(item_name, item_type, item_subtype, item_description = '', slots = 1, denomination, value, defense = null, atkbonus = null, speed=null) {
         this.item_name = item_name;
         this.item_type = item_type;
         this.item_subtype = item_subtype;
@@ -410,9 +460,7 @@ class Item {
         this.value = value;
         this.defense = defense;
         this.atkbonus = atkbonus;
-        this.speed_reduction = speed_reduction
-        this.speed_increase = speed_increase
-        this.speed_set = speed_set
+        this.speed = speed
     }
 }
 
@@ -445,6 +493,7 @@ var adversary = new Adversary({
     creature_type: 'monster',
     creature_subtype: null,
     primary_aptitudes: [],
+    gear: [],
     description: null,
     passives: [],
     abilities: [],
