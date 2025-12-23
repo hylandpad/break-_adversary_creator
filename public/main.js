@@ -144,6 +144,7 @@ class Adversary {
 
     _adjust_menace() {
         this.menace = document.getElementById('menace').value
+        menace_color(document.getElementById('menace').value)
     }
 
     _adjust_name() {
