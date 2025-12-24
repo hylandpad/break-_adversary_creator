@@ -7,8 +7,10 @@
 </head>
 
 <body>
-    <div class="container bg-gray-300-flex">
-        <div class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
+    <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-5"><img class="w-[250px] m-auto"
+            src="/images/breakcommunity.png"></div>
+    <div class="container bg-gray-300-flex m-auto">
+        <div class="app-main bg-gray-200 m-8 p-4 rounded-md overflow-auto">
             <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
                         class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
                     onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span>
@@ -77,7 +79,7 @@
 
                     <div class="stat-block aptitudes">
                         <h3 class="fading-header from-slate-600">APTITUDES</h3>
-                        <div class="max-w-4xl w-full  p-8">
+                        <div class="max-w-4xl w-full m-auto  p-8">
 
                             <!-- Visualization Area -->
                             <div class="space-y-6 mb-2">
@@ -159,32 +161,35 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="from-slate-600 fading-header">TRAITS & PASSIVES</p>
-
-                        <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
-                            <div class="flex" id="trait-container">
-                            </div>
-                        </div>
-                        <button class="btn modal-trigger" data-target="trait-add">Add Trait</button>
-                        <p class="from-slate-600 fading-header">GEAR</p>
-
-                        <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
-                            <div class="flex flex-wrap" id="gear-container">
-                            </div>
-                        </div>
-                        <button class="btn">Add Gear</button>
                     </div>
                 </div>
-
-                <div class="header break-adversary-header">
-                    <h3 class="break-header-text">ABILITIES</h3>
-                </div>
-
-                <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
-                    <div class="flex" id="ability-container">
+                <div class="adversary-traits">
+                    <p class="from-slate-600 fading-header">TRAITS & PASSIVES</p>
+                    <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
+                        <div class="flex" id="trait-container">
+                        </div>
                     </div>
+                    <button class="btn modal-trigger" data-target="trait-add">Add Trait</button>
                 </div>
-                <button class="btn">Add Ability</button>
+
+                <div id="adversary-gear">
+                    <p class="from-slate-600 fading-header">GEAR</p>
+                    <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
+                        <div class="flex flex-wrap" id="gear-container">
+                        </div>
+                    </div>
+                    <button class="btn modal-trigger" data-target="gear-add">Add Gear</button>
+                </div>
+
+                <div id="adversary-abilities">
+                    <p class="from-slate-600 fading-header">ABILITIES</p>
+
+                    <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
+                        <div class="flex" id="ability-container">
+                        </div>
+                    </div>
+                    <button class="btn modal-trigger" data-target="ability-add">Add Ability</button>
+                </div>
             </div>
             <div id="info-card" class="main hidden">
                 <div class="quick-facts-section">
@@ -247,256 +252,281 @@
                 </div>
             </div>
         </div>
-        <div>
-            <template id="trait-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-                <div>
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text"><input id="trait-name" placeholder="New Trait" type="text"
-                                class="basis-xl"></h3>
-                    </div>
-                    <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize your
-                        adversary or fit them into a role.
-                    </p>
-                    <input type="radio" id="trait-add" name="trait-operator" value="add" checked><label for="trait-add">
-                        Add
-                    </label>
-                    <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label
-                        for="trait-subtract">
-                        Subtract </label>
-                    | <label for="trait-value">Amount: </label><input class="text-input" min=1 value=1 class="w-10"
-                        id="trait-value" type="number">
-                    <select id="trait-modifier">
-                        <option value="might">Might</option>
-                        <option value="deftness">Deftness</option>
-                        <option value="grit">Grit</option>
-                        <option value="insight">Insight</option>
-                        <option value="aura">Aura</option>
-                    </select>
-                    <br />
-                    <button onclick="adversary._add_trait()" id="btnAddTrait" class="btn close-modal">Add</button>
+        <template id="trait-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
+            <div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text"><input id="trait-name" placeholder="New Trait" type="text"
+                            class="basis-xl"></h3>
                 </div>
-            </template>
-            <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-                <div>
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text"><input id="trait-name" placeholder="New Ability" type="text"
-                                class="basis-xl"></h3>
-                    </div>
-                    <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
-                        powerful abilities can only be assigned to Bosses or Megabosses of certain levels, and may be
-                        magical in
-                        nature
-                    </p>
-                    <input type="radio" id="bright-add" name="alignment-modifier" value="bright"><label
-                        for="bright-add">
-                        Bright
-                    </label>
-                    <input type="radio" id="unaligned" name="alignment-modifier" value="unaligned" checked><label
-                        for="unaligned"> Unaligned </label>
-                    <input type="radio" id="dark-add" name="alignment-modifier" value="dark"> <label for="dark-add">
-                        Dark
-                    </label>
-                    <textarea placeholder="brief description here."
-                        class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                    <button id="btnAddAbility" class="btn">Add</button>
+                <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize your
+                    adversary or fit them into a role.
+                </p>
+                <input type="radio" id="trait-add" name="trait-operator" value="add" checked><label for="trait-add">
+                    Add
+                </label>
+                <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label
+                    for="trait-subtract">
+                    Subtract </label>
+                | <label for="trait-value">Amount: </label><input class="text-input" min=1 value=1 class="w-10"
+                    id="trait-value" type="number">
+                <select id="trait-modifier">
+                    <option value="might">Might</option>
+                    <option value="deftness">Deftness</option>
+                    <option value="grit">Grit</option>
+                    <option value="insight">Insight</option>
+                    <option value="aura">Aura</option>
+                </select>
+                <br />
+                <button onclick="adversary._add_trait()" id="btnAddTrait" class="btn close-modal">Add</button>
+            </div>
+        </template>
+        <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-3xl">
+            <div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text"><input id="trait-name" placeholder="New Ability" type="text"
+                            class="basis-xl"></h3>
                 </div>
-            </template>
-            <template id="gear-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-                <div>
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text"><input id="gear-name" placeholder="New Gear" type="gear"
-                                class="basis-xl">
-                        </h3>
+                <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
+                    powerful abilities can only be assigned to Bosses or Megabosses of certain levels, and may be
+                    magical in
+                    nature
+                </p>
+                <label>Allegiance Points: </label><input id="ability-allegiance" class="w-10 " type="number" value="0">
+                <br />
+                <label for="ability-type">Ability Type: </label>
+                <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label for="ability-basic">
+                    Basic</label>
+                <input id="ability-advanced" name="ability-type" type="radio" value="Advanced" disabled="true"><label
+                    for="ability-advanced"> Advanced</label>
+                <input id="ability-legendary" name="ability-type" type="radio" value="Legendary" disabled="true"><label
+                    for="ability-legendary"> Legendary</label>
+                <br />
+                <div class="flex">
+                    <div><label for="ability-magic">Magic: </label></div>
+                    <div><label class="switch switch-small ml-3">
+                            <input id="ability-magic" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                    <p class="italic slate-400 p-2">Gear is the equipment that this adversary wears or has equipped and
-                        uses
-                        in
-                        combat.
-                    </p>
-                    <label class="font-bold" for="gear-item-type">Item Type / Subtype:</label>
-                    <select id="gear-item-type">
-                        <option value="weapon">Weapon</option>
-                        <option value="armor">Armor</option>
-                        <option value="shield">Shield</option>
-                        <option value="outfit">Outfit</option>
-                        <option value="mount">Mount</option>
+                </div>
+
+                <textarea placeholder="Ability Explanation here"
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <div class="mb-2">
+                    <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
+                        id="ability-atkbonus" type="number">
+                    <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
+                        type="number">
+                    <i class="fa-solid fa-person-running"></i><select id="ability-base-speed-override">
+                        <option value=null></option>
+                        <option value="slow">Slow</option>
+                        <option value="slow">Average</option>
+                        <option value="slow">Fast</option>
+                        <option value="slow">Very Fast</option>
                     </select>
-                    / <input class="text-input w-35" id="gear-item-subtype" type="text" placeholder="IE-Great Weapon">
-                    <div class="mb-2">
-                        <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
-                            id="gear-item-atkbonus" type="number">
-                        <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="gear-item-defense"
-                            type="number">
-                        <i class="fa-solid fa-person-running"></i><input class="text-input" id="gear-item-speed"
-                            type="number">
-                    </div>
-                    <textarea id="gear-item-description" placeholder="brief description here."
-                        class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                    <div>
-                        <div class="flex">
-                            <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min=1
-                                    class="w-10 bg-slate-400 rounded-md pl-3" id="gear-item-slots" type="number"></div>
-                            <div class="spacer basis-md"></div>
-                            <div class="basis-md">
-                                <label for="gear-item-value">Value: </label><input type="number" value=1
-                                    id="gear-item-value" class="text-input">
-                                <input type="radio" id="gear-item-stones" name="gear-item-denomination"
-                                    value="stones"><label for="gear-item-stones"> Stones </label>
-                                <input type="radio" id="gear-items-coins" name="gear-item-denomination" value="coins"
-                                    checked><label for="gear-item-coins"> Coins </label>
-                                <input type="radio" id="gear-items-gems" name="gear-item-denomination"
-                                    value="gems"><label for="gear-item-gems">
-                                    Gems </label>
-                            </div>
+                </div>
+                <button id="btnAddAbility" class="btn">Add</button>
+            </div>
+        </template>
+        <template id="gear-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
+            <div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text"><input id="gear-name" placeholder="New Gear" type="gear"
+                            class="basis-xl">
+                    </h3>
+                </div>
+                <p class="italic slate-400 p-2">Gear is the equipment that this adversary wears or has equipped and
+                    uses
+                    in
+                    combat.
+                </p>
+                <label class="font-bold" for="gear-item-type">Item Type / Subtype:</label>
+                <select id="gear-item-type">
+                    <option value="weapon">Weapon</option>
+                    <option value="armor">Armor</option>
+                    <option value="shield">Shield</option>
+                    <option value="outfit">Outfit</option>
+                    <option value="mount">Mount</option>
+                </select>
+                / <input class="text-input w-35" id="gear-item-subtype" type="text" placeholder="IE-Great Weapon">
+                <div class="mb-2">
+                    <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
+                        id="gear-item-atkbonus" type="number">
+                    <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="gear-item-defense"
+                        type="number">
+                    <i class="fa-solid fa-person-running"></i><input class="text-input" id="gear-item-speed"
+                        type="number">
+                </div>
+                <textarea id="gear-item-description" placeholder="brief description here."
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <div>
+                    <div class="flex">
+                        <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min=1
+                                class="w-10 bg-slate-400 rounded-md pl-3" id="gear-item-slots" type="number"></div>
+                        <div class="spacer basis-md"></div>
+                        <div class="basis-md">
+                            <label for="gear-item-value">Value: </label><input type="number" value=1
+                                id="gear-item-value" class="text-input">
+                            <input type="radio" id="gear-item-stones" name="gear-item-denomination"
+                                value="stones"><label for="gear-item-stones"> Stones </label>
+                            <input type="radio" id="gear-items-coins" name="gear-item-denomination" value="coins"
+                                checked><label for="gear-item-coins"> Coins </label>
+                            <input type="radio" id="gear-items-gems" name="gear-item-denomination" value="gems"><label
+                                for="gear-item-gems">
+                                Gems </label>
                         </div>
                     </div>
-                    <button id="btnAddGear" onclick="adversary._add_gear()" class="btn">Add</button>
                 </div>
-            </template>
-            <template id="loot-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-                <div>
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text"><input id="loot-name" placeholder="New Loot" type="text"
-                                class="basis-xl">
-                        </h3>
-                    </div>
-                    <p class="italic slate-400 p-2">Loot or Yield is anything that comes from the creature that isn't in
-                        its
-                        gear or
-                        inventory. It may be a creature byproduct, or a weapon derived from its body.
-                    </p>
-                    <label for="loot-item-type">Item Type / Subtype:</label>
-                    <select id="loot-item-type">
-                        <option value="weapon">Weapon</option>
-                        <option value="armor">Armor</option>
-                        <option value="shield">Shield</option>
-                        <option value="outfit">Outfit</option>
-                        <option value="accessories">Accessories</option>
-                        <option value="wayfinding">Wayfinding</option>
-                        <option value="illumination">Illumination</option>
-                        <option value="kits">Specialist Kit</option>
-                        <option value="books">Books</option>
-                        <option value="consumables">Consumable</option>
-                        <option value="explosives">Explosives</option>
-                        <option value="chemicals">Chemicals</option>
-                        <option value="reagent">Crafting Reagent</option>
-                        <option value="misc">Miscellaneous</option>
-                        <option value="curiosity">Curiosity</option>
-                        <option value="gadget">Gadget</option>
-                        <option value="artifact">Artifact</option>
-                        <option value="otherworld">Otherworldy Items</option>
-                        <option value="vehicle">Vehicle</option>
-                        <option value="companion">Companion</option>
-                    </select>
-                    / <input id="loot-item-subtype" type="text" placeholder="IE-Great Weapon"> | <label
-                        for="loot-slots">Slots: </label> <input class="w-10" id="loot-slots" type="number">
-                    <input type="radio" id="loot-item-stones" name="loot-item-value" value="stones"><label
-                        for="loot-item-stones">
-                        Stones </label>
-                    <input type="radio" id="loot-items-coins" name="loot-item-value" value="coins" checked><label
-                        for="loot-item-coins"> Coins </label>
-                    <input type="radio" id="loot-items-gems" name="loot-item-value" value="gems"><label
-                        for="loot-item-gems">
-                        Gems </label> |
-                    <label for="loot-item-value"> Value: </label><input type="number" value=1 id="loot-item-value">
-                    <textarea placeholder="brief description here."
-                        class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                    <button id="btnAddLoot" class="btn">Add</button>
+                <button id="btnAddGear" onclick="adversary._add_gear()" class="btn">Add</button>
+            </div>
+        </template>
+        <template id="loot-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
+            <div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text"><input id="loot-name" placeholder="New Loot" type="text"
+                            class="basis-xl">
+                    </h3>
                 </div>
-            </template>
-            <template id="inventory-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-                <div>
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text"><input id="inventory-item-name" placeholder="New Inventory Item"
-                                type="text" class="basis-xl">
-                        </h3>
-                    </div>
-                    <p class="italic slate-400 p-2">Inventory items are things an adversary may have on their person
-                        that
-                        isn't
-                        worn. It may be selling or hoarding these items, or it may use some of them in combat (such as
-                        bombs
-                        or
-                        flasks of acid)'
-                    </p>
-                    <label for="inventory-item-type">Item Type / Subtype:</label>
-                    <select id="inventory-item-type">
-                        <option value="weapon">Weapon</option>
-                        <option value="armor">Armor</option>
-                        <option value="shield">Shield</option>
-                        <option value="outfit">Outfit</option>
-                        <option value="accessories">Accessories</option>
-                        <option value="wayfinding">Wayfinding</option>
-                        <option value="illumination">Illumination</option>
-                        <option value="kits">Specialist Kit</option>
-                        <option value="books">Books</option>
-                        <option value="consumables">Consumable</option>
-                        <option value="explosives">Explosives</option>
-                        <option value="chemicals">Chemicals</option>
-                        <option value="reagent">Crafting Reagent</option>
-                        <option value="misc">Miscellaneous</option>
-                        <option value="curiosity">Curiosity</option>
-                        <option value="gadget">Gadget</option>
-                        <option value="artifact">Artifact</option>
-                        <option value="otherworld">Otherworldy Items</option>
-                        <option value="vehicle">Vehicle</option>
-                        <option value="companion">Companion</option>
-                    </select>
-                    / <input id="inventory-item-subtype" type="text" placeholder="IE-Great Weapon"> | <label
-                        for="inventory-slots">Slots: </label> <input class="w-10" id="inventoryt-slots" type="number">
-                    <input type="radio" id="inventory-item-stones" name="inventory-item-value" value="stones"><label
-                        for="inventory-item-stones"> Stones </label>
-                    <input type="radio" id="inventory-items-coins" name="inventory-item-value" value="coins"
-                        checked><label for="inventory-item-coins"> Coins </label>
-                    <input type="radio" id="inventory-items-gems" name="inventory-item-value" value="gems"><label
-                        for="inventory-item-gems"> Gems </label> |
-                    <label for="inventory-item-value"> Value: </label><input type="number" value=1
-                        id="inventory-item-value">
-                    <textarea placeholder="brief description here."
-                        class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                    <button id="btnAddInventory" class="btn">Add</button>
+                <p class="italic slate-400 p-2">Loot or Yield is anything that comes from the creature that isn't in
+                    its
+                    gear or
+                    inventory. It may be a creature byproduct, or a weapon derived from its body.
+                </p>
+                <label for="loot-item-type">Item Type / Subtype:</label>
+                <select id="loot-item-type">
+                    <option value="weapon">Weapon</option>
+                    <option value="armor">Armor</option>
+                    <option value="shield">Shield</option>
+                    <option value="outfit">Outfit</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="wayfinding">Wayfinding</option>
+                    <option value="illumination">Illumination</option>
+                    <option value="kits">Specialist Kit</option>
+                    <option value="books">Books</option>
+                    <option value="consumables">Consumable</option>
+                    <option value="explosives">Explosives</option>
+                    <option value="chemicals">Chemicals</option>
+                    <option value="reagent">Crafting Reagent</option>
+                    <option value="misc">Miscellaneous</option>
+                    <option value="curiosity">Curiosity</option>
+                    <option value="gadget">Gadget</option>
+                    <option value="artifact">Artifact</option>
+                    <option value="otherworld">Otherworldy Items</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="companion">Companion</option>
+                </select>
+                / <input id="loot-item-subtype" type="text" placeholder="IE-Great Weapon"> | <label
+                    for="loot-slots">Slots: </label> <input class="w-10" id="loot-slots" type="number">
+                <input type="radio" id="loot-item-stones" name="loot-item-value" value="stones"><label
+                    for="loot-item-stones">
+                    Stones </label>
+                <input type="radio" id="loot-items-coins" name="loot-item-value" value="coins" checked><label
+                    for="loot-item-coins"> Coins </label>
+                <input type="radio" id="loot-items-gems" name="loot-item-value" value="gems"><label
+                    for="loot-item-gems">
+                    Gems </label> |
+                <label for="loot-item-value"> Value: </label><input type="number" value=1 id="loot-item-value">
+                <textarea placeholder="brief description here."
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <button id="btnAddLoot" class="btn">Add</button>
+            </div>
+        </template>
+        <template id="inventory-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
+            <div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text"><input id="inventory-item-name" placeholder="New Inventory Item"
+                            type="text" class="basis-xl">
+                    </h3>
                 </div>
-            </template>
-            <template id="fact-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-                <div>
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text">
-                            <select>
-                                <option value="" disabled selected hidden>Please Select</option>
-                                <option id="habitat">Habitat</option>
-                                <option id="communication">Communication</option>
-                                <option id="tactics">Tactics</option>
-                                <option id="indicators">Indicators</option>
-                                <option id="notes">Role Playing Notes</option>
-                                <option id="customizations">Customization</option>
-                            </select>
-                        </h3>
-                    </div>
-                    <textarea placeholder="brief description here."
-                        class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                    <button id="btnAddAbility" class="btn">Add</button>
+                <p class="italic slate-400 p-2">Inventory items are things an adversary may have on their person that
+                    isn't worn. It may be selling or hoarding these items, or it may use some of them in combat (such as
+                    bombs or
+                    flasks of acid)
+                </p>
+                <label for="inventory-item-type">Item Type / Subtype:</label>
+                <select id="inventory-item-type">
+                    <option value="weapon">Weapon</option>
+                    <option value="armor">Armor</option>
+                    <option value="shield">Shield</option>
+                    <option value="outfit">Outfit</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="wayfinding">Wayfinding</option>
+                    <option value="illumination">Illumination</option>
+                    <option value="kits">Specialist Kit</option>
+                    <option value="books">Books</option>
+                    <option value="consumables">Consumable</option>
+                    <option value="explosives">Explosives</option>
+                    <option value="chemicals">Chemicals</option>
+                    <option value="reagent">Crafting Reagent</option>
+                    <option value="misc">Miscellaneous</option>
+                    <option value="curiosity">Curiosity</option>
+                    <option value="gadget">Gadget</option>
+                    <option value="artifact">Artifact</option>
+                    <option value="otherworld">Otherworldy Items</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="companion">Companion</option>
+                </select>
+                / <input id="inventory-item-subtype" type="text" placeholder="IE-Great Weapon"> | <label
+                    for="inventory-slots">Slots: </label> <input class="w-10" id="inventoryt-slots" type="number">
+                <input type="radio" id="inventory-item-stones" name="inventory-item-value" value="stones"><label
+                    for="inventory-item-stones"> Stones </label>
+                <input type="radio" id="inventory-items-coins" name="inventory-item-value" value="coins" checked><label
+                    for="inventory-item-coins"> Coins </label>
+                <input type="radio" id="inventory-items-gems" name="inventory-item-value" value="gems"><label
+                    for="inventory-item-gems"> Gems </label> |
+                <label for="inventory-item-value"> Value: </label><input type="number" value=1
+                    id="inventory-item-value">
+                <textarea placeholder="brief description here."
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <button id="btnAddInventory" class="btn">Add</button>
+            </div>
+        </template>
+        <template id="fact-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
+            <div>
+                <div class="header break-adversary-header">
+                    <h3 class="break-header-text">
+                        <select>
+                            <option value="" disabled selected hidden>Please Select</option>
+                            <option id="habitat">Habitat</option>
+                            <option id="communication">Communication</option>
+                            <option id="tactics">Tactics</option>
+                            <option id="indicators">Indicators</option>
+                            <option id="notes">Role Playing Notes</option>
+                            <option id="customizations">Customization</option>
+                        </select>
+                    </h3>
                 </div>
-            </template>
-        </div>
+                <textarea placeholder="brief description here."
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <button id="btnAddAbility" class="btn">Add</button>
+            </div>
+        </template>
     </div>
     <div id="modal-overlay"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full m-4 overflow-hidden transform scale-95 transition-transform duration-300"
-            id="modal-container">
-            <div class="flex justify-end p-2">
-                <button id="modal-close" class="z-99 text-gray-400 hover:text-gray-600 text-2xl px-2">&times;</button>
-            </div>
-            <div id="modal-body" class="p-6 pt-0">
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-all duration-300">
+
+        <div id="modal-container"
+            class="relative bg-white w-full max-w-2xl mx-4 rounded-xl shadow-2xl transform scale-90 transition-all duration-300">
+
+            <button id="modal-close"
+                class="absolute -top-12 right-0 md:-right-12 text-white text-4xl hover:text-gray-300 transition-colors p-2 cursor-pointer">
+                &times;
+            </button>
+
+            <div id="modal-body" class="p-8">
             </div>
         </div>
     </div>
-    <footer class="text-italic text-sm text-slate-400 text-center w-100%">
-        <p>Community Project for Break!! Tabletop RPG by Reynaldo Madrinan and Carlo Tartaglia</p>
-        <p>This project is in no way officially affiliated with Madrinan and Tartaglia</p>
-    </footer>
+    <div relative width-full>
+        <div class="text-italic p-5 text-sm text-white text-center w-full bg-gradient-to-r from-cyan-500 to-green-600">
+            <p>Community Project for Break!! Tabletop RPG by Reynaldo Madrinan and Carlo Tartaglia</p>
+            <p>Break!! Adversary Creator is an independent product published under BREAK!! RPG's Non-Commercial License
+                and is not affiliated with BREAK!!'s creators or publishers.</p>
+        </div>
+    </div>
 </body>
 
-
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="modal.js" type="text/javascript"></script>
 <script src="main.js" type="text/javascript"></script>
 

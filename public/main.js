@@ -16,7 +16,6 @@ function menace_color(menace) {
 
 }
 
-
 // Aptitude bar visualization
 
 const barContainer = document.getElementById('bar-container');
@@ -145,6 +144,24 @@ class Adversary {
     _adjust_menace() {
         this.menace = document.getElementById('menace').value
         menace_color(document.getElementById('menace').value)
+
+        // Hide ability types based on menace tier
+        
+        // This portion is going to need to be rethought since the target elements are within a template 
+        // and are not able to be found until the template is invoked. I may need to throw this logic in on the modal invocation.
+        // maybe remake as a function rather than a method
+        const advanced_ability = document.getElementById('ability-advanced')
+        const legendary_ability = document.getElementById('ability-legendary')
+        if (this.menace == 'mook'){
+            advanced_ability.setAttribute('disabled',true)
+            legendary_ability.setAttribute('disabled', true)
+        }else if(this.menace == 'boss' && parseInt(this.rank) >= 5){
+            advanced_ability.setAttribute('disabled',false)
+            legendary_ability.setAttribute('disabled',true)
+        }else if(this.menace == 'megaboss' && parseInt(this.rank) >= 5){
+            advanced_ability.setAttribute('disabled',false)
+            legendary_ability.setAttribute('disabled'),false
+        }
     }
 
     _adjust_name() {
@@ -161,7 +178,7 @@ class Adversary {
         this.description = document.getElementById('adversary-description').value
     }
 
-    _calculate_atkbonus(){
+    _calculate_atkbonus() {
         adversary.gear.forEach(this_item => {
             if (this_item.atkbonus > 0) {
                 this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
@@ -239,6 +256,23 @@ class Adversary {
         const speedElement = document.getElementById('speed')
         this.speed = speedElement.value
         // add a spot for trait and item-based speed mods
+
+        adversary.gear.forEach(this_item => {
+            const speeds = ['slow', 'average', 'fast', 'veryfast']
+            if (this_item.speed > 0 || this_item.speed < 0) {
+                var current_speed = speeds.indexOf(this.speed)
+                var new_speed = parseInt(current_speed) + (parseInt(this_item.speed))
+                if (new_speed > 3) {
+                    new_speed = 3
+                }
+                else if (new_speed < 0) {
+                    new_speed = 0
+                }
+            } else {
+                return
+            }
+            this.speed = speeds[new_speed]
+        })
         this._calculate_defense()
     }
 
@@ -385,7 +419,7 @@ class Adversary {
         const item_defense = document.getElementById('gear-item-defense').value ? document.getElementById('gear-item-defense').value : null
         const item_atkbonus = document.getElementById('gear-item-atkbonus').value ? document.getElementById('gear-item-atkbonus').value : null
         const item_speed = document.getElementById('gear-item-speed').value ? document.getElementById('gear-item-speed').value : null
-        
+
         var new_gear_item = new Item(
             item_name,
             item_type,
@@ -402,7 +436,7 @@ class Adversary {
         this._adjust_gear()
     }
 
-        _adjust_gear(){
+    _adjust_gear() {
         const gear_container = document.getElementById('gear-container')
         gear_container.innerHTML = ''
         adversary.gear.forEach(item => {
@@ -419,23 +453,26 @@ class Adversary {
                     <div id="description" class="italic">${item.item_description}</div>
                 </div>
                 <div class="text-stone-200 italic flex" id="footer">
-                    <div class="basis-1/3">Slots : ${item.slots}</div>
-                    <div class="spacer basis-1/3"></div>
+                    <div class="basis-xs">Slots : ${item.slots}</div>
                     <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
                 </div>
             </div>
             `
-            gear_container.insertAdjacentHTML('beforeend',gear_block)
-            const gear_div = document.getElementById(`${item.item_name}-${item.item_type}-${item.item_subtype}`) 
+            gear_container.insertAdjacentHTML('beforeend', gear_block)
+            const gear_div = document.getElementById(`${item.item_name}-${item.item_type}-${item.item_subtype}`)
             gear_div.setAttribute('onclick', `adversary._remove_gear('${item.item_name}')`)
         })
         this._calculate_aptitudes()
         this._calculate_defense()
         this._calculate_atkbonus()
+        this._adjust_speed()
         update_ui(adversary)
     }
 
-    _remove_gear(){
+    _add_ability() {
+    }
+
+    _remove_gear() {
         const gear_to_remove = adversary.gear.indexOf(adversary.gear.find(gear => gear.item_name === name))
         this.gear.splice(gear_to_remove, 1)
         this._calculate_defense()
@@ -451,12 +488,16 @@ class Adversary {
 // and may have an alignment value.
 // Also abilities will need a way to optionally add in traits bound to them (IE - Surging Darkness (p.414) adds speed and defense)
 class Ability {
-    constructor(ability_name, ability_type, ability_description, alignment = 0, bound_passive = []) {
+    constructor(ability_name, ability_description, allegiance = 0, bound_passive = [], atkbonus = 0, defense = 0, base_speed = null, ability_type = 'basic', magic = false) {
         this.ability_name = ability_name;
         this.ability_type = ability_type;
         this.ability_description = ability_description;
-        this.alignment = alignment;
+        this.allegiance = allegiance;
         this.bound_passive = bound_passive;
+        this.magic = magic;
+        this.defense = defense;
+        this.atkbonus = atkbonus;
+        this.base_speed = base_speed
     }
 }
 
@@ -477,7 +518,7 @@ class Passive {
 
 // Generic item class - can be used as Loot or as equipment or as items a vendor is looking to sell
 class Item {
-    constructor(item_name, item_type, item_subtype, item_description = '', slots = 1, denomination, value, defense = null, atkbonus = null, speed=null) {
+    constructor(item_name, item_type, item_subtype, item_description = '', slots = 1, denomination, value, defense = null, atkbonus = null, speed = null) {
         this.item_name = item_name || 'Unnamed Item';
         this.item_type = item_type || 'Generic Type';
         this.item_subtype = item_subtype || 'Generic Subtype';
@@ -487,7 +528,7 @@ class Item {
         this.value = value;
         this.defense = defense;
         this.atkbonus = atkbonus;
-        this.speed = speed
+        this.speed = speed || null
     }
 }
 
