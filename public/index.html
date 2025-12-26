@@ -3,6 +3,7 @@
 <head>
     <link href="output.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7bbfb304a9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Break!! Adversary Creator</title>
 </head>
 
@@ -10,7 +11,7 @@
     <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-5"><img class="w-[250px] m-auto"
             src="/images/breakcommunity.png"></div>
     <div class="container bg-gray-300-flex m-auto">
-        <div class="app-main bg-gray-200 m-8 p-4 rounded-md overflow-auto">
+        <div id="app-main" class="bg-gray-200 m-8 p-4 rounded-md overflow-auto">
             <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
                         class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
                     onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span>
@@ -28,7 +29,7 @@
                             <option value="megaboss">MEGABOSS</option>
                         </select></span>
                     <span class="font-bold text-blue-950 p-1 rounded-md"><label for="rank">RANK </label><input id="rank"
-                            class="w-10" id="rank" value=0 type="number" min=0
+                            class="w-10" id="rank" value='0' type="number" min='0'
                             onchange="adversary._adjust_rank()"></span>
                 </span>
             </div>
@@ -50,7 +51,13 @@
                             <option value="large">Large</option>
                             <option value="massive">Massive</option>
                         </select> |
-                        <strong>Allegiance:</strong> <span id="allegiance">Unaligned</span>
+                        <strong>Allegiance: </strong><div class="inline-flex" id="allegiance">
+                            <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"class="material-icons text-slate-400">circle</i></span>
+                            <span class="flex hidden" id="twilight">Twilight <i id="allegiance-bright" class="material-icons bg-gradient-to-r from-yellow-300 to-purple-700 text-transparent bg-clip-text">contrast</i></span>
+                            <span class="flex hidden" id="bright">Bright <i id="allegiance-bright" class="material-icons text-yellow-500">brightness_5</i></span>
+                            <span class="flex hidden" id="dark">Dark <i id="allegiance-dark" class="material-icons text-purple-900">cyclone</i></span>
+                        </div>
+
                     </div>
                     <hr class="faded-hr" />
                     <textarea id="adversary-description" placeholder="brief description here."
@@ -68,7 +75,7 @@
                             <span class="stat-item"><i class="fa-solid fa-shield"></i> <span
                                     id="defense">14</span></span>
                             <span class="stat-item"><i class="fa-solid fa-person-running"></i>
-                                <select id="speed" onchange="adversary._adjust_speed()">
+                                <select id="speed" disabled onchange="adversary._adjust_speed()">
                                     <option value="slow">Slow</option>
                                     <option value="average">Average</option>
                                     <option value="fast">Fast</option>
@@ -267,7 +274,7 @@
                 <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label
                     for="trait-subtract">
                     Subtract </label>
-                | <label for="trait-value">Amount: </label><input class="text-input" min=1 value=1 class="w-10"
+                | <label for="trait-value">Amount: </label><input class="text-input" min='1' value='1' class="w-10"
                     id="trait-value" type="number">
                 <select id="trait-modifier">
                     <option value="might">Might</option>
@@ -281,9 +288,9 @@
             </div>
         </template>
         <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-3xl">
-            <div>
+            <div id="ability-div">
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input id="trait-name" placeholder="New Ability" type="text"
+                    <h3 class="break-header-text"><input id="ability-name" placeholder="New Ability" type="text"
                             class="basis-xl"></h3>
                 </div>
                 <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
@@ -291,10 +298,22 @@
                     magical in
                     nature
                 </p>
-                <label>Allegiance Points: </label><input id="ability-allegiance" class="w-10 " type="number" value="0">
+                <hr class="faded-hr" />
+                <div class="inline-flex">
+                    <label>Allegiance Points: </label><input onchange="set_ability_allegiance()" id="ability-allegiance"
+                    class="w-10 text-right " type="number" value="0">
+                    <div id="ability-allegiance-icon-box" class="inline-flex">
+                        <span><i id="ability-bright"
+                    class="material-icons text-stone-200">brightness_5</i><i id="ability-unaligned"
+                    class="material-icons text-slate-400">circle</i><i id="ability-dark"
+                    class="material-icons text-stone-200">cyclone</i></span>
+                    </div>
+                </div>
+                    
                 <br />
                 <label for="ability-type">Ability Type: </label>
-                <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label for="ability-basic">
+                <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label
+                    for="ability-basic">
                     Basic</label>
                 <input id="ability-advanced" name="ability-type" type="radio" value="Advanced" disabled="true"><label
                     for="ability-advanced"> Advanced</label>
@@ -310,22 +329,23 @@
                     </div>
                 </div>
 
-                <textarea placeholder="Ability Explanation here"
+                <textarea id="ability-description" placeholder="Ability Explanation here"
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
                 <div class="mb-2">
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
                         id="ability-atkbonus" type="number">
                     <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
                         type="number">
+                    <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input" id="ability-hearts" type="number">
                     <i class="fa-solid fa-person-running"></i><select id="ability-base-speed-override">
-                        <option value=null></option>
+                        <option value=""></option>
                         <option value="slow">Slow</option>
-                        <option value="slow">Average</option>
-                        <option value="slow">Fast</option>
-                        <option value="slow">Very Fast</option>
+                        <option value="average">Average</option>
+                        <option value="fast">Fast</option>
+                        <option value="veryfast">Very Fast</option>
                     </select>
                 </div>
-                <button id="btnAddAbility" class="btn">Add</button>
+                <button id="btnAddAbility" onclick="adversary._add_ability()" class="btn">Add</button>
             </div>
         </template>
         <template id="gear-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
@@ -349,6 +369,7 @@
                     <option value="mount">Mount</option>
                 </select>
                 / <input class="text-input w-35" id="gear-item-subtype" type="text" placeholder="IE-Great Weapon">
+                <hr class="faded-hr" />
                 <div class="mb-2">
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
                         id="gear-item-atkbonus" type="number">
@@ -356,14 +377,21 @@
                         type="number">
                     <i class="fa-solid fa-person-running"></i><input class="text-input" id="gear-item-speed"
                         type="number">
+                    <label>MAX </label><i class="fa-solid fa-person-running"></i><select class="font-bold"
+                        id="gear-item-max-speed">
+                        <option value=""></option>
+                        <option value='slow'>Slow</option>
+                        <option value='average'>Average</option>
+                        <option value='fast'>Fast</option>
+                        <option value='veryfast'>Very Fast</option>
+                    </select>
                 </div>
                 <textarea id="gear-item-description" placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
                 <div>
                     <div class="flex">
-                        <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min=1
+                        <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min='1'
                                 class="w-10 bg-slate-400 rounded-md pl-3" id="gear-item-slots" type="number"></div>
-                        <div class="spacer basis-md"></div>
                         <div class="basis-md">
                             <label for="gear-item-value">Value: </label><input type="number" value=1
                                 id="gear-item-value" class="text-input">
@@ -498,7 +526,7 @@
                 </div>
                 <textarea placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                <button id="btnAddAbility" class="btn">Add</button>
+                <button id="btnAddfact" class="btn">Add</button>
             </div>
         </template>
     </div>

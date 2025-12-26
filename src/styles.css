@@ -28,6 +28,25 @@
     .text-input {
         @apply w-15 w-10 bg-slate-400 rounded-md pl-3
     }
+
+    .unaligned-allegiance{
+        @apply bg-gray-200
+    }
+    .dark-allegiance{
+        @apply bg-gradient-to-tr from-gray-50 via-violet-500 to-violet-900
+    }
+
+    .bright-allegiance{
+        @apply bg-gradient-to-tr from-gray-50 via-pink-500 to-yellow-400
+    }
+
+    .twilight-allegiance{
+        @apply bg-gradient-to-tl from-yellow-400 to-purple-800
+    }
+}
+
+#speed{
+    appearance: none;
 }
 
 .svg-icon {
@@ -169,4 +188,46 @@ input:checked+.slider:before {
   list-style-type: decimal;
   padding-left: 1.5rem;
   margin-bottom: 1rem;
+}
+
+i.icons-sm{
+    font-size: 20px;
+}
+
+.magic-icon{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: oklch(44.6% 0.043 257.281);
+}
+
+.ability-icon{
+    border: 2px #eee solid;
+    border-radius: 5px;
+    padding: 3px 6px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+}
+
+.ability-dark-allegiance{
+    padding: .25rem;
+    margin-top: .5rem;
+    background-color: purple;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.ability-bright-allegiance{
+    padding: .25rem;
+    margin-top: .5rem;
+    background-color: rgb(206, 22, 151);
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
 }

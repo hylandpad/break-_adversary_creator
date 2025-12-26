@@ -19,6 +19,11 @@ function openModal(targetId) {
   modalBody.innerHTML = '';
   modalBody.appendChild(temp.content.cloneNode(true));
 
+  // Run necessary scipts from main.js that need to be run on any template load
+  if(document.getElementById('ability-div')){
+    ability_types_access()
+  }
+
   // Remove hiding classes, Add showing classes
   overlay.classList.remove('opacity-0', 'pointer-events-none');
   overlay.classList.add('opacity-100', 'pointer-events-auto');
