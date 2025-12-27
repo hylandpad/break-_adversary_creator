@@ -18,7 +18,7 @@
     }
 
     .trait-span {
-        @apply bg-slate-400 text-white font-bold text-center px-2 m-2 rounded-xl
+        @apply bg-slate-400 text-white rounded-md p-2 mr-4 mb-4 max-w-md
     }
 
     .btn {
@@ -45,7 +45,7 @@
     }
 
     .passive-span{
-        @apply bg-teal-500 text-white rounded-md p-3 mr-4 mb-4 max-w-md
+        @apply bg-teal-500 text-white rounded-md p-2 mr-4 mb-4 max-w-md
     }
 
     .ability-card{

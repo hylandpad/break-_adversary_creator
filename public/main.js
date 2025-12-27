@@ -536,7 +536,7 @@ class Adversary {
             if (passive.passive_type == 'trait') {
                 const trait_span = document.createElement('span')
                 trait_span.innerHTML = `${(passive.passive_name ? passive.passive_name : 'Unnamed').toUpperCase()} (${(passive.operator == 'add' ? '+' : '-')}${passive.value} ${passive.modifier.toUpperCase()})`
-                trait_span.classList.add('trait-span')
+                trait_span.classList.add('trait-span','font-bold')
                 trait_span.id = (`trait-${passive.passive_name ? passive.passive_name : 'Unnamed'}-${passive.modifier}-${passive.operator}-${passive.value}`).toLowerCase()
                 trait_span.setAttribute('onclick', `adversary._remove_trait('${passive.passive_name}')`)
                 trait_container.appendChild(trait_span)
@@ -571,7 +571,7 @@ class Adversary {
     }
 
     _add_gear() {
-        const item_name = document.getElementById('gear-name').value;
+        const item_name = (document.getElementById('gear-name').value).toUpperCase();
         const item_type = document.getElementById('gear-item-type').value;
         const item_subtype = document.getElementById('gear-item-subtype').value;
         const item_description = document.getElementById('gear-item-description').value;
@@ -646,7 +646,7 @@ class Adversary {
 
 
     _add_ability() {
-        const ability_name = document.getElementById('ability-name').value
+        const ability_name = (document.getElementById('ability-name').value).toUpperCase() || 'UNNAMED ABILITY'
         const ability_description = document.getElementById('ability-description').value
         const ability_type = document.querySelector(`input[name='ability-type']:checked`).value
         const allegiance = document.getElementById('ability-allegiance').value
@@ -682,22 +682,40 @@ class Adversary {
             const passive_keys = [Object.keys(passives)]
             const passive_values = [Object.values(passives)]
             const linked_ability = this.abilities[ability_name]
-            var bound_passive = new Passive(
+            var new_bound_passive = new Passive(
                 ability_name, 'ability', passive_keys, 'add', passive_values, linked_ability
             )
+            //Link the bound passive to the ability
+            this.abilities[ability_name].bound_passive.push(new_bound_passive)
         }
 
-        bound_passive && this.passives.push(bound_passive)
+        new_bound_passive && this.passives.push(new_bound_passive)
+        
+        
         this._adjust_allegiance()
         this._adjust_abilities()
         this._adjust_passives()
     }
 
     _remove_ability(name) {
-        const ability_to_remove = this.abilities.name
-        const linked_passive = ability_to_remove.bound_passive[0]
+        const ability_to_remove = this.abilities[name]
+        const points = parseInt(ability_to_remove.allegiance)
+        delete this.abilities[name]
 
-        if (this.passives.findIndex(passive => passive.passive_name == 'Unnamed Passive')){}
+        //remove any linked passives
+        const passive_index = this.passives.findIndex(passive => passive.passive_name == name)
+        if (passive_index !== -1) {
+            adversary.passives.splice(passive_index, 1);
+        }
+        //offset bright or dark point values 
+        if(points < 0){
+            this.dark_points = this.dark_points + points
+        }else if(points > 0){
+            this.bright_points = this.bright - points
+        }
+        this._adjust_abilities()
+        this._adjust_passives()
+        this._adjust_allegiance()
     }
 
     _adjust_abilities() {
