@@ -7,16 +7,16 @@
     <title>Break!! Adversary Creator</title>
 </head>
 
-<body>
+<body id="app-main" class="transition ease-in-out delay-150 duration-2500">
     <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-5"><img class="w-[250px] m-auto"
             src="/images/breakcommunity.png"></div>
     <div class="container bg-gray-300-flex m-auto">
-        <div id="app-main" class="bg-gray-200 m-8 p-4 rounded-md overflow-auto">
+        <div  class="bg-gray-200 m-8 p-4 rounded-md overflow-auto">
             <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
                         class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
                     onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span>
             </div>
-            <div class="header break-adversary-header">
+            <div class="header break-adversary-header mb-5">
                 <h3 class="break-header-text"><input id="adversary-name" onchange="adversary._adjust_name()"
                         placeholder="New Adversary" type="text" class="basis-xl"></h3>
                 <span class="w-50%"></span>
@@ -34,7 +34,7 @@
                 </span>
             </div>
             <div id="stats-card" class="main">
-                <div class="stats-card">
+                <div class="stats-card bg-gray-200">
                     <h3 class="fading-header from-slate-600">ADVERSARY INFO</h3>
                     <div class="my-3"><label for="adversary-type"><strong>Type: </strong></label><select
                             id="adversary-type" onchange="adversary._adjust_type_subtype()">
@@ -64,16 +64,16 @@
                         class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50"
                         onchange="adversary._adjust_description()"></textarea>
                 </div>
-                <div class="stats-container">
+                <div class="stats-container bg-gray-200">
                     <div class="stat-block combat-values">
                         <h3 class="fading-header from-slate-600">COMBAT VALUES</h3>
                         <div class="stat-grid mx-2 my-4">
                             <span class="stat-item"><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg">
-                                +<span id="atk-bonus">2</span></span>
+                                +<span id="atk-bonus"></span></span>
                             <span class="stat-item"><i class="text-red-600 fa-solid fa-heart"></i> <span
-                                    id="hearts">2</span></span>
+                                    id="hearts"></span></span>
                             <span class="stat-item"><i class="fa-solid fa-shield"></i> <span
-                                    id="defense">14</span></span>
+                                    id="defense"></span></span>
                             <span class="stat-item"><i class="fa-solid fa-person-running"></i>
                                 <select id="speed" disabled onchange="adversary._adjust_speed()">
                                     <option value="slow">Slow</option>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    <div class="stat-block aptitudes">
+                    <div class="stat-block aptitudes bg-gray-200">
                         <h3 class="fading-header from-slate-600">APTITUDES</h3>
                         <div class="max-w-4xl w-full m-auto  p-8">
 
@@ -170,7 +170,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="adversary-traits">
+                <div id="adversary-traits" class="bg-gray-200">
                     <p class="from-slate-600 fading-header">TRAITS & PASSIVES</p>
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
                         <div class="flex" id="trait-container">
@@ -179,7 +179,7 @@
                     <button class="btn modal-trigger" data-target="trait-add">Add Trait</button>
                 </div>
 
-                <div id="adversary-gear">
+                <div id="adversary-gear" class="bg-gray-200">
                     <p class="from-slate-600 fading-header">GEAR</p>
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
                         <div class="flex flex-wrap" id="gear-container">
@@ -188,7 +188,7 @@
                     <button class="btn modal-trigger" data-target="gear-add">Add Gear</button>
                 </div>
 
-                <div id="adversary-abilities">
+                <div id="adversary-abilitie" class="bg-gray-200">
                     <p class="from-slate-600 fading-header">ABILITIES</p>
 
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">

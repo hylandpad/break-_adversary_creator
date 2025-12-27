@@ -33,7 +33,7 @@
         @apply bg-gray-200
     }
     .dark-allegiance{
-        @apply bg-gradient-to-tr from-gray-50 via-violet-500 to-violet-900
+        @apply bg-gradient-to-tr from-slate-300 via-violet-500 to-violet-900
     }
 
     .bright-allegiance{
@@ -41,7 +41,15 @@
     }
 
     .twilight-allegiance{
-        @apply bg-gradient-to-tl from-yellow-400 to-purple-800
+        @apply bg-gradient-to-tr from-yellow-50 via-pink-500 to-purple-800
+    }
+
+    .passive-span{
+        @apply bg-teal-500 text-white rounded-md p-3 mr-4 mb-4 max-w-md
+    }
+
+    .ability-card{
+        @apply bg-teal-500 rounded-md p-3 mr-4 mb-4 max-w-sm
     }
 }
 

@@ -16,18 +16,18 @@ function menace_color(menace) {
 
 }
 
-function ability_types_access(){
+function ability_types_access() {
     const advanced_ability = document.getElementById('ability-advanced')
     const legendary_ability = document.getElementById('ability-legendary')
-    if (adversary.menace == 'mook'){
-        advanced_ability.setAttribute('disabled','disabled')
-        legendary_ability.setAttribute('disabled','disabled')
-    }else if(adversary.menace == 'boss' && parseInt(adversary.rank) >= 5){
+    if (adversary.menace == 'mook') {
+        advanced_ability.setAttribute('disabled', 'disabled')
+        legendary_ability.setAttribute('disabled', 'disabled')
+    } else if (adversary.menace == 'boss' && parseInt(adversary.rank) >= 5) {
         advanced_ability.removeAttribute('disabled')
-        legendary_ability.setAttribute('disabled','disabled')
-    }else if(adversary.menace == 'megaboss' && parseInt(adversary.rank) >= 5){
+        legendary_ability.setAttribute('disabled', 'disabled')
+    } else if (adversary.menace == 'megaboss' && parseInt(adversary.rank) >= 5) {
         advanced_ability.removeAttribute('disabled')
-       legendary_ability.removeAttribute('disabled')
+        legendary_ability.removeAttribute('disabled')
     }
 }
 
@@ -189,50 +189,50 @@ class Adversary {
         this.moods = data.moods;
     }
 
-    _adjust_allegiance(){
+    _adjust_allegiance() {
         const bright_points = parseInt(this.bright_points)
         const dark_points = parseInt(this.dark_points)
         const app_main_div = document.getElementById('app-main')
-        
+
         // determine is bright/dark points exceeds one or the other by 2 or more
         function exceedsByX(A, B, X) {
             return A - B >= X;
         }
-        
-        if (bright_points <= 1 && dark_points <= 1){
+
+        if (bright_points <= 1 && dark_points <= 1) {
             this.allegiance = 'unaligned'
             document.getElementById('unaligned').classList.remove('hidden')
             document.getElementById('bright').classList.add('hidden')
             document.getElementById('dark').classList.add('hidden')
             document.getElementById('twilight').classList.add('hidden')
             app_main_div.classList.add('unaligned-allegiance')
-            app_main_div.classList.remove('dark-allegiance','bright-allegiance','twilight-allegiance')
-        }else if(exceedsByX(bright_points,dark_points,2)){
+            app_main_div.classList.remove('dark-allegiance', 'bright-allegiance', 'twilight-allegiance')
+        } else if (exceedsByX(bright_points, dark_points, 2)) {
             this.allegiance = 'bright'
             document.getElementById('unaligned').classList.add('hidden')
             document.getElementById('bright').classList.remove('hidden')
             document.getElementById('dark').classList.add('hidden')
             document.getElementById('twilight').classList.add('hidden')
             app_main_div.classList.add('bright-allegiance')
-            app_main_div.classList.remove('dark-allegiance','unaligned-allegiance','twilight-allegiance')
-        }else if(exceedsByX(dark_points,this.bright_points,2)){
+            app_main_div.classList.remove('dark-allegiance', 'unaligned-allegiance', 'twilight-allegiance')
+        } else if (exceedsByX(dark_points, this.bright_points, 2)) {
             this.allegiance = 'dark'
             document.getElementById('unaligned').classList.add('hidden')
             document.getElementById('bright').classList.add('hidden')
             document.getElementById('dark').classList.remove('hidden')
             document.getElementById('twilight').classList.add('hidden')
             app_main_div.classList.add('dark-allegiance')
-            app_main_div.classList.remove('bright-allegiance','unaligned-allegiance','twilight-allegiance')
-        }else{
+            app_main_div.classList.remove('bright-allegiance', 'unaligned-allegiance', 'twilight-allegiance')
+        } else {
             this.allegiance = 'twilight'
             document.getElementById('unaligned').classList.add('hidden')
             document.getElementById('bright').classList.add('hidden')
             document.getElementById('dark').classList.add('hidden')
             document.getElementById('twilight').classList.remove('hidden')
             app_main_div.classList.add('twilight-allegiance')
-            app_main_div.classList.remove('bright-allegiance','unaligned-allegiance','dark-allegiance')
+            app_main_div.classList.remove('bright-allegiance', 'unaligned-allegiance', 'dark-allegiance')
         }
-        
+
         // make changes to UI to reflect new allegiance
     }
 
@@ -263,9 +263,18 @@ class Adversary {
             }
         })
         adversary.passives.forEach(this_passive => {
-            if(this_passive.modifier.flat().includes('atkbonus')){
+            if (this_passive.modifier.flat().includes('atkbonus')) {
                 const atkbonus_index = this_passive.modifier.flat().indexOf('atkbonus')
                 this.atkbonus = parseInt(this.atkbonus) + parseInt(this_passive.value.flat()[atkbonus_index])
+            }
+        })
+    }
+
+    _calculate_hearts() {
+        adversary.passives.forEach(this_passive => {
+            if (this_passive.modifier.flat().includes('hearts')) {
+                const hearts_index = this_passive.modifier.flat().indexOf('hearts')
+                this.hearts = parseInt(this.hearts) + parseInt(this_passive.value.flat()[hearts_index])
             }
         })
     }
@@ -332,9 +341,9 @@ class Adversary {
         // change menace based on rank
         if (parseInt(this.rank) < 1) {
             document.getElementById('menace').value = 'mook'
-        }else if(this.menace == 'megaboss'){
+        } else if (this.menace == 'megaboss') {
             return
-        } else if (parseInt(this.rank) >= 1 ) {
+        } else if (parseInt(this.rank) >= 1) {
             document.getElementById('menace').value = 'boss'
         }
         this._adjust_menace()
@@ -351,7 +360,7 @@ class Adversary {
         this.speed = selected_speed.value
         // set lowest base speed allowed by any abilities
         adversary.passives.forEach(this_passive => {
-            if(this_passive.modifier.flat().includes('speed')){
+            if (this_passive.modifier.flat().includes('speed')) {
                 const speed_index = this_passive.modifier.flat().indexOf('speed')
                 this.speed = this_passive.value.flat()[speed_index]
             }
@@ -432,7 +441,7 @@ class Adversary {
         })
 
         adversary.passives.forEach(this_passive => {
-            if(this_passive.modifier.flat().includes('defense')){
+            if (this_passive.modifier.flat().includes('defense')) {
                 const defense_index = this_passive.modifier.flat().indexOf('defense')
                 this.defense = parseInt(this.defense) + parseInt(this_passive.value.flat()[defense_index])
             }
@@ -485,11 +494,6 @@ class Adversary {
         this._calculate_defense()
     }
 
-    _adjust_traits() {
-        //Do later
-        update_ui(adversary)
-    }
-
     // Confirms data being injected into Adversary class is of the correct type/class
 
     _validateArray(dataItem, targetClass) {
@@ -506,27 +510,52 @@ class Adversary {
         var modifier = document.getElementById('trait-modifier').value
         var new_trait = new Passive(name, 'trait', modifier, operator, value)
         this.passives.push(new_trait)
-        this._adjust_traits()
+        this._adjust_passives()
     }
 
     _remove_trait(name) {
         const trait_to_remove = adversary.passives.indexOf(adversary.passives.find(trait => trait.passive_name === name))
         adversary.passives.splice(trait_to_remove, 1)
-        this._adjust_traits()
+        this._adjust_passives()
     }
 
-    _adjust_traits() {
+    _adjust_passives() {
         //add trait to page by clearing out container div and constructing new traits based 
         // on trait array in adversary
         const trait_container = document.getElementById('trait-container')
         trait_container.innerHTML = ''
-        adversary.passives.forEach(trait => {
-            var trait_span = document.createElement('span')
-            trait_span.innerHTML = `${(trait.passive_name ? trait.passive_name : 'Unnamed').toUpperCase()} (${(trait.operator == 'add' ? '+' : '-')}${trait.value} ${trait.modifier.toUpperCase()})`
-            trait_span.classList.add('trait-span')
-            trait_span.id = (`trait-${trait.passive_name ? trait.passive_name : 'Unnamed'}-${trait.modifier}-${trait.operator}-${trait.value}`).toLowerCase()
-            trait_span.setAttribute('onclick', `adversary._remove_trait('${trait.passive_name}')`)
-            trait_container.appendChild(trait_span)
+        adversary.passives.forEach(passive => {
+            if (passive.passive_type == 'trait') {
+                const trait_span = document.createElement('span')
+                trait_span.innerHTML = `${(passive.passive_name ? passive.passive_name : 'Unnamed').toUpperCase()} (${(passive.operator == 'add' ? '+' : '-')}${passive.value} ${passive.modifier.toUpperCase()})`
+                trait_span.classList.add('trait-span')
+                trait_span.id = (`trait-${passive.passive_name ? passive.passive_name : 'Unnamed'}-${passive.modifier}-${passive.operator}-${passive.value}`).toLowerCase()
+                trait_span.setAttribute('onclick', `adversary._remove_trait('${passive.passive_name}')`)
+                trait_container.appendChild(trait_span)
+            } else if (passive.passive_type = "ability") {
+                const passive_id = (`passive-${passive.passive_name ? passive.passive_name : 'Unnamed'}-${passive.modifier}-${passive.operator}-${passive.value}`).toLowerCase()
+                const passive_span_html = `
+                <span id="${passive_id}" class="passive-span font-bold">${passive.linked_ability.ability_name}: </span>
+                `
+                trait_container.insertAdjacentHTML('beforeend', passive_span_html)
+                const passive_span = document.getElementById(passive_id)
+                if (passive.modifier.flat().includes('atkbonus')) {
+                    const atk_span = `<span><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg">+${passive.value.flat()[passive.modifier.flat().indexOf('atkbonus')]}</span>`
+                    passive_span.insertAdjacentHTML('beforeend',atk_span)
+                }
+                if (passive.modifier.flat().includes('defense')) {
+                    const defense_span = `<span><i class="fa-solid fa-shield"></i>+${passive.value.flat()[passive.modifier.flat().indexOf('defense')]}</span>`
+                    passive_span.insertAdjacentHTML('beforeend',defense_span)
+                }
+                if (passive.modifier.flat().includes('hearts')) {
+                    const hearts_span = `<span><i class="text-red-600 fa-solid fa-heart"></i>+${passive.value.flat()[passive.modifier.flat().indexOf('hearts')]}</span>`
+                    passive_span.insertAdjacentHTML('beforeend',hearts_span)
+                }
+                if (passive.modifier.flat().includes('speed')) {
+                    const speed_span = `<span><i class="fa-solid fa-person-running"></i>Base Speed - ${passive.value.flat()[passive.modifier.flat().indexOf('speed')].toUpperCase()}</span>`
+                    passive_span.insertAdjacentHTML('beforeend',speed_span)
+                }
+            }
         })
         this._calculate_aptitudes()
         this._calculate_defense()
@@ -625,9 +654,9 @@ class Adversary {
         )
 
         // adjust allegiance appropriately based on a positive or negative value
-        if (parseInt(allegiance) > 0){
+        if (parseInt(allegiance) > 0) {
             this.bright_points = this.bright_points + parseInt(allegiance)
-        }else if(parseInt(allegiance) < 0){
+        } else if (parseInt(allegiance) < 0) {
             this.dark_points = this.dark_points + Math.abs(parseInt(allegiance))
         }
 
@@ -653,40 +682,34 @@ class Adversary {
         bound_passive && this.passives.push(bound_passive)
         this._adjust_allegiance()
         this._adjust_abilities()
+        this._adjust_passives()
     }
 
-    _adjust_abilities(){
+    _adjust_abilities() {
         // Adds the ability card to the abilities div
-        
+
         const ability_container = document.getElementById('ability-container')
         ability_container.innerHTML = ''
-        for(let key in this.abilities) {
+        for (let key in this.abilities) {
             const ability = this.abilities[key]
             const ability_block = `
-            <div id="${ability.ability_name}-${ability.ability_type}-${ability-allegiance}" class="ability-card bg-slate-600 rounded-md p-3 mr-4 mb-4 max-w-sm">
-                <div class="text-white flex"><span class="font-bold">${ability.ability_name}</span><span class="ability-icon">${ability.ability_type  == 'Basic'? 'B' : ability.ability_type == 'Advanced' ? 'A' : ability.ability_type == 'Legendary' ? 'L' : 'NA'}</span>${ability.magic ? '<span class="magic-icon">M</span>': ''}</div>
+            <div id="${ability.ability_name}-${ability.ability_type}-${ability - allegiance}" class="ability-card">
+                <div class="text-white flex"><span class="font-bold">${ability.ability_name}</span><span class="ability-icon">${ability.ability_type == 'Basic' ? 'B' : ability.ability_type == 'Advanced' ? 'A' : ability.ability_type == 'Legendary' ? 'L' : 'NA'}</span>${ability.magic ? '<span class="magic-icon">M</span>' : ''}</div>
                 <div class="ability-content bg-slate-200 p-1 rounded-md">
                     ${ability.ability_description != 'None' ? `<div id=description" class="italic">${ability.ability_description}</div>` : ''}
                 </div>
             </div>
             `
-            
+
             ability_container.insertAdjacentHTML('beforeend', ability_block)
-            const ability_div = document.getElementById(`${ability.ability_name}-${ability.ability_type}-${ability-allegiance}`)
+            const ability_div = document.getElementById(`${ability.ability_name}-${ability.ability_type}-${ability - allegiance}`)
             ability_div.setAttribute('onclick', `adversary._remove_ability('${ability.ability_name}')`)
-            if (parseInt(ability.allegiance) != 0){
+            if (parseInt(ability.allegiance) != 0) {
                 const allegiance_box = `<div class="${parseInt(ability.allegiance) > 0 ? 'ability-bright-allegiance' : parseInt(ability.allegiance) < 0 ? 'ability-dark-allegiance' : ''}" id="allegiance-box-${ability.ability_name}">Adds ${Math.abs(parseInt(ability.allegiance))} ${parseInt(ability.allegiance) > 0 ? 'Bright' : parseInt(ability.allegiance) < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
-                ability_div.insertAdjacentHTML('beforeend',allegiance_box)
-            } 
-        
-
-        // If this ability has a bound passive, find the linked passive in adversary.passives and build it in the traits and passives section
-
-        //if(ability.bound_passive){
-        //const trait_container = document.getElementById('trait-container')
-        //passive_name = ability_name   
-        //    }
+                ability_div.insertAdjacentHTML('beforeend', allegiance_box)
+            }
         }
+        this._calculate_hearts()
         this._calculate_defense()
         this._calculate_atkbonus()
         this._adjust_speed()
@@ -702,9 +725,9 @@ class Adversary {
 // Also abilities will need a way to optionally add in traits bound to them (IE - Surging Darkness (p.414) adds speed and defense)
 class Ability {
     constructor(ability_name, ability_description, allegiance = 0, bound_passive = null, ability_type = 'basic', magic = false) {
-        this.ability_name = ability_name;
+        this.ability_name = ability_name || 'Unnamed Ability';
         this.ability_type = ability_type;
-        this.ability_description = ability_description;
+        this.ability_description = ability_description || 'N/A';
         this.allegiance = allegiance;
         this.bound_passive = bound_passive;
         this.magic = magic;
@@ -717,8 +740,8 @@ class Ability {
 // (for creatures whose abilities also grant them passives)
 class Passive {
     constructor(passive_name, passive_type, modifier, operator, value, linked_ability = null) {
-        this.passive_name = passive_name;
-        this.passive_type = passive_type
+        this.passive_name = passive_name || 'Unnamed Passive';
+        this.passive_type = passive_type || 'N/A'
         this.modifier = modifier;
         this.operator = operator;
         this.value = value;
