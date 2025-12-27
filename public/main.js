@@ -263,7 +263,9 @@ class Adversary {
             }
         })
         adversary.passives.forEach(this_passive => {
-            if (this_passive.modifier.flat().includes('atkbonus')) {
+            if (this_passive.passive_type != 'ability'){
+                return
+            }else if (this_passive.modifier.flat().includes('atkbonus')) {
                 const atkbonus_index = this_passive.modifier.flat().indexOf('atkbonus')
                 this.atkbonus = parseInt(this.atkbonus) + parseInt(this_passive.value.flat()[atkbonus_index])
             }
@@ -272,7 +274,9 @@ class Adversary {
 
     _calculate_hearts() {
         adversary.passives.forEach(this_passive => {
-            if (this_passive.modifier.flat().includes('hearts')) {
+            if (this_passive.passive_type != 'ability'){
+                return
+            }else if (this_passive.modifier.flat().includes('hearts')) {
                 const hearts_index = this_passive.modifier.flat().indexOf('hearts')
                 this.hearts = parseInt(this.hearts) + parseInt(this_passive.value.flat()[hearts_index])
             }
@@ -360,7 +364,9 @@ class Adversary {
         this.speed = selected_speed.value
         // set lowest base speed allowed by any abilities
         adversary.passives.forEach(this_passive => {
-            if (this_passive.modifier.flat().includes('speed')) {
+            if (this_passive.passive_type != 'ability'){
+                return
+            }else if (this_passive.modifier.flat().includes('speed')) {
                 const speed_index = this_passive.modifier.flat().indexOf('speed')
                 this.speed = this_passive.value.flat()[speed_index]
             }
@@ -441,7 +447,9 @@ class Adversary {
         })
 
         adversary.passives.forEach(this_passive => {
-            if (this_passive.modifier.flat().includes('defense')) {
+            if (this_passive.passive_type != 'ability'){
+                return
+            }else if (this_passive.modifier.flat().includes('defense')) {
                 const defense_index = this_passive.modifier.flat().indexOf('defense')
                 this.defense = parseInt(this.defense) + parseInt(this_passive.value.flat()[defense_index])
             }
@@ -683,6 +691,13 @@ class Adversary {
         this._adjust_allegiance()
         this._adjust_abilities()
         this._adjust_passives()
+    }
+
+    _remove_ability(name) {
+        const ability_to_remove = this.abilities.name
+        const linked_passive = ability_to_remove.bound_passive[0]
+
+        if (this.passives.findIndex(passive => passive.passive_name == 'Unnamed Passive')){}
     }
 
     _adjust_abilities() {
