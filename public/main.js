@@ -183,7 +183,7 @@ class Adversary {
         this.aptitudes = data.aptitudes || []
         this.passives = this._validateArray(data.passives, Passive);
         this.abilities = {};
-        this.facts = this._validateArray(data.facts, Fact);
+        this.facts = data.facts;
         this.loot = this._validateArray(data.loot, Item);
         this.shop_inventory = this._validateArray(data.shop_inventory, Item);
         this.moods = data.moods;
@@ -749,6 +749,11 @@ class Adversary {
         update_ui(adversary)
 
     }
+
+    _adjust_facts(fact){
+        const fact_content = document.getElementById(fact).value
+        this.facts[fact].description = fact_content
+    }
 }
 
 // Class definitions
@@ -799,14 +804,6 @@ class Item {
     }
 }
 
-// fun tidbits
-class Fact {
-    constructor(fact_type, fact_text) {
-        this.fact_type = fact_type;
-        this.fact_text = fact_text;
-    }
-}
-
 // Rollable mood table - need to work on how to structure this. Probably a matrix?
 class MoodTable {
     constructor(rolls, moods, moods_text) {
@@ -834,7 +831,27 @@ var adversary = new Adversary({
     description: null,
     passives: [],
     abilities: {},
-    facts: {},
+    facts: {
+        'habitat':{
+            description:''
+        },
+        'communication':{
+            description:''
+        },
+        'tactics':{
+            description:''
+        },
+        'indicators':{
+            description:''
+        },
+        'role-playing-notes':{
+            description:''
+        },
+        'customization':{
+            description:''
+        }
+
+    },
     loot: [],
     shop_inventory: [],
     moods: {}

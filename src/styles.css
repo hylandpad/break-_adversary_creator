@@ -22,7 +22,7 @@
     }
 
     .btn {
-        @apply text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2 hover:bg-blue-800
+        @apply text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2 mr-2 hover:bg-blue-800
     }
 
     .text-input {
@@ -50,6 +50,9 @@
 
     .ability-card{
         @apply bg-teal-500 rounded-md p-3 mr-4 mb-4 max-w-sm
+    }
+    .fact-card{
+        @apply basis-1/2 p-2
     }
 }
 

@@ -205,24 +205,53 @@
             <div id="info-card" class="main hidden">
                 <div class="quick-facts-section">
                     <h3 class="fading-header from-slate-600">QUICK FACTS</h3>
-                    <div class="bg-amber-200 rounded-md p-2 m-1">
-                        <p><strong>Habitat:</strong> Mana-rich environments, such as wizarding structures or magical
-                            biomes.
-                        </p>
-                        <p><strong>Communication:</strong> Incessant buzzing.</p>
-                        <p><strong>Tactics:</strong> Instinctual creatures that primarily seek mana. They are sometimes
-                            weaponized against arcane foes in "Buzz Bombs".</p>
-                        <p><strong>Indicators:</strong> Rusty imbued items, a single Bizzer moving along a wall, that
-                            horrible
-                            buzzing noise.</p>
+                    <div id="fact-container" class="rounded-md p-2 m-1 flex flex-wrap">
+                        <div id="habitat-div" class="fact-card">
+                            <div class="flex fading-header from-slate-600"><i id="facts-habitat"
+                                    class="material-icons text-white mr-2">cottage</i>
+                                <h3>Habitat</h3>
+                            </div>
+                            <textarea onchange="adversary._adjust_facts('habitat')" id="habitat" class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                        </div>
+                        <div id="communication-div" class="fact-card">
+                            <div class="flex fading-header from-slate-600"><i id="facts-communication"
+                                    class="material-icons text-white mr-2">chat</i>
+                                <h3>Communication</h3>
+                            </div>
+                            <textarea onchange="adversary._adjust_facts('communication')" id="communication" class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                        </div>
+                        <div id="tactics-div" class="fact-card">
+                            <div class="flex fading-header from-slate-600"><i id="facts-tactics"
+                                    class="material-icons text-white mr-2">tactic</i>
+                                <h3>Tactics</h3>
+                            </div>
+                            <textarea onchange="adversary._adjust_facts('tactics')" id="tactics" class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                        </div>
+                        <div id="indicators-div" class="fact-card">
+                            <div class="flex fading-header from-slate-600"><i id="facts-indicators"
+                                    class="material-icons text-white mr-2">travel_explore</i>
+                                <h3>Indicators</h3>
+                            </div>
+                            <textarea onchange="adversary._adjust_facts('indicators')" id="indicators" class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                        </div>
+                        <div id="role-playing-notes-div" class="fact-card">
+                            <div class="flex fading-header from-slate-600"><i id="facts-roleplay"
+                                    class="material-icons text-white mr-2">theater_comedy</i>
+                                <h3>Role Playing Notes</h3>
+                            </div>
+                            <textarea onchange="adversary._adjust_facts('role-playing-notes')" id='role-playing-notes' class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                        </div>
+                        <div id="customization-div" class="fact-card">
+                            <div class="flex fading-header from-slate-600"><i id="facts-customize"
+                                    class="material-icons text-white mr-2">construction</i>
+                                <h3>Customization</h3>
+                            </div>
+                            <textarea onchange="adversary._adjust_facts('customization')" id="customization" class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                        </div>
                     </div>
-
                 </div>
-
                 <div class="yield-section">
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text">YIELD</h3>
-                    </div>
+                    <h3 class="fading-header from-slate-600">YIELD</h3>
                     <p><strong>Arcane Powder:</strong> 1 Unit of Arcane Powder.</p>
                     <p><strong>Buzz Bombs:</strong> 2 Buzz Bombs (Thrown Weapon range, 1 Heart swarm) can be created if
                         the
@@ -230,9 +259,7 @@
                 </div>
 
                 <div class="mood-table-section">
-                    <div class="header break-adversary-header">
-                        <h3 class="break-header-text">MOOD TABLE</h3>
-                    </div>
+                    <h3 class="fading-header from-slate-600">MOOD TABLE</h3>
                     <table>
                         <thead>
                             <tr>
@@ -264,9 +291,14 @@
             </div>
         </div>
         <div class="sidebar bg-gray-300 inline-block align-top w-1/5">
-            <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque congue vehicula massa in congue. Nunc id feugiat eros, at pretium urna. Sed egestas nulla sed molestie aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed porttitor felis. Etiam eget sodales lorem. Praesent vulputate orci sed volutpat cursus. Integer accumsan vel elit quis fringilla. Phasellus imperdiet elit sed leo placerat tempus. Proin sem nisi, convallis eget lectus malesuada, porta mollis ante. Maecenas ac sem tortor. Proin lacinia mi non dolor sagittis volutpat. Mauris nec fringilla nulla. Sed porttitor lacus vel est iaculis, at condimentum purus venenatis. Cras eleifend maximus auctor.
-
-Nunc eget erat vel odio hendrerit congue sit amet eget nisl. Donec eget diam in eros elementum ullamcorper. Suspendisse potenti. Aenean eget ultricies mi. Nunc in placerat orci. Sed ac dignissim sem. Aenean id ipsum condimentum, euismod eros sodales, hendrerit mi. Nunc non velit sapien. Aliquam consectetur diam vel risus euismod, sed elementum ex rhoncus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed pulvinar venenatis sapien eu dignissim. Phasellus mi sapien, gravida id ipsum et, pharetra sodales enim. Sed vel nunc at lacus accumsan fermentum quis sit amet turpis. Curabitur efficitur venenatis lorem, non posuere lorem feugiat accumsan. Quisque sit amet consectetur ante, ac convallis nibh.</div>
+            <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">
+                <div id="current-adversary" class="h-1/8"></div>
+                <div id="adversaries-container" class="h-5/8"></div>
+                <div id="control-button-group" class="block align-bottom text-center">
+                    <button class="btn">Load</button><button class="btn">Import</button><button
+                        class="btn">Export</button>
+                </div>
+            </div>
         </div>
         <template id="trait-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
             <div>
