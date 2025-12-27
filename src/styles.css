@@ -2,7 +2,7 @@
 
 @layer components {
     .break-adversary-header {
-        @apply flex justify-between bg-gradient-to-r from-orange-400 to-pink-600 py-1 px-1 rounded-r-2xl
+        @apply flex justify-between bg-gradient-to-r from-teal-500 to-pink-600 py-1 px-1 rounded-r-2xl
     }
 
     .break-header-text {

@@ -10,8 +10,8 @@
 <body id="app-main" class="transition ease-in-out delay-150 duration-2500">
     <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-5"><img class="w-[250px] m-auto"
             src="/images/breakcommunity.png"></div>
-    <div class="container bg-gray-300-flex m-auto">
-        <div  class="bg-gray-200 m-8 p-4 rounded-md overflow-auto">
+    <div class="container bg-gray-300 m-auto">
+        <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
             <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
                         class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
                     onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span>
@@ -51,11 +51,16 @@
                             <option value="large">Large</option>
                             <option value="massive">Massive</option>
                         </select> |
-                        <strong>Allegiance: </strong><div class="inline-flex" id="allegiance">
-                            <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"class="material-icons text-slate-400">circle</i></span>
-                            <span class="flex hidden" id="twilight">Twilight <i id="allegiance-bright" class="material-icons bg-gradient-to-r from-yellow-300 to-purple-700 text-transparent bg-clip-text">contrast</i></span>
-                            <span class="flex hidden" id="bright">Bright <i id="allegiance-bright" class="material-icons text-yellow-500">brightness_5</i></span>
-                            <span class="flex hidden" id="dark">Dark <i id="allegiance-dark" class="material-icons text-purple-900">cyclone</i></span>
+                        <strong>Allegiance: </strong>
+                        <div class="inline-flex" id="allegiance">
+                            <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"
+                                    class="material-icons text-slate-400">circle</i></span>
+                            <span class="flex hidden" id="twilight">Twilight <i id="allegiance-bright"
+                                    class="material-icons bg-gradient-to-r from-yellow-300 to-purple-700 text-transparent bg-clip-text">contrast</i></span>
+                            <span class="flex hidden" id="bright">Bright <i id="allegiance-bright"
+                                    class="material-icons text-yellow-500">brightness_5</i></span>
+                            <span class="flex hidden" id="dark">Dark <i id="allegiance-dark"
+                                    class="material-icons text-purple-900">cyclone</i></span>
                         </div>
 
                     </div>
@@ -72,8 +77,7 @@
                                 +<span id="atk-bonus"></span></span>
                             <span class="stat-item"><i class="text-red-600 fa-solid fa-heart"></i> <span
                                     id="hearts"></span></span>
-                            <span class="stat-item"><i class="fa-solid fa-shield"></i> <span
-                                    id="defense"></span></span>
+                            <span class="stat-item"><i class="fa-solid fa-shield"></i> <span id="defense"></span></span>
                             <span class="stat-item"><i class="fa-solid fa-person-running"></i>
                                 <select id="speed" disabled onchange="adversary._adjust_speed()">
                                     <option value="slow">Slow</option>
@@ -259,6 +263,11 @@
                 </div>
             </div>
         </div>
+        <div class="sidebar bg-gray-300 inline-block align-top w-1/5">
+            <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque congue vehicula massa in congue. Nunc id feugiat eros, at pretium urna. Sed egestas nulla sed molestie aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed porttitor felis. Etiam eget sodales lorem. Praesent vulputate orci sed volutpat cursus. Integer accumsan vel elit quis fringilla. Phasellus imperdiet elit sed leo placerat tempus. Proin sem nisi, convallis eget lectus malesuada, porta mollis ante. Maecenas ac sem tortor. Proin lacinia mi non dolor sagittis volutpat. Mauris nec fringilla nulla. Sed porttitor lacus vel est iaculis, at condimentum purus venenatis. Cras eleifend maximus auctor.
+
+Nunc eget erat vel odio hendrerit congue sit amet eget nisl. Donec eget diam in eros elementum ullamcorper. Suspendisse potenti. Aenean eget ultricies mi. Nunc in placerat orci. Sed ac dignissim sem. Aenean id ipsum condimentum, euismod eros sodales, hendrerit mi. Nunc non velit sapien. Aliquam consectetur diam vel risus euismod, sed elementum ex rhoncus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed pulvinar venenatis sapien eu dignissim. Phasellus mi sapien, gravida id ipsum et, pharetra sodales enim. Sed vel nunc at lacus accumsan fermentum quis sit amet turpis. Curabitur efficitur venenatis lorem, non posuere lorem feugiat accumsan. Quisque sit amet consectetur ante, ac convallis nibh.</div>
+        </div>
         <template id="trait-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
             <div>
                 <div class="header break-adversary-header">
@@ -301,15 +310,14 @@
                 <hr class="faded-hr" />
                 <div class="inline-flex">
                     <label>Allegiance Points: </label><input onchange="set_ability_allegiance()" id="ability-allegiance"
-                    class="w-10 text-right " type="number" value="0">
+                        class="w-10 text-right " type="number" value="0">
                     <div id="ability-allegiance-icon-box" class="inline-flex">
-                        <span><i id="ability-bright"
-                    class="material-icons text-stone-200">brightness_5</i><i id="ability-unaligned"
-                    class="material-icons text-slate-400">circle</i><i id="ability-dark"
-                    class="material-icons text-stone-200">cyclone</i></span>
+                        <span><i id="ability-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                id="ability-unaligned" class="material-icons text-slate-400">circle</i><i
+                                id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
                     </div>
                 </div>
-                    
+
                 <br />
                 <label for="ability-type">Ability Type: </label>
                 <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label
@@ -336,7 +344,8 @@
                         id="ability-atkbonus" type="number">
                     <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
                         type="number">
-                    <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input" id="ability-hearts" type="number">
+                    <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input" id="ability-hearts"
+                        type="number">
                     <i class="fa-solid fa-person-running"></i><select id="ability-base-speed-override">
                         <option value=""></option>
                         <option value="slow">Slow</option>
