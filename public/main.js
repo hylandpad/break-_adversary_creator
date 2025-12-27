@@ -117,7 +117,6 @@ inputs.forEach(input => {
 
 function show_hide_card(nav_item) {
     main = document.querySelectorAll('.main')
-    console.log(main)
     main.forEach(page => {
         if (page.id != nav_item) {
             page.classList.add('hidden')
@@ -185,7 +184,6 @@ class Adversary {
         this.abilities = {};
         this.facts = data.facts;
         this.loot = this._validateArray(data.loot, Item);
-        this.shop_inventory = this._validateArray(data.shop_inventory, Item);
         this.moods = data.moods;
     }
 
@@ -263,9 +261,9 @@ class Adversary {
             }
         })
         adversary.passives.forEach(this_passive => {
-            if (this_passive.passive_type != 'ability'){
+            if (this_passive.passive_type != 'ability') {
                 return
-            }else if (this_passive.modifier.flat().includes('atkbonus')) {
+            } else if (this_passive.modifier.flat().includes('atkbonus')) {
                 const atkbonus_index = this_passive.modifier.flat().indexOf('atkbonus')
                 this.atkbonus = parseInt(this.atkbonus) + parseInt(this_passive.value.flat()[atkbonus_index])
             }
@@ -274,9 +272,9 @@ class Adversary {
 
     _calculate_hearts() {
         adversary.passives.forEach(this_passive => {
-            if (this_passive.passive_type != 'ability'){
+            if (this_passive.passive_type != 'ability') {
                 return
-            }else if (this_passive.modifier.flat().includes('hearts')) {
+            } else if (this_passive.modifier.flat().includes('hearts')) {
                 const hearts_index = this_passive.modifier.flat().indexOf('hearts')
                 this.hearts = parseInt(this.hearts) + parseInt(this_passive.value.flat()[hearts_index])
             }
@@ -364,9 +362,9 @@ class Adversary {
         this.speed = selected_speed.value
         // set lowest base speed allowed by any abilities
         adversary.passives.forEach(this_passive => {
-            if (this_passive.passive_type != 'ability'){
+            if (this_passive.passive_type != 'ability') {
                 return
-            }else if (this_passive.modifier.flat().includes('speed')) {
+            } else if (this_passive.modifier.flat().includes('speed')) {
                 const speed_index = this_passive.modifier.flat().indexOf('speed')
                 this.speed = this_passive.value.flat()[speed_index]
             }
@@ -447,9 +445,9 @@ class Adversary {
         })
 
         adversary.passives.forEach(this_passive => {
-            if (this_passive.passive_type != 'ability'){
+            if (this_passive.passive_type != 'ability') {
                 return
-            }else if (this_passive.modifier.flat().includes('defense')) {
+            } else if (this_passive.modifier.flat().includes('defense')) {
                 const defense_index = this_passive.modifier.flat().indexOf('defense')
                 this.defense = parseInt(this.defense) + parseInt(this_passive.value.flat()[defense_index])
             }
@@ -536,7 +534,7 @@ class Adversary {
             if (passive.passive_type == 'trait') {
                 const trait_span = document.createElement('span')
                 trait_span.innerHTML = `${(passive.passive_name ? passive.passive_name : 'Unnamed').toUpperCase()} (${(passive.operator == 'add' ? '+' : '-')}${passive.value} ${passive.modifier.toUpperCase()})`
-                trait_span.classList.add('trait-span','font-bold')
+                trait_span.classList.add('trait-span', 'font-bold')
                 trait_span.id = (`trait-${passive.passive_name ? passive.passive_name : 'Unnamed'}-${passive.modifier}-${passive.operator}-${passive.value}`).toLowerCase()
                 trait_span.setAttribute('onclick', `adversary._remove_trait('${passive.passive_name}')`)
                 trait_container.appendChild(trait_span)
@@ -549,19 +547,19 @@ class Adversary {
                 const passive_span = document.getElementById(passive_id)
                 if (passive.modifier.flat().includes('atkbonus')) {
                     const atk_span = `<span><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg">+${passive.value.flat()[passive.modifier.flat().indexOf('atkbonus')]}</span>`
-                    passive_span.insertAdjacentHTML('beforeend',atk_span)
+                    passive_span.insertAdjacentHTML('beforeend', atk_span)
                 }
                 if (passive.modifier.flat().includes('defense')) {
                     const defense_span = `<span><i class="fa-solid fa-shield"></i>+${passive.value.flat()[passive.modifier.flat().indexOf('defense')]}</span>`
-                    passive_span.insertAdjacentHTML('beforeend',defense_span)
+                    passive_span.insertAdjacentHTML('beforeend', defense_span)
                 }
                 if (passive.modifier.flat().includes('hearts')) {
                     const hearts_span = `<span><i class="text-red-600 fa-solid fa-heart"></i>+${passive.value.flat()[passive.modifier.flat().indexOf('hearts')]}</span>`
-                    passive_span.insertAdjacentHTML('beforeend',hearts_span)
+                    passive_span.insertAdjacentHTML('beforeend', hearts_span)
                 }
                 if (passive.modifier.flat().includes('speed')) {
                     const speed_span = `<span><i class="fa-solid fa-person-running"></i>Base Speed - ${passive.value.flat()[passive.modifier.flat().indexOf('speed')].toUpperCase()}</span>`
-                    passive_span.insertAdjacentHTML('beforeend',speed_span)
+                    passive_span.insertAdjacentHTML('beforeend', speed_span)
                 }
             }
         })
@@ -601,7 +599,7 @@ class Adversary {
         this._adjust_gear()
     }
 
-    _remove_gear() {
+    _remove_gear(name) {
         const gear_to_remove = adversary.gear.indexOf(adversary.gear.find(gear => gear.item_name === name))
         this.gear.splice(gear_to_remove, 1)
         this._calculate_defense()
@@ -627,7 +625,7 @@ class Adversary {
                     </div>
                     ${item.item_description != 'None' ? `<div id=description" class="italic">${item.item_description}</div>` : ''}
                 </div>
-                <div class="text-stone-200 italic flex" id="footer">
+                <div class="text-stone-200 italic flex">
                     <div class="basis-xs">Slots : ${item.slots}</div>
                     <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
                 </div>
@@ -642,6 +640,58 @@ class Adversary {
         this._calculate_atkbonus()
         this._adjust_speed()
         update_ui(adversary)
+    }
+
+    _add_loot() {
+        const item_name = (document.getElementById('loot-name').value).toUpperCase();
+        const item_type = document.getElementById('loot-item-type').value;
+        const item_subtype = document.getElementById('loot-item-subtype').value;
+        const item_description = document.getElementById('loot-item-description').value;
+        const denomination = document.querySelector(`input[name='loot-item-denomination']:checked`).value
+        const item_value = document.getElementById('loot-item-value').value;
+        const item_slots = document.getElementById('loot-item-slots').value
+
+        var new_loot_item = new Item(
+            item_name || 'Unnamed Item',
+            item_type || 'Generic Type',
+            item_subtype || 'Generic Subtype',
+            item_description || 'None',
+            item_slots,
+            denomination,
+            item_value
+        )
+        this.loot.push(new_loot_item)
+        this._adjust_loot()
+    }
+
+    _adjust_loot() {
+        const loot_container = document.getElementById('loot-container')
+        loot_container.innerHTML = ''
+        adversary.loot.forEach(item => {
+            const loot_block = `
+            <div id="${item.item_name}-${item.item_type}-${item.item_subtype}" class="loot-item bg-teal-600 rounded-md p-3 mr-4 mb-4 max-w-sm">
+                <div class="text-white"><span class="font-bold">${item.item_name}</span> (<span
+                        class="italic">${item.item_subtype}</span>)</div>
+                <div class="loot-content bg-slate-200 p-1 rounded-md">
+                    ${item.item_description != 'None' ? `<div id=description" class="italic">${item.item_description}</div>` : ''}
+                </div>
+                <div class="text-stone-200 italic flex">
+                    <div class="basis-xs">Slots : ${item.slots}</div>
+                    <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
+                </div>
+            </div>
+            `
+            loot_container.insertAdjacentHTML('beforeend', loot_block)
+            const loot_div = document.getElementById(`${item.item_name}-${item.item_type}-${item.item_subtype}`)
+            loot_div.setAttribute('onclick', `adversary._remove_loot('${item.item_name}')`)
+        })
+        update_ui(adversary)
+    }
+
+    _remove_loot(name){
+        const loot_to_remove = adversary.loot.indexOf(adversary.loot.find(loot => loot.item_name === name))
+        this.loot.splice(loot_to_remove, 1)
+        this._adjust_loot()
     }
 
 
@@ -690,8 +740,8 @@ class Adversary {
         }
 
         new_bound_passive && this.passives.push(new_bound_passive)
-        
-        
+
+
         this._adjust_allegiance()
         this._adjust_abilities()
         this._adjust_passives()
@@ -708,9 +758,9 @@ class Adversary {
             adversary.passives.splice(passive_index, 1);
         }
         //offset bright or dark point values 
-        if(points < 0){
+        if (points < 0) {
             this.dark_points = this.dark_points + points
-        }else if(points > 0){
+        } else if (points > 0) {
             this.bright_points = this.bright - points
         }
         this._adjust_abilities()
@@ -750,7 +800,7 @@ class Adversary {
 
     }
 
-    _adjust_facts(fact){
+    _adjust_facts(fact) {
         const fact_content = document.getElementById(fact).value
         this.facts[fact].description = fact_content
     }
@@ -794,13 +844,13 @@ class Item {
         this.item_type = item_type || 'Generic Type';
         this.item_subtype = item_subtype || 'Generic Subtype';
         this.item_description = item_description || 'None';
-        this.slots = slots || 1;
+        this.slots = slots;
         this.denomination = denomination;
         this.value = value;
         this.defense = defense;
         this.atkbonus = atkbonus;
-        this.speed = speed || null;
-        this.max_speed = max_speed || null;
+        this.speed = speed;
+        this.max_speed = max_speed;
     }
 }
 
@@ -832,28 +882,27 @@ var adversary = new Adversary({
     passives: [],
     abilities: {},
     facts: {
-        'habitat':{
-            description:''
+        'habitat': {
+            description: ''
         },
-        'communication':{
-            description:''
+        'communication': {
+            description: ''
         },
-        'tactics':{
-            description:''
+        'tactics': {
+            description: ''
         },
-        'indicators':{
-            description:''
+        'indicators': {
+            description: ''
         },
-        'role-playing-notes':{
-            description:''
+        'role-playing-notes': {
+            description: ''
         },
-        'customization':{
-            description:''
+        'customization': {
+            description: ''
         }
 
     },
     loot: [],
-    shop_inventory: [],
     moods: {}
 })
 
@@ -890,3 +939,4 @@ set_max_rank()
 //window.onload = updateVisualization;
 menace_color(document.getElementById('menace').value)
 update_ui(adversary)
+var saved_adversaries = {}
