@@ -852,6 +852,7 @@ class Adversary {
         adversary.moods = []
         for (var row of rows){
             var data = []
+
             row.querySelectorAll('input').forEach(input => data.push(input.value))
             const rolls = {
                 start: data[0],
@@ -1016,9 +1017,6 @@ function update_ui(adversary) {
     //update the data bars
     updateVisualization()
 
-    //initialize mood table
-    initialize_mood_table()
-    initialize_mood_table_event_handlers()
 }
 
 adversary._calculate_aptitudes()
