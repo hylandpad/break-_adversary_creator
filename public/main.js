@@ -16,9 +16,36 @@ function menace_color(menace) {
 
 }
 
-function initialize_mood_table(){
+function save_adversary() {
+    const saved_container = document.getElementById('adversaries-scrollable')
+    const saved_name = adversary.name ? adversary.name.toUpperCase() : 'UNNAMED ADVERSARY'
+    saved_container.innerHTML = ''
+    saved_adversaries[saved_name] = adversary
+
+    // Generate the saved adversaries list
+    const adversary_names = Object.keys(saved_adversaries)
+    for (const adversary of adversary_names) {
+        const name = adversary
+        const subname = (`${saved_adversaries[adversary].size} Rank ${saved_adversaries[adversary].rank} ${saved_adversaries[adversary].creature_type}`).toUpperCase()
+        const adversary_sidebar_card = `
+        <div class="p-4 mb-2 text-center rounded-lg bg-cyan-700 text-white">
+            <h4 class="font-bold" id="adversary-card-name">${name}</h4>
+            <p class="italic text-sm" id="adversary-card-subname">${subname}</p>
+        </div>`
+        saved_container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
+    }
+}
+
+function current_adversary_card() {
+    const name = adversary.name ? adversary.name.toUpperCase() : 'UNNAMED ADVERSARY'
+    const subname = (`${adversary.size} Rank ${adversary.rank} ${adversary.creature_type}`).toUpperCase()
+    document.getElementById('adversary-card-name').innerHTML = name
+    document.getElementById('adversary-card-subname').innerHTML = subname
+}
+
+function initialize_mood_table() {
     const moods = adversary.moods
-    for (const this_mood of moods){
+    for (const this_mood of moods) {
         add_row(
             this_mood.rolls.start,
             this_mood.rolls.stop,
@@ -28,15 +55,15 @@ function initialize_mood_table(){
     }
 }
 
-function initialize_mood_table_event_handlers(){
+function initialize_mood_table_event_handlers() {
     const inputs = document.querySelectorAll('#mood-table > tbody input')
     inputs.forEach(input => {
-        input.addEventListener('change',adversary._adjust_mood_table)
+        input.addEventListener('change', adversary._adjust_mood_table)
     }
-)
+    )
 }
 
-function add_row(roll1 = "",roll2="",moodname="",mooddesc="") {
+function add_row(roll1 = "", roll2 = "", moodname = "", mooddesc = "") {
     const table = document.querySelector('#mood-table > tbody')
     const row_number = document.querySelectorAll('#mood-table > tbody > tr').length + 1
     const row_html = `
@@ -51,8 +78,8 @@ function add_row(roll1 = "",roll2="",moodname="",mooddesc="") {
     initialize_mood_table_event_handlers()
 }
 
-function remove_row(row_number){
-    const row_to_remove = document.getElementById('mood-table-row-'+row_number)
+function remove_row(row_number) {
+    const row_to_remove = document.getElementById('mood-table-row-' + row_number)
     //space for removing any existing data from mood table in adversary
     row_to_remove.remove()
 }
@@ -283,11 +310,13 @@ class Adversary {
     _adjust_name() {
         this.name = document.getElementById('adversary-name').value.toUpperCase()
         document.getElementById('adversary-name').value = this.name
+        current_adversary_card()
     }
 
     _adjust_type_subtype() {
         this.creature_type = document.getElementById('adversary-type').value
         this.creature_subtype = document.getElementById('adversary-subtype').value
+        current_adversary_card()
     }
 
     _adjust_description() {
@@ -394,6 +423,7 @@ class Adversary {
         this._calculate_aptitudes()
         this._adjust_size()
         this._calculate_atkbonus()
+        current_adversary_card()
         update_ui(adversary)
     }
 
@@ -539,6 +569,7 @@ class Adversary {
         // for colossal, there will need to be a lot of extensive customization - earmark for future
         // After this, rerun _adjustTraits so that new traits are re-incorporated
         this._calculate_defense()
+        current_adversary_card()
     }
 
     // Confirms data being injected into Adversary class is of the correct type/class
@@ -846,11 +877,11 @@ class Adversary {
         this.facts[fact].description = fact_content
     }
 
-    _adjust_mood_table(){
+    _adjust_mood_table() {
         const rows = document.querySelectorAll('#mood-table > tbody > tr')
         //clear out moods object and reindex info from table
         adversary.moods = []
-        for (var row of rows){
+        for (var row of rows) {
             var data = []
 
             row.querySelectorAll('input').forEach(input => data.push(input.value))
@@ -858,7 +889,7 @@ class Adversary {
                 start: data[0],
                 stop: data[1]
             }
-            const mood = new Mood(rolls,data[2],data[3])
+            const mood = new Mood(rolls, data[2], data[3])
             adversary.moods.push(mood)
         }
     }
@@ -1016,11 +1047,11 @@ function update_ui(adversary) {
 
     //update the data bars
     updateVisualization()
-
 }
 
 adversary._calculate_aptitudes()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
 update_ui(adversary)
+current_adversary_card()
 var saved_adversaries = {}

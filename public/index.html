@@ -292,14 +292,15 @@
                 <div id="current-adversary" class="h-1/8">
                     <p class="italic text-sm text-center">Current Adversary</p>
                     <hr class="faded-hr"/>
-                    <div class="p-4 text-center rounded-lg bg-gradient-to-r from-cyan-500 to-green-500 text-white"><h4 class="font-bold">TEST</h4><p class="italic text-sm">Medium Rank 3 Monster</p></div>
+                    <div class="p-4 text-center rounded-lg bg-cyan-500 text-white"><h4 class="font-bold" id="adversary-card-name">TEST</h4><p class="italic text-sm" id="adversary-card-subname">Medium Rank 3 Monster</p></div>
                     <div class="text-center">
-                    <button class="btn">Save Adversary</button>
+                    <button class="btn" onclick="save_adversary()">Save Adversary</button>
                 </div>
                 </div>
                 <div id="adversaries-container" class="h-5/8">
                     <p class="italic text-sm text-center">Created Adversaries</p>
                     <hr class="faded-hr"/>
+                    <div id="adversaries-scrollable"></div>
                 </div>
                 <div id="control-button-group" class="block align-bottom text-center">
                     <button class="btn">Import</button>
