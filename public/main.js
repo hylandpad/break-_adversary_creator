@@ -16,24 +16,37 @@ function menace_color(menace) {
 
 }
 
-function save_adversary() {
-    const saved_container = document.getElementById('adversaries-scrollable')
-    const saved_name = adversary.name ? adversary.name.toUpperCase() : 'UNNAMED ADVERSARY'
-    saved_container.innerHTML = ''
-    saved_adversaries[saved_name] = adversary
 
-    // Generate the saved adversaries list
-    const adversary_names = Object.keys(saved_adversaries)
-    for (const adversary of adversary_names) {
-        const name = adversary
-        const subname = (`${saved_adversaries[adversary].size} Rank ${saved_adversaries[adversary].rank} ${saved_adversaries[adversary].creature_type}`).toUpperCase()
+function save_adversary() {
+    const name = adversary.name;
+    
+    // 1. Create a deep-ish copy (cloning the object)
+    saved_adversaries[name] = JSON.parse(JSON.stringify(adversary));
+
+    // 2. Trigger a separate function to handle the UI
+    render_saved_list();
+}
+
+function render_saved_list() {
+    const container = document.getElementById('adversaries-scrollable');
+    container.innerHTML = ''; // Clear once before the loop
+
+    // 3. Loop through the keys in your object to rebuild the list
+    Object.keys(saved_adversaries).forEach(name => {
+        const subname = (`${saved_adversaries[name].size} Rank ${saved_adversaries[name].rank} ${saved_adversaries[name].creature_type}`).toUpperCase()
         const adversary_sidebar_card = `
-        <div class="p-4 mb-2 text-center rounded-lg bg-cyan-700 text-white">
+        <div class="p-4 mb-2 text-center rounded-lg bg-cyan-700 text-white" id="load-${name}" onclick="load_adversary('${name}')">
             <h4 class="font-bold" id="adversary-card-name">${name}</h4>
             <p class="italic text-sm" id="adversary-card-subname">${subname}</p>
         </div>`
-        saved_container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
-    }
+        container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
+    });
+}
+
+function load_adversary(adversary_name) {
+    const name = String(adversary_name)
+    adversary = saved_adversaries[name]
+    update_ui(adversary)
 }
 
 function current_adversary_card() {
@@ -1047,6 +1060,7 @@ function update_ui(adversary) {
 
     //update the data bars
     updateVisualization()
+    current_adversary_card()
 }
 
 adversary._calculate_aptitudes()
