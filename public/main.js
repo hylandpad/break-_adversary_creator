@@ -772,12 +772,12 @@ class Adversary {
         if (Object.keys(passives).length > 0) {
             const passive_keys = [Object.keys(passives)]
             const passive_values = [Object.values(passives)]
-            const linked_ability = this.abilities[ability_name]
+            const linked_ability = ability_name
             var new_bound_passive = new Passive(
                 ability_name, 'ability', passive_keys, 'add', passive_values, linked_ability
             )
             //Link the bound passive to the ability
-            this.abilities[ability_name].bound_passive.push(new_bound_passive)
+            this.abilities[ability_name].bound_passive = ability_name
         }
 
         new_bound_passive && this.passives.push(new_bound_passive)
@@ -817,7 +817,7 @@ class Adversary {
         for (let key in this.abilities) {
             const ability = this.abilities[key]
             const ability_block = `
-            <div id="${ability.ability_name}-${ability.ability_type}-${ability - allegiance}" class="ability-card">
+            <div id="${ability.ability_name}-${ability.ability_type}-${ability - allegiance}" class="ability-card w-1/2">
                 <div class="text-white flex"><span class="font-bold">${ability.ability_name}</span><span class="ability-icon">${ability.ability_type == 'Basic' ? 'B' : ability.ability_type == 'Advanced' ? 'A' : ability.ability_type == 'Legendary' ? 'L' : 'NA'}</span>${ability.magic ? '<span class="magic-icon">M</span>' : ''}</div>
                 <div class="ability-content bg-slate-200 p-1 rounded-md">
                     ${ability.ability_description != 'None' ? `<div id=description" class="italic">${ability.ability_description}</div>` : ''}

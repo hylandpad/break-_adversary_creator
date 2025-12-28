@@ -289,8 +289,18 @@
         </div>
         <div class="sidebar bg-gray-300 inline-block align-top w-1/5">
             <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">
-                <div id="current-adversary" class="h-1/8"></div>
-                <div id="adversaries-container" class="h-5/8"></div>
+                <div id="current-adversary" class="h-1/8">
+                    <p class="italic text-sm text-center">Current Adversary</p>
+                    <hr class="faded-hr"/>
+                    <div class="p-4 text-center rounded-lg bg-gradient-to-r from-cyan-500 to-green-500 text-white"><h4 class="font-bold">TEST</h4><p class="italic text-sm">Medium Rank 3 Monster</p></div>
+                    <div class="text-center">
+                    <button class="btn">Save Adversary</button>
+                </div>
+                </div>
+                <div id="adversaries-container" class="h-5/8">
+                    <p class="italic text-sm text-center">Created Adversaries</p>
+                    <hr class="faded-hr"/>
+                </div>
                 <div id="control-button-group" class="block align-bottom text-center">
                     <button class="btn">Import</button>
                     <button class="btn">Export</button>
@@ -383,7 +393,7 @@
                         <option value="veryfast">Very Fast</option>
                     </select>
                 </div>
-                <button id="btnAddAbility" onclick="adversary._add_ability()" class="btn">Add</button>
+                <button id="btnAddAbility" onclick="adversary._add_ability()" class="btn close-modal">Add</button>
             </div>
         </template>
         <template id="gear-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
@@ -443,7 +453,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="btnAddGear" onclick="adversary._add_gear()" class="btn">Add</button>
+                <button id="btnAddGear" onclick="adversary._add_gear()" class="btn close-modal">Add</button>
             </div>
         </template>
         <template id="loot-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
@@ -499,7 +509,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="btnAddLoot" onclick="adversary._add_loot()" class="btn">Add</button>
+                <button id="btnAddLoot" onclick="adversary._add_loot()" class="btn close-modal">Add</button>
             </div>
         </template>
     </div>
