@@ -272,33 +272,18 @@
 
                 <div class="mood-table-section">
                     <h3 class="fading-header from-slate-600">MOOD TABLE</h3>
-                    <table>
+                    <table id="mood-table" class="table-fixed border-separate border-spacing-2 border border-gray-400 w-full">
                         <thead>
-                            <tr>
-                                <th>Roll</th>
-                                <th>Mood</th>
-                                <th>Situation</th>
+                            <tr class="text-left">
+                                <th class="w-1/12">Roll</th>
+                                <th class="w-1/4">Mood</th>
+                                <th class="w-3/5">Situation</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1-5</td>
-                                <td>Docile</td>
-                                <td>Sleeping off a satisfying meal. Tread lightly.</td>
-                            </tr>
-                            <tr>
-                                <td>6-14</td>
-                                <td>Disinterested</td>
-                                <td>Busy eating a pack or cart. The aggrieved traveler may offer the PCs a reward for
-                                    chasing the Chompa off.</td>
-                            </tr>
-                            <tr>
-                                <td>15-20</td>
-                                <td>Hangry</td>
-                                <td>Starving, will attack the PCs.</td>
-                            </tr>
                         </tbody>
                     </table>
+                    <button class="btn" onclick="add_row()">Add Row</button>
                 </div>
             </div>
         </div>
@@ -515,56 +500,6 @@
                     </div>
                 </div>
                 <button id="btnAddLoot" onclick="adversary._add_loot()" class="btn">Add</button>
-            </div>
-        </template>
-        <template id="inventory-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-            <div>
-                <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input id="inventory-item-name" placeholder="New Inventory Item"
-                            type="text" class="basis-xl">
-                    </h3>
-                </div>
-                <p class="italic slate-400 p-2">Inventory items are things an adversary may have on their person that
-                    isn't worn. It may be selling or hoarding these items, or it may use some of them in combat (such as
-                    bombs or
-                    flasks of acid)
-                </p>
-                <label for="inventory-item-type">Item Type / Subtype:</label>
-                <select id="inventory-item-type">
-                    <option value="weapon">Weapon</option>
-                    <option value="armor">Armor</option>
-                    <option value="shield">Shield</option>
-                    <option value="outfit">Outfit</option>
-                    <option value="accessories">Accessories</option>
-                    <option value="wayfinding">Wayfinding</option>
-                    <option value="illumination">Illumination</option>
-                    <option value="kits">Specialist Kit</option>
-                    <option value="books">Books</option>
-                    <option value="consumables">Consumable</option>
-                    <option value="explosives">Explosives</option>
-                    <option value="chemicals">Chemicals</option>
-                    <option value="reagent">Crafting Reagent</option>
-                    <option value="misc">Miscellaneous</option>
-                    <option value="curiosity">Curiosity</option>
-                    <option value="gadget">Gadget</option>
-                    <option value="artifact">Artifact</option>
-                    <option value="otherworld">Otherworldy Items</option>
-                    <option value="vehicle">Vehicle</option>
-                    <option value="companion">Companion</option>
-                </select>
-                / <input id="inventory-item-subtype" type="text" placeholder="IE-Great Weapon"> | <label
-                    for="inventory-slots">Slots: </label> <input class="w-10" id="inventoryt-slots" type="number">
-                <input type="radio" id="inventory-item-stones" name="inventory-item-value" value="stones"><label
-                    for="inventory-item-stones"> Stones </label>
-                <input type="radio" id="inventory-items-coins" name="inventory-item-value" value="coins" checked><label
-                    for="inventory-item-coins"> Coins </label>
-                <input type="radio" id="inventory-items-gems" name="inventory-item-value" value="gems"><label
-                    for="inventory-item-gems"> Gems </label> |
-                <label for="inventory-item-value"> Value: </label><input type="number" value=1
-                    id="inventory-item-value">
-                <textarea placeholder="brief description here."
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                <button id="btnAddInventory" class="btn">Add</button>
             </div>
         </template>
     </div>

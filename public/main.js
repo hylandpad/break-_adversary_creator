@@ -16,6 +16,47 @@ function menace_color(menace) {
 
 }
 
+function initialize_mood_table(){
+    const moods = adversary.moods
+    for (const this_mood of moods){
+        add_row(
+            this_mood.rolls.start,
+            this_mood.rolls.stop,
+            this_mood.mood,
+            this_mood.mood_text
+        )
+    }
+}
+
+function initialize_mood_table_event_handlers(){
+    const inputs = document.querySelectorAll('#mood-table > tbody input')
+    inputs.forEach(input => {
+        input.addEventListener('change',adversary._adjust_mood_table)
+    }
+)
+}
+
+function add_row(roll1 = "",roll2="",moodname="",mooddesc="") {
+    const table = document.querySelector('#mood-table > tbody')
+    const row_number = document.querySelectorAll('#mood-table > tbody > tr').length + 1
+    const row_html = `
+    <tr id="mood-table-row-${row_number}">    
+        <td><input type="text" class="w-7 bg-slate-400 rounded-sm pl-1" value="${roll1}" inputmode="numeric" pattern="[0-9]*"> - <input class="w-7 bg-slate-400 rounded-sm pl-1" type="text" value="${roll2}" inputmode="numeric" pattern="[0-9]*"></td>
+        <td><input type="text" class="bg-slate-400 rounded-sm w-full pl-2" value="${moodname}"></td>
+        <td><input type="text" class="bg-slate-400 rounded-sm w-full pl-2" value="${mooddesc}"></td>
+        <td><button onclick="remove_row("${row_number}")" class="btn">X</button></td>
+    </tr>
+        `
+    table.insertAdjacentHTML('beforeend', row_html)
+    initialize_mood_table_event_handlers()
+}
+
+function remove_row(row_number){
+    const row_to_remove = document.getElementById('mood-table-row-'+row_number)
+    //space for removing any existing data from mood table in adversary
+    row_to_remove.remove()
+}
+
 function ability_types_access() {
     const advanced_ability = document.getElementById('ability-advanced')
     const legendary_ability = document.getElementById('ability-legendary')
@@ -688,7 +729,7 @@ class Adversary {
         update_ui(adversary)
     }
 
-    _remove_loot(name){
+    _remove_loot(name) {
         const loot_to_remove = adversary.loot.indexOf(adversary.loot.find(loot => loot.item_name === name))
         this.loot.splice(loot_to_remove, 1)
         this._adjust_loot()
@@ -804,6 +845,22 @@ class Adversary {
         const fact_content = document.getElementById(fact).value
         this.facts[fact].description = fact_content
     }
+
+    _adjust_mood_table(){
+        const rows = document.querySelectorAll('#mood-table > tbody > tr')
+        //clear out moods object and reindex info from table
+        adversary.moods = []
+        for (var row of rows){
+            var data = []
+            row.querySelectorAll('input').forEach(input => data.push(input.value))
+            const rolls = {
+                start: data[0],
+                stop: data[1]
+            }
+            const mood = new Mood(rolls,data[2],data[3])
+            adversary.moods.push(mood)
+        }
+    }
 }
 
 // Class definitions
@@ -854,11 +911,12 @@ class Item {
     }
 }
 
-// Rollable mood table - need to work on how to structure this. Probably a matrix?
-class MoodTable {
-    constructor(rolls, moods, moods_text) {
-        // do this later
-
+// Moods to insert into the mood table
+class Mood {
+    constructor(rolls, mood, mood_text) {
+        this.rolls = rolls
+        this.mood = mood
+        this.mood_text = mood_text
     }
 }
 
@@ -903,7 +961,32 @@ var adversary = new Adversary({
 
     },
     loot: [],
-    moods: {}
+    moods: [
+        {
+            rolls: {
+                start: 1,
+                stop: 5
+            },
+            mood: 'Friendly/Benign',
+            mood_text: 'This creature seems to have a favorable disposition to you'
+        },
+        {
+            rolls: {
+                start: 6,
+                stop: 14
+            },
+            mood: 'Indifferent/Wary',
+            mood_text: 'This creature is not immediately interested in harming you, but is watchful'
+        },
+        {
+            rolls: {
+                start: 15,
+                stop: 20
+            },
+            mood: 'Hostile/Bloodthirsty',
+            mood_text: 'This creature is angry or aggressive. Prepare for combat'
+        }
+    ]
 })
 
 // make changes on the page to represent changes in the data structure for the current adversary
@@ -932,11 +1015,14 @@ function update_ui(adversary) {
 
     //update the data bars
     updateVisualization()
+
+    //initialize mood table
+    initialize_mood_table()
+    initialize_mood_table_event_handlers()
 }
 
 adversary._calculate_aptitudes()
 set_max_rank()
-//window.onload = updateVisualization;
 menace_color(document.getElementById('menace').value)
 update_ui(adversary)
 var saved_adversaries = {}
