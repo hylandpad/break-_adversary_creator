@@ -13,7 +13,7 @@ function menace_color(menace) {
         document.getElementById('menace').classList.add('rounded-lg', 'bg-pink-600')
     } else {
         document.getElementById('menace').className = ''
-        document.getElementById('menace').classList.add('rounded-lg', 'bg-stone-600')
+        document.getElementById('menace').classList.add('rounded-lg', 'bg-slate-500')
     }
 
 }

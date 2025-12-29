@@ -12,7 +12,7 @@
 <body id="app-main" class="unaligned-allegiance transition ease-in-out delay-150 duration-2500">
     <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-5"><img class="w-[250px] m-auto"
             src="/images/breakcommunity.png"></div>
-    <div class="container bg-gray-300 m-auto">
+    <div class="container m-auto">
         <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
             <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
                         class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
@@ -287,7 +287,7 @@
                 </div>
             </div>
         </div>
-        <div class="sidebar bg-gray-300 inline-block align-top w-1/5">
+        <div class="sidebar inline-block align-top w-1/5">
             <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">
                 <div id="current-adversary" class="h-1/8">
                     <p class="italic text-sm text-center">Current Adversary</p>
@@ -317,13 +317,7 @@
                 <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize your
                     adversary or fit them into a role.
                 </p>
-                <input type="radio" id="trait-add" name="trait-operator" value="add" checked><label for="trait-add">
-                    Add
-                </label>
-                <input type="radio" id="trait-subtract" name="trait-operator" value="subtract"><label
-                    for="trait-subtract">
-                    Subtract </label>
-                | <label for="trait-value">Amount: </label><input class="text-input" min='1' value='1' class="w-10"
+                <label for="trait-value">Amount: </label><input class="text-input" class="w-10"
                     id="trait-value" type="number">
                 <select id="trait-modifier">
                     <option value="might">Might</option>
@@ -460,7 +454,7 @@
         <template id="loot-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
             <div>
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input id="loot-name" placeholder="New Loot" type="text"
+                    <h3 class="break-header-text"><input data-required id="loot-name" placeholder="New Loot" type="text"
                             class="basis-xl">
                     </h3>
                 </div>
@@ -468,7 +462,7 @@
                     byproducts of its demise.
                 </p>
                 <label for="loot-item-type">Item Type / Subtype:</label>
-                <select id="loot-item-type">
+                <select id="loot-item-type" data-required>
                     <option value="weapon">Weapon</option>
                     <option value="armor">Armor</option>
                     <option value="shield">Shield</option>
@@ -489,9 +483,9 @@
                     <option value="otherworld">Otherworldy Items</option>
                     <option value="vehicle">Vehicle</option>
                     <option value="companion">Companion</option>
-                </select>/ <input class="text-input w-35" id="loot-item-subtype" type="text"
+                </select>/ <input data-required class="text-input w-35" id="loot-item-subtype" type="text"
                     placeholder="IE-Great Weapon">
-                <textarea id="loot-item-description" placeholder="brief description here."
+                <textarea data-required id="loot-item-description" placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
                 <div>
                     <div class="flex">
@@ -510,7 +504,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="btnAddLoot" onclick="adversary._add_loot()" class="btn close-modal">Add</button>
+                <button id="btnAddLoot" onclick="adversary._add_loot()" disabled class="btn submit-btn close-modal">Add</button>
             </div>
         </template>
     </div>

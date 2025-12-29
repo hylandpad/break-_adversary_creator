@@ -22,7 +22,8 @@
     }
 
     .btn {
-        @apply text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2 mr-2 hover:bg-blue-800
+        @apply text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2 mr-2 hover:bg-blue-800;
+        @apply disabled:bg-gray-300
     }
 
     .text-input {
@@ -30,18 +31,18 @@
     }
 
     .unaligned-allegiance{
-        @apply bg-gray-200
+        @apply bg-gradient-to-tr from-slate-100 to-slate-500
     }
     .dark-allegiance{
-        @apply bg-gradient-to-tr from-slate-300 via-violet-500 to-violet-900
+        @apply bg-gradient-to-tr from-purple-800 to-indigo-950
     }
 
     .bright-allegiance{
-        @apply bg-gradient-to-tr from-gray-50 via-pink-500 to-yellow-400
+        @apply bg-gradient-to-tr from-pink-500 to-yellow-400
     }
 
     .twilight-allegiance{
-        @apply bg-gradient-to-tr from-yellow-50 via-pink-500 to-purple-800
+        @apply bg-gradient-to-tr from-yellow-800 via-pink-500 to-purple-800
     }
 
     .passive-span{

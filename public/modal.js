@@ -60,3 +60,39 @@ document.addEventListener('keydown', (e) => {
     closeModal();
   }
 });
+
+/**
+ * Validates a specific modal container including inputs and selects
+ */
+function validateModal(modal) {
+    const submitBtn = modal.querySelector('.submit-btn');
+    // Finds any input, textarea, or select with the data-required attribute
+    const requiredFields = modal.querySelectorAll('input[data-required], select[data-required], textarea[data-required]');
+    
+    let allValid = true;
+
+    requiredFields.forEach(field => {
+        const value = field.value ? field.value.trim() : "";
+        
+        // If the value is an empty string, it's invalid
+        if (value === "") {
+            allValid = false;
+        }
+    });
+
+    submitBtn.disabled = !allValid;
+    
+    // Visual feedback
+    submitBtn.classList.toggle('btn-disabled', !allValid);
+    submitBtn.classList.toggle('btn-enabled', allValid);
+}
+
+// Global listener for both typing (input) and dropdown changes (change)
+['input', 'change'].forEach(eventType => {
+    document.addEventListener(eventType, (e) => {
+        const modal = e.target.closest('#modal-container');
+        if (modal) {
+            validateModal(modal);
+        }
+    });
+});

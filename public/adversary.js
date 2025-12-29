@@ -36,19 +36,17 @@ class Adversary {
     _add_trait() {
         // create trait in adversary object
         var name = document.getElementById('trait-name').value
-        var operator = document.querySelector(`input[name='trait-operator']:checked`).value
         var value = parseInt(document.getElementById('trait-value').value)
         var modifier = document.getElementById('trait-modifier').value
         const type = 'trait'
 
-        const createTrait = (name, operator, value, modifier, type) => ({
+        const createTrait = (name, value, modifier, type) => ({
             'name': name,
             'type': type,
             'modifier': modifier,
-            'operator': operator,
             'value': value
         })
-        this.passives.push(createTrait(name, operator, value, modifier, type))
+        this.passives.push(createTrait(name, value, modifier, type))
         this._adjust_passives()
         update_ui(this)
     }
@@ -396,9 +394,9 @@ class Adversary {
         adversary.passives.forEach(passive => {
             if (passive.type == 'trait') {
                 const trait_span = document.createElement('span')
-                trait_span.innerHTML = `${(passive.name ? passive.name : 'Unnamed').toUpperCase()} (${(passive.operator == 'add' ? '+' : '-')}${passive.value} ${passive.modifier.toUpperCase()})`
+                trait_span.innerHTML = `${(passive.name || 'Unnamed').toUpperCase()} (${passive.value >= 0 ? '+' : ''}${passive.value} ${passive.modifier.toUpperCase()})`
                 trait_span.classList.add('trait-span', 'font-bold')
-                trait_span.id = (`trait-${passive.name ? passive.name : 'Unnamed'}-${passive.modifier}-${passive.operator}-${passive.value}`).toLowerCase()
+                trait_span.id = (`trait-${passive.name || 'Unnamed'}-${passive.modifier}`).toLowerCase()
                 trait_span.setAttribute('onclick', `adversary._remove_trait('${passive.name}')`)
                 trait_container.appendChild(trait_span)
             } else if (passive.type = "ability") {
@@ -601,9 +599,7 @@ class Adversary {
         aptitudeKeys.forEach(key => {
             adversary.passives.forEach(this_trait => {
                 if (this_trait.modifier == key) {
-                    this_trait.operator == 'add' ?
-                        this.aptitudes[key] = parseInt(this.aptitudes[key]) + parseInt(this_trait.value) :
-                        this.aptitudes[key] = parseInt(this.aptitudes[key]) - parseInt(this_trait.value)
+                        this.aptitudes[key] = this.aptitudes[key] + this_trait.value
                 }
             })
         })
