@@ -337,6 +337,7 @@ function update_ui(adversary) {
     current_adversary_card()
 }
 
+// On page loads
 adversary._calculate_aptitudes()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
