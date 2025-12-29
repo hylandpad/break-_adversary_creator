@@ -24,6 +24,34 @@ function save_adversary() {
     render_saved_list();
 }
 
+function load_adversary(name) {
+    adv = saved_adversaries[name]
+    adversary = new Adversary(
+        {
+            name: adv[name],
+            menace: adv[menace],
+            rank: adv[rank],
+            size: adv[size],
+            hearts: adv[rank],
+            atkbonus: adv[atkbonus],
+            bright_points: adv[bright_points],
+            dark_points: adv[dark_points],
+            defense: adv[defense],
+            speed: adv[speed],
+            creature_type: adv[creature_type],
+            creature_subtype: adv[creature_subtype],
+            primary_aptitudes: adv[primary_aptitudes],
+            gear: adv[gear],
+            description: adv[description],
+            passives: adv[passives],
+            abilities: adv[abilities],
+            facts: adv[facts],
+            loot: adv[loot],
+            moods: adv[moods]
+        }
+    )
+}
+
 function render_saved_list() {
     const container = document.getElementById('adversaries-scrollable');
     container.innerHTML = '';
@@ -32,7 +60,7 @@ function render_saved_list() {
         const subname = (`${saved_adversaries[name].size} Rank ${saved_adversaries[name].rank} ${saved_adversaries[name].creature_type}`).toUpperCase()
         const adversary_sidebar_card = `
         <div class="p-4 mb-2 text-center rounded-lg bg-cyan-700 text-white" id="load-${name}" onclick="load_adversary('${name}')">
-            <h4 class="font-bold" id="adversary-card-name">${name}</h4>
+            <h4 class="font-bold" id="adversary-card-name">${name.toUpperCase()}</h4>
             <p class="italic text-sm" id="adversary-card-subname">${subname}</p>
         </div>`
         container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
@@ -46,7 +74,7 @@ function load_adversary(adversary_name) {
     const name = String(adversary_name)
     adversary = saved_adversaries[name]
     update_ui(adversary)
-    
+
 }
 
 function current_adversary_card() {

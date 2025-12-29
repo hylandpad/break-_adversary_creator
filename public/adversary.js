@@ -1,7 +1,6 @@
 class Adversary {
 
     constructor(data = {}) {
-        // creature metadata
         this.name = data.name;
         this.menace = data.menace;
         this.rank = data.rank;
