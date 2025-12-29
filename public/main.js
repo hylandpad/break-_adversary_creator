@@ -1,5 +1,4 @@
 
-
 function menace_color(menace) {
 
     if (menace == 'mook') {
@@ -339,6 +338,7 @@ function update_ui(adversary) {
 
 // On page loads
 adversary._calculate_aptitudes()
+initialize_mood_table()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
 update_ui(adversary)

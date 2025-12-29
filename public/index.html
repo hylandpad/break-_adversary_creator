@@ -19,8 +19,7 @@
                     onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span>
             </div>
             <div class="header break-adversary-header mb-5">
-                <h3 class="break-header-text flex items-center"><i id="allegiance-bright"
-                        class="material-icons text-white mr-1">edit</i><input id="adversary-name"
+                <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input id="adversary-name"
                         onchange="adversary._adjust_name()" placeholder="New Adversary" type="text" class="basis-xl">
                 </h3>
                 <span class="w-50%"></span>
@@ -40,22 +39,22 @@
             <div id="stats-card" class="main">
                 <div class="stats-card bg-gray-200">
                     <h3 class="fading-header from-slate-600">ADVERSARY INFO</h3>
-                    <div class="my-3"><label for="adversary-type"><strong>Type: </strong></label><select
-                            id="adversary-type" onchange="adversary._adjust_type_subtype()">
+                    <div class="my-3 flex items-center"><label for="adversary-type">Type: </label><select
+                            id="adversary-type" class="dropdown" onchange="adversary._adjust_type_subtype()">
                             <option value="beast">Beast</option>
                             <option value="celestial">Celestial</option>
                             <option value="folk">Folk</option>
                             <option value="monster">Monster</option>
-                        </select> : <input onchange="adversary._adjust_type_subtype()" id="adversary-subtype"
-                            class="text-input w-30" type="text" placeholder="Subtype"> | <label for="size"><strong>Size:
-                            </strong></label><select id="size" onchange="adversary._adjust_size()">
+                        </select><label for="adversary-subtype">Subtype: </label><input onchange="adversary._adjust_type_subtype()" id="adversary-subtype"
+                            class="text-input w-30 mr-2" type="text" placeholder="Subtype"> <label for="size">Size:
+                            </label><select class="dropdown" id="size" onchange="adversary._adjust_size()">
                             <option value="tiny">Tiny</option>
                             <option value="small">Small</option>
                             <option value="medium">Medium</option>
                             <option value="large">Large</option>
                             <option value="massive">Massive</option>
-                        </select> |
-                        <strong>Allegiance: </strong>
+                        </select> 
+                        <strong class="mr-2">Allegiance: </strong>
                         <div class="inline-flex" id="allegiance">
                             <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"
                                     class="material-icons text-slate-400">circle</i></span>
@@ -308,18 +307,23 @@
                 </div>
             </div>
         </div>
+
+        <!--// Templates start //-->
+
+
         <template id="trait-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
             <div>
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input id="trait-name" placeholder="New Trait" type="text"
+                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required id="trait-name" placeholder="New Trait" type="text"
                             class="basis-xl"></h3>
                 </div>
                 <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize your
                     adversary or fit them into a role.
                 </p>
-                <label for="trait-value">Amount: </label><input class="text-input" class="w-10"
+                <label for="trait-value">Amount: </label><input data-required class="text-input" class="w-10"
                     id="trait-value" type="number">
-                <select id="trait-modifier">
+                <label for="trait-modifier">Aptitude: </label>
+                    <select class="dropdown" id="trait-modifier">
                     <option value="might">Might</option>
                     <option value="deftness">Deftness</option>
                     <option value="grit">Grit</option>
@@ -327,13 +331,13 @@
                     <option value="aura">Aura</option>
                 </select>
                 <br />
-                <button onclick="adversary._add_trait()" id="btnAddTrait" class="btn close-modal">Add</button>
+                <button onclick="adversary._add_trait()" id="btnAddTrait" disabled class="btn close-modal submit-btn">Add</button>
             </div>
         </template>
         <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-3xl">
             <div id="ability-div">
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input id="ability-name" placeholder="New Ability" type="text"
+                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required id="ability-name" placeholder="New Ability" type="text"
                             class="basis-xl"></h3>
                 </div>
                 <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
@@ -351,9 +355,8 @@
                                 id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
                     </div>
                 </div>
-
-                <br />
-                <label for="ability-type">Ability Type: </label>
+                <div>
+                    <label for="ability-type">Ability Type: </label>
                 <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label
                     for="ability-basic">
                     Basic</label>
@@ -361,8 +364,8 @@
                     for="ability-advanced"> Advanced</label>
                 <input id="ability-legendary" name="ability-type" type="radio" value="Legendary" disabled="true"><label
                     for="ability-legendary"> Legendary</label>
-                <br />
-                <div class="flex">
+                </div>
+                <div class="flex text-center">
                     <div><label for="ability-magic">Magic: </label></div>
                     <div><label class="switch switch-small ml-3">
                             <input id="ability-magic" type="checkbox">
@@ -371,16 +374,17 @@
                     </div>
                 </div>
 
-                <textarea id="ability-description" placeholder="Ability Explanation here"
+                <textarea data-required id="ability-description" placeholder="Ability Explanation here"
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                <div class="mb-2">
+                <h4 class="fading-header from-slate-400 mb-2">Optional Passives</h4>
+                    <div class="mb-2">
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
                         id="ability-atkbonus" type="number">
                     <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
                         type="number">
                     <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input" id="ability-hearts"
                         type="number">
-                    <i class="fa-solid fa-person-running"></i><select id="ability-base-speed-override">
+                    <i class="fa-solid fa-person-running"></i><select id="ability-base-speed-override" class="dropdown">
                         <option value=""></option>
                         <option value="slow">Slow</option>
                         <option value="average">Average</option>
@@ -388,13 +392,13 @@
                         <option value="veryfast">Very Fast</option>
                     </select>
                 </div>
-                <button id="btnAddAbility" onclick="adversary._add_ability()" class="btn close-modal">Add</button>
+                <button id="btnAddAbility" onclick="adversary._add_ability()" disabled class="btn close-modal submit-btn">Add</button>
             </div>
         </template>
         <template id="gear-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
             <div>
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input id="gear-name" placeholder="New Gear" type="gear"
+                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required id="gear-name" placeholder="New Gear" type="gear"
                             class="basis-xl">
                     </h3>
                 </div>
@@ -403,15 +407,15 @@
                     in
                     combat.
                 </p>
-                <label class="font-bold" for="gear-item-type">Item Type / Subtype:</label>
-                <select id="gear-item-type">
+                <label class="font-bold" for="gear-item-type">Item Type: </label>
+                <select class="dropdown" data-required id="gear-item-type">
                     <option value="weapon">Weapon</option>
                     <option value="armor">Armor</option>
                     <option value="shield">Shield</option>
                     <option value="outfit">Outfit</option>
                     <option value="mount">Mount</option>
                 </select>
-                / <input class="text-input w-35" id="gear-item-subtype" type="text" placeholder="IE-Great Weapon">
+                <label>Subtype: </label> <input data-required class="text-input w-35" id="gear-item-subtype" type="text" placeholder="IE-Great Weapon">
                 <hr class="faded-hr" />
                 <div class="mb-2">
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
@@ -420,7 +424,7 @@
                         type="number">
                     <i class="fa-solid fa-person-running"></i><input class="text-input" id="gear-item-speed"
                         type="number">
-                    <label>MAX </label><i class="fa-solid fa-person-running"></i><select class="font-bold"
+                    <label>MAX </label><i class="fa-solid fa-person-running"></i><select class="dropdown font-bold"
                         id="gear-item-max-speed">
                         <option value=""></option>
                         <option value='slow'>Slow</option>
@@ -429,12 +433,12 @@
                         <option value='veryfast'>Very Fast</option>
                     </select>
                 </div>
-                <textarea id="gear-item-description" placeholder="brief description here."
+                <textarea data-required id="gear-item-description" placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
                 <div>
                     <div class="flex">
                         <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min='1'
-                                class="w-10 bg-slate-400 rounded-md pl-3" id="gear-item-slots" type="number"></div>
+                                class="text-input" id="gear-item-slots" type="number"></div>
                         <div class="basis-md">
                             <label for="gear-item-value">Value: </label><input type="number" value=1
                                 id="gear-item-value" class="text-input">
@@ -448,21 +452,22 @@
                         </div>
                     </div>
                 </div>
-                <button id="btnAddGear" onclick="adversary._add_gear()" class="btn close-modal">Add</button>
+                <button id="btnAddGear" onclick="adversary._add_gear()" disabled class="btn close-modal submit-btn">Add</button>
             </div>
         </template>
         <template id="loot-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
             <div>
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><input data-required id="loot-name" placeholder="New Loot" type="text"
+                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required id="loot-name" placeholder="New Loot" type="text"
                             class="basis-xl">
                     </h3>
                 </div>
                 <p class="italic slate-400 p-2">Loot may be items this creature has in its inventory for use or sale, or
                     byproducts of its demise.
                 </p>
-                <label for="loot-item-type">Item Type / Subtype:</label>
-                <select id="loot-item-type" data-required>
+                <div class="mb-1">
+                    <label for="loot-item-type">Item Type:</label>
+                <select class="dropdown" id="loot-item-type" data-required>
                     <option value="weapon">Weapon</option>
                     <option value="armor">Armor</option>
                     <option value="shield">Shield</option>
@@ -483,14 +488,15 @@
                     <option value="otherworld">Otherworldy Items</option>
                     <option value="vehicle">Vehicle</option>
                     <option value="companion">Companion</option>
-                </select>/ <input data-required class="text-input w-35" id="loot-item-subtype" type="text"
+                </select><label for="loot-item-subtype">Subtype: </label><input data-required class="text-input w-35" id="loot-item-subtype" type="text"
                     placeholder="IE-Great Weapon">
+                </div>
                 <textarea data-required id="loot-item-description" placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
                 <div>
                     <div class="flex">
-                        <div class="basis-sm rounded-md"><label for="loot-item-slots">Slots: </label><input min='1'
-                                class="w-10 bg-slate-400 rounded-md pl-3" id="loot-item-slots" type="number" value="1"></div>
+                        <div class="basis-sm rounded-md"><label for="loot-item-slots">Slots: </label><input
+                                class="text-input" id="loot-item-slots" type="number" value="1"></div>
                         <div class="basis-md">
                             <label for="loot-item-value">Value: </label><input type="number" value="1"
                                 id="loot-item-value" class="text-input">

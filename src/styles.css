@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 @layer components {
+    label{
+        @apply font-bold
+    }
     .break-adversary-header {
         @apply flex justify-between bg-gradient-to-r from-teal-500 to-pink-600 py-1 px-1 rounded-r-2xl
     }
 
     .break-header-text {
-        @apply text-lg text-stone-50 font-bold
+        @apply text-lg text-stone-50 font-bold flex items-center
     }
 
     .adversary-lead-in {
@@ -27,7 +30,15 @@
     }
 
     .text-input {
-        @apply w-15 w-10 bg-slate-400 rounded-md pl-3
+        @apply w-15 bg-slate-300 rounded-md ml-1 pl-2
+    }
+
+    .numeric-input {
+        @apply bg-slate-300 rounded-md ml-1 pl-2
+    }
+
+    .dropdown {
+        @apply bg-slate-300 rounded-md mx-2 pl-2
     }
 
     .unaligned-allegiance{
