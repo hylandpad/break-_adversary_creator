@@ -1,3 +1,5 @@
+
+
 function menace_color(menace) {
 
     if (menace == 'mook') {
@@ -239,7 +241,7 @@ function set_max_rank() {
 
 // Load page with some preformatted adversary data
 var adversary = new Adversary({
-    name: null,
+    name: 'New Adversary',
     menace: "",
     rank: 1,
     size: 'medium',
@@ -250,12 +252,12 @@ var adversary = new Adversary({
     defense: 10,
     speed: 'average',
     creature_type: 'monster',
-    creature_subtype: null,
+    creature_subtype: 'Abberant',
     primary_aptitudes: [],
     gear: [],
     description: null,
     passives: [],
-    abilities: {},
+    abilities: [],
     facts: {
         'habitat': {
             description: ''
