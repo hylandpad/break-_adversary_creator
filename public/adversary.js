@@ -515,7 +515,7 @@ class Adversary {
                         ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
                         ${item.max_speed ? `<span class="font-bold">MAX </span><i class="fa-solid fa-person-running"></i><span>${item.max_speed}</span>` : ''}
                     </div>
-                    ${item.item_description != 'None' ? `<div id=description" class="italic">${item.item_description}</div>` : ''}
+                    ${item.description != 'None' ? `<div id=description" class="italic">${item.description}</div>` : ''}
                 </div>
                 <div class="text-stone-200 italic flex">
                     <div class="basis-xs">Slots : ${item.slots}</div>
