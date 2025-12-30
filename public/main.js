@@ -24,32 +24,9 @@ function save_adversary() {
     render_saved_list();
 }
 
-function load_adversary(name) {
-    adv = saved_adversaries[name]
-    adversary = new Adversary(
-        {
-            name: adv[name],
-            menace: adv[menace],
-            rank: adv[rank],
-            size: adv[size],
-            hearts: adv[rank],
-            atkbonus: adv[atkbonus],
-            bright_points: adv[bright_points],
-            dark_points: adv[dark_points],
-            defense: adv[defense],
-            speed: adv[speed],
-            creature_type: adv[creature_type],
-            creature_subtype: adv[creature_subtype],
-            primary_aptitudes: adv[primary_aptitudes],
-            gear: adv[gear],
-            description: adv[description],
-            passives: adv[passives],
-            abilities: adv[abilities],
-            facts: adv[facts],
-            loot: adv[loot],
-            moods: adv[moods]
-        }
-    )
+function load_adversary(adv_name) {
+    adversary = new Adversary({...saved_adversaries[adv_name]})
+    update_ui(adversary)
 }
 
 function render_saved_list() {
@@ -65,16 +42,6 @@ function render_saved_list() {
         </div>`
         container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
     });
-}
-
-function load_adversary(adversary_name) {
-    //this load function loads a generic JSON object into the UI, which only half works. I think it needs to reuse the constructor to rebuild the Adversary object
-
-    //In fact, I am going to need to refactor almost all my useless classes since classifying them doesn't do anything and its too much of a pain in the ass to have to reconstruct every classified object on each load
-    const name = String(adversary_name)
-    adversary = saved_adversaries[name]
-    update_ui(adversary)
-
 }
 
 function current_adversary_card() {
@@ -362,6 +329,43 @@ function update_ui(adversary) {
     //update the data bars
     updateVisualization()
     current_adversary_card()
+}
+
+const exportAdversariesJson = (data, filename = 'adversaries.json') =>{
+    const jsonString = JSON.stringify(data, null, 2)
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+const importAdversariesJson = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+
+    input.onchange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                console.log("Data imported successfully:", importedData);
+                saved_adversaries = importedData;
+                render_saved_list(); 
+            } catch (err) {
+                console.error("Error parsing JSON:", err);
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 }
 
 // On page loads

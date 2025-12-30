@@ -1,29 +1,9 @@
 class Adversary {
 
-    constructor(data = {}) {
-        this.name = data.name;
-        this.menace = data.menace;
-        this.rank = data.rank;
+    constructor(data) {
+        Object.assign(this, data);
         this.size = data.size || "Medium";
-        this.hearts = data.hearts;
-        this.atkbonus = data.atkbonus;
-        this.defense = data.defense;
-        this.speed = data.speed;
         this.max_speed = data.max_speed || 'veryfast';
-        this.creature_type = data.creature_type;
-        this.creature_subtype = data.creature_subtype;
-        this.primary_aptitudes = data.primary_aptitudes
-        this.gear = data.gear
-        this.bright_points = data.bright_points;
-        this.dark_points = data.dark_points;
-        this.allegiance = data.allegiance;
-        this.description = data.description;
-        this.aptitudes = data.aptitudes
-        this.passives = data.passives
-        this.abilities = data.abilities;
-        this.facts = data.facts;
-        this.loot = data.loot
-        this.moods = data.moods;
     }
 
 
@@ -580,7 +560,6 @@ class Adversary {
         update_ui(adversary)
     }
 
-
     // **Calculates - broader functions that integrate changes from a number of different sources to recalculate specific attributes
 
     // Calculate atk bonus based on gear, abilities and rank
@@ -686,6 +665,7 @@ class Adversary {
     }
 
     // **Removals - undo the addition of a trait, loot, gear or ability
+    
     _remove_trait(name) {
         const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.name == name && trait.type == 'trait'))
         this.passives.splice(trait_to_remove, 1)
