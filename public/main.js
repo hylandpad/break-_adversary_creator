@@ -26,6 +26,7 @@ function save_adversary() {
 
 function load_adversary(adv_name) {
     adversary = new Adversary({...saved_adversaries[adv_name]})
+    full_reload
     update_ui(adversary)
 }
 

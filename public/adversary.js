@@ -130,7 +130,7 @@ class Adversary {
         });
 
 
-        this.gear.push(createGear(item_name,item_type,item_subtype,item_description,item_slots, item_denomination,item_value,item_defense,item_atkbonus,item_speed,item_max_speed))
+        this.gear.push(createGear(item_name,item_type,item_subtype,item_description,item_slots,item_denomination,item_value,item_defense,item_atkbonus,item_speed,item_max_speed))
         this._adjust_gear()
     }
 
@@ -163,7 +163,7 @@ class Adversary {
         });
 
 
-        this.gear.push(createLoot(item_name,item_type,item_subtype,item_description,item_slots, item_denomination,item_value))
+        this.loot.push(createLoot(item_name,item_type,item_subtype,item_description,item_slots, item_denomination,item_value))
         this._adjust_loot()
     }
 
@@ -688,7 +688,7 @@ class Adversary {
     }
 
     _remove_ability(name) {
-        const ability_to_remove = this.abilities.indexOf(this.abilities.find(abilities => abilities['name'] === name))
+        const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities['name'] === name))]
         const points = ability_to_remove.allegiance
        this.abilities.splice(ability_to_remove,1)
 
@@ -701,7 +701,7 @@ class Adversary {
         if (points < 0) {
             this.dark_points = this.dark_points + points
         } else if (points > 0) {
-            this.bright_points = this.bright - points
+            this.bright_points = this.bright_points - points
         }
         this._adjust_abilities()
         this._adjust_passives()
