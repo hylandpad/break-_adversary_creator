@@ -701,9 +701,6 @@
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
   }
-  .pl-3 {
-    padding-left: calc(var(--spacing) * 3);
-  }
   .text-center {
     text-align: center;
   }
@@ -919,6 +916,7 @@
   .btn {
     margin-block: calc(var(--spacing) * 2);
     margin-right: calc(var(--spacing) * 2);
+    cursor: pointer;
     border-radius: var(--radius-md);
     background-color: var(--color-blue-600);
     padding-inline: calc(var(--spacing) * 3);
@@ -1005,6 +1003,9 @@
   .fact-card {
     flex-basis: calc(1/2 * 100%);
     padding: calc(var(--spacing) * 2);
+  }
+  a {
+    cursor: pointer;
   }
 }
 #speed {
