@@ -14,10 +14,6 @@
             src="/images/breakcommunity.png"></div>
     <div class="container m-auto">
         <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
-            <div id="card-nav"><span id="nav-stats" class="p-1" onclick="show_hide_card('stats-card')"><i
-                        class="fa-solid fa-dragon"></i></span><span id="nav-info" class="p-1"
-                    onclick="show_hide_card('info-card')" link-div="info-card"><i class="fa-solid fa-book"></i></span>
-            </div>
             <div class="header break-adversary-header mb-5">
                 <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
                         id="adversary-name" onchange="adversary._adjust_name()" placeholder="New Adversary" type="text"
@@ -60,7 +56,7 @@
                         <div class="inline-flex" id="allegiance">
                             <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"
                                     class="material-icons text-slate-400">circle</i></span>
-                            <span class="flex hidden" id="twilight">Twilight <i id="allegiance-bright"
+                            <span class="flex hidden" id="twilight">Twilight <i id="allegiance-twilight"
                                     class="material-icons bg-gradient-to-r from-yellow-300 to-purple-700 text-transparent bg-clip-text">contrast</i></span>
                             <span class="flex hidden" id="bright">Bright <i id="allegiance-bright"
                                     class="material-icons text-yellow-500">brightness_5</i></span>
@@ -185,16 +181,16 @@
                         <div class="flex" id="trait-container">
                         </div>
                     </div>
-                    <button class="btn modal-trigger" data-target="trait-add">Add Trait</button>
+                    <button id="open-trait-modal" class="btn modal-trigger" data-target="trait-add">Add Trait</button>
                 </div>
 
-                <div id="adversary-gear" class="bg-gray-200">
-                    <p class="from-slate-600 fading-header">GEAR</p>
+                <div id="adversary-inventory" class="bg-gray-200">
+                    <p class="from-slate-600 fading-header">INVENTORY</p>
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
-                        <div class="flex flex-wrap" id="gear-container">
+                        <div class="flex flex-wrap" id="inventory-container">
                         </div>
                     </div>
-                    <button class="btn modal-trigger" data-target="gear-add">Add Gear</button>
+                    <button id="open-item-modal" class="btn modal-trigger" data-target="item-add">Add Item</button>
                 </div>
 
                 <div id="adversary-abilitie" class="bg-gray-200">
@@ -204,10 +200,11 @@
                         <div class="flex" id="ability-container">
                         </div>
                     </div>
-                    <button class="btn modal-trigger" data-target="ability-add">Add Ability</button>
+                    <button id="open-ability-modal" class="btn modal-trigger" data-target="ability-add">Add
+                        Ability</button>
                 </div>
             </div>
-            <div id="info-card" class="main hidden">
+            <div id="info-card">
                 <div class="quick-facts-section">
                     <h3 class="fading-header from-slate-600">QUICK FACTS</h3>
                     <div id="fact-container" class="rounded-md p-2 m-1 flex flex-wrap">
@@ -262,15 +259,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="yield-section">
-                    <h3 class="fading-header from-slate-600">YIELD</h3>
-                    <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
-                        <div class="flex" id="loot-container">
-                        </div>
-                    </div>
-                    <button class="btn modal-trigger" data-target="loot-add">Add Item</button>
-                </div>
-
                 <div class="mood-table-section">
                     <h3 class="fading-header from-slate-600">MOOD TABLE</h3>
                     <table id="mood-table"
@@ -285,7 +273,7 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <button class="btn" onclick="add_row()">Add Row</button>
+                    <button id="add-mood-row" class="btn" onclick="add_row()">Add Row</button>
                 </div>
             </div>
         </div>
@@ -299,7 +287,7 @@
                         <p class="italic text-sm" id="adversary-card-subname">Medium Rank 3 Monster</p>
                     </div>
                     <div class="text-center">
-                        <button class="btn" onclick="save_adversary()">Save Adversary</button>
+                        <button id="save-adversary-btn" class="btn" onclick="save_adversary()">Save Adversary</button>
                     </div>
                 </div>
                 <div id="adversaries-container" class="h-5/8">
@@ -308,8 +296,8 @@
                     <div id="adversaries-scrollable"></div>
                 </div>
                 <div id="control-button-group" class="block align-bottom text-center">
-                    <button class="btn" onclick="importAdversariesJson()">Import</button>
-                    <button class="btn modal-trigger" data-target="export">Export</button>
+                    <button id="import-adversaries-btn" class="btn" onclick="importAdversariesJson()">Import</button>
+                    <button id="open-export-modal" class="btn modal-trigger" data-target="export">Export</button>
                 </div>
             </div>
         </div>
@@ -400,38 +388,59 @@
                     class="btn close-modal submit-btn">Add</button>
             </div>
         </template>
-        <template id="gear-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
+        <template id="item-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
             <div>
                 <div class="header break-adversary-header">
                     <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
-                            id="gear-name" placeholder="New Gear" type="gear" class="basis-xl">
+                            id="item-name" placeholder="New Item" class="basis-xl">
                     </h3>
                 </div>
-                <p class="italic slate-400 p-2">Gear is the equipment that this adversary wears or has equipped and
-                    uses
-                    in
-                    combat.
+                <p class="italic slate-400 p-2">An adversary's inventory is comprised of its usable equipment, its
+                    carried items and whatever yield might be garnered from defeating them.
                 </p>
-                <label class="font-bold" for="gear-item-type">Item Type: </label>
-                <select class="dropdown" data-required id="gear-item-type">
+                <div id="item-category-div">
+                    <label for="item-category">Category: </label><select id="item-category">
+                    <option value="yield">Yield</option>
+                    <option value="equipment">Equipment</option>
+                    <option value="item">Item</option>
+                </select>
+                </div>
+                <label class="font-bold" for="item-type">Item Type: </label>
+                <select class="dropdown" data-required id="inventory-item-type">
+                    <option disabled selected value=""></option>
                     <option value="weapon">Weapon</option>
                     <option value="armor">Armor</option>
                     <option value="shield">Shield</option>
                     <option value="outfit">Outfit</option>
                     <option value="mount">Mount</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="wayfinding">Wayfinding</option>
+                    <option value="illumination">Illumination</option>
+                    <option value="kits">Specialist Kit</option>
+                    <option value="books">Books</option>
+                    <option value="consumables">Consumable</option>
+                    <option value="explosives">Explosives</option>
+                    <option value="chemicals">Chemicals</option>
+                    <option value="reagent">Crafting Reagent</option>
+                    <option value="misc">Miscellaneous</option>
+                    <option value="curiosity">Curiosity</option>
+                    <option value="gadget">Gadget</option>
+                    <option value="artifact">Artifact</option>
+                    <option value="otherworld">Otherworldy Items</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="companion">Companion</option>
                 </select>
-                <label>Subtype: </label> <input data-required class="text-input w-35" id="gear-item-subtype" type="text"
-                    placeholder="IE-Great Weapon">
+                <label>Subtype: </label>
+                <span id="item-subtype-container"></span>
                 <hr class="faded-hr" />
-                <div class="mb-2">
+                <div id="equipment-combat-modifiers" class="mb-2">
+                    <p>Combat Modifiers</p>
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
-                        id="gear-item-atkbonus" type="number">
-                    <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="gear-item-defense"
-                        type="number">
-                    <i class="fa-solid fa-person-running"></i><input class="text-input" id="gear-item-speed"
-                        type="number">
+                        id="item-atkbonus" type="number">
+                    <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="item-defense" type="number">
+                    <i class="fa-solid fa-person-running"></i><input class="text-input" id="item-speed" type="number">
                     <label>MAX </label><i class="fa-solid fa-person-running"></i><select class="dropdown font-bold"
-                        id="gear-item-max-speed">
+                        id="item-max-speed">
                         <option value=""></option>
                         <option value='slow'>Slow</option>
                         <option value='average'>Average</option>
@@ -439,101 +448,42 @@
                         <option value='veryfast'>Very Fast</option>
                     </select>
                 </div>
-                <textarea data-required id="gear-item-description" placeholder="brief description here."
+                <textarea data-required id="inventory-item-description" placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                <div>
-                    <div class="flex">
-                        <div class="basis-sm rounded-md"><label for="gear-item-slots">Slots: </label><input min='1'
-                                class="text-input" id="gear-item-slots" type="number"></div>
-                        <div class="basis-md">
-                            <label for="gear-item-value">Value: </label><input type="number" value=1
-                                id="gear-item-value" class="text-input">
-                            <input type="radio" id="gear-item-stones" name="gear-item-denomination"
-                                value="stones"><label for="gear-item-stones"> Stones </label>
-                            <input type="radio" id="gear-items-coins" name="gear-item-denomination" value="coins"
-                                checked><label for="gear-item-coins"> Coins </label>
-                            <input type="radio" id="gear-items-gems" name="gear-item-denomination" value="gems"><label
-                                for="gear-item-gems">
-                                Gems </label>
-                        </div>
+                <div class="flex">
+                    <div class="basis-sm rounded-md"><label for="inventory-item-slots">Slots: </label><input min='1'
+                            class="text-input" id="item-slots" type="number"></div>
+                    <div id="inventory-item-value" class="basis-md">
+                        <label for="item-value">Value: </label><input type="number" value=1 id="item-value"
+                            class="text-input">
+                        <input type="radio" id="item-stones" name="item-denomination" value="stones"><label
+                            for="item-stones"> Stones </label>
+                        <input type="radio" id="items-coins" name="item-denomination" value="coins" checked><label
+                            for="item-coins"> Coins </label>
+                        <input type="radio" id="items-gems" name="item-denomination" value="gems"><label
+                            for="item-gems">
+                            Gems </label>
                     </div>
                 </div>
-                <button id="btnAddGear" onclick="adversary._add_gear()" disabled
+                <button id="btnAddItem" onclick="adversary._add_item()" disabled
                     class="btn close-modal submit-btn">Add</button>
-            </div>
-        </template>
-        <template id="loot-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md">
-            <div>
-                <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
-                            id="loot-name" placeholder="New Loot" type="text" class="basis-xl">
-                    </h3>
-                </div>
-                <p class="italic slate-400 p-2">Loot may be items this creature has in its inventory for use or sale, or
-                    byproducts of its demise.
-                </p>
-                <div class="mb-1">
-                    <label for="loot-item-type">Item Type:</label>
-                    <select class="dropdown" id="loot-item-type" data-required>
-                        <option value="weapon">Weapon</option>
-                        <option value="armor">Armor</option>
-                        <option value="shield">Shield</option>
-                        <option value="outfit">Outfit</option>
-                        <option value="accessories">Accessories</option>
-                        <option value="wayfinding">Wayfinding</option>
-                        <option value="illumination">Illumination</option>
-                        <option value="kits">Specialist Kit</option>
-                        <option value="books">Books</option>
-                        <option value="consumables">Consumable</option>
-                        <option value="explosives">Explosives</option>
-                        <option value="chemicals">Chemicals</option>
-                        <option value="reagent">Crafting Reagent</option>
-                        <option value="misc">Miscellaneous</option>
-                        <option value="curiosity">Curiosity</option>
-                        <option value="gadget">Gadget</option>
-                        <option value="artifact">Artifact</option>
-                        <option value="otherworld">Otherworldy Items</option>
-                        <option value="vehicle">Vehicle</option>
-                        <option value="companion">Companion</option>
-                    </select><label for="loot-item-subtype">Subtype: </label><input data-required
-                        class="text-input w-35" id="loot-item-subtype" type="text" placeholder="IE-Great Weapon">
-                </div>
-                <textarea data-required id="loot-item-description" placeholder="brief description here."
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
-                <div>
-                    <div class="flex">
-                        <div class="basis-sm rounded-md"><label for="loot-item-slots">Slots: </label><input
-                                class="text-input" id="loot-item-slots" type="number" value="1"></div>
-                        <div class="basis-md">
-                            <label for="loot-item-value">Value: </label><input type="number" value="1"
-                                id="loot-item-value" class="text-input">
-                            <input type="radio" id="loot-item-stones" name="loot-item-denomination"
-                                value="stones"><label for="loot-item-stones"> Stones </label>
-                            <input type="radio" id="loot-items-coins" name="loot-item-denomination" value="coins"
-                                checked><label for="loot-item-coins"> Coins </label>
-                            <input type="radio" id="loot-items-gems" name="loot-item-denomination" value="gems"><label
-                                for="loot-item-gems">
-                                Gems </label>
-                        </div>
-                    </div>
-                </div>
-                <button id="btnAddLoot" onclick="adversary._add_loot()" disabled
-                    class="btn submit-btn close-modal">Add</button>
             </div>
         </template>
         <template id="export">
             <div>
                 <h3>Choose your Export Format</h3>
-                <p class="italic text-slate-400">Currently only JSON export is supported. Print and Plain Text will be coming in the future</p>
+                <p class="italic text-slate-400">Currently only JSON export is supported. Print and Plain Text will be
+                    coming in the future</p>
                 <div class="flex">
-                    <button class="btn" onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button disabled class="btn">Text</button><button disabled class="btn">Print</button>
+                    <button id="export-json-btn" class="btn"
+                        onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button disabled
+                        class="btn">Text</button><button disabled class="btn">Print</button>
                 </div>
             </div>
         </template>
     </div>
     <div id="modal-overlay"
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-all duration-300">
-
         <div id="modal-container"
             class="relative bg-white w-full max-w-2xl mx-4 rounded-xl shadow-2xl transform scale-90 transition-all duration-300">
 
@@ -551,7 +501,8 @@
             <p>Community Project for Break!! Tabletop RPG by Reynaldo Madrinan and Carlo Tartaglia</p>
             <p>Break!! Adversary Creator is an independent product published under BREAK!! RPG's Non-Commercial License
                 and is not affiliated with BREAK!!'s creators or publishers.</p>
-            <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator/issues" target="_blank">Report a Bug/Request a Feature</a>
+            <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator/issues"
+                target="_blank">Report a Bug/Request a Feature</a>
         </div>
     </div>
 </body>
