@@ -1,6 +1,7 @@
 <html lang="en">
 
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <link href="output.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7bbfb304a9.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -10,7 +11,7 @@
 </head>
 
 <body id="app-main" class="unaligned-allegiance transition ease-in-out delay-150 duration-2500">
-    <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-5"><img class="w-[250px] m-auto"
+    <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-2"><img class="w-[250px] m-auto"
             src="/images/breakcommunity.png"></div>
     <div class="container m-auto">
         <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
@@ -66,9 +67,14 @@
 
                     </div>
                     <hr class="faded-hr" />
-                    <textarea id="adversary-description" placeholder="brief description here."
+                    <div class="item-container">
+                        <label>Description</label>
+                        <div class="editor editor-short"></div>
+                        <button class="btn submit-btn">Save</button>
+                    </div>
+                    <!--<textarea id="adversary-description" placeholder="brief description here."
                         class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50"
-                        onchange="adversary._adjust_description()"></textarea>
+                        onchange="adversary._adjust_description()"></textarea>-->
                 </div>
                 <div class="stats-container bg-gray-200">
                     <div class="stat-block combat-values">
@@ -328,7 +334,8 @@
         </template>
         <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-3xl">
             <div id="ability-div">
-                <div class="header break-adversary-header">
+                <div class="item-container">
+                    <div class="header break-adversary-header">
                     <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
                             id="ability-name" placeholder="New Ability" type="text" class="basis-xl"></h3>
                 </div>
@@ -365,9 +372,9 @@
                         </label>
                     </div>
                 </div>
-
-                <textarea data-required id="ability-description" placeholder="Ability Explanation here"
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <div class="editor"></div>
+                <!--<textarea data-required id="ability-description" placeholder="Ability Explanation here"
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
                 <h4 class="fading-header from-slate-400 mb-2">Optional Passives</h4>
                 <div class="mb-2">
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
@@ -386,10 +393,11 @@
                 </div>
                 <button id="btnAddAbility" onclick="adversary._add_ability()" disabled
                     class="btn close-modal submit-btn">Add</button>
+                </div>
             </div>
         </template>
         <template id="item-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
-            <div>
+            <div class="item-container">
                 <div class="header break-adversary-header">
                     <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
                             id="item-name" placeholder="New Item" class="basis-xl">
@@ -398,12 +406,12 @@
                 <p class="italic slate-400 p-2">An adversary's inventory is comprised of its usable equipment, its
                     carried items and whatever yield might be garnered from defeating them.
                 </p>
-                <div id="item-category-div">
-                    <label for="item-category">Category: </label><select id="item-category">
-                    <option value="yield">Yield</option>
-                    <option value="equipment">Equipment</option>
-                    <option value="item">Item</option>
-                </select>
+                <div id="item-category-div" class="mb-2">
+                    <label for="item-category">Category: </label><select class="dropdown" id="item-category">
+                        <option value="yield">Yield</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="item">Item</option>
+                    </select>
                 </div>
                 <label class="font-bold" for="item-type">Item Type: </label>
                 <select class="dropdown" data-required id="inventory-item-type">
@@ -430,11 +438,10 @@
                     <option value="vehicle">Vehicle</option>
                     <option value="companion">Companion</option>
                 </select>
-                <label>Subtype: </label>
                 <span id="item-subtype-container"></span>
                 <hr class="faded-hr" />
-                <div id="equipment-combat-modifiers" class="mb-2">
-                    <p>Combat Modifiers</p>
+                <div id="equipment-combat-modifiers" class="hidden mb-1" class="mb-2">
+                    <p class="italic">Combat Modifiers</p>
                     <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
                         id="item-atkbonus" type="number">
                     <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="item-defense" type="number">
@@ -448,8 +455,9 @@
                         <option value='veryfast'>Very Fast</option>
                     </select>
                 </div>
-                <textarea data-required id="inventory-item-description" placeholder="brief description here."
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>
+                <!--<textarea data-required id="inventory-item-description" placeholder="brief description here."
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
+                <div class="editor"></div>
                 <div class="flex">
                     <div class="basis-sm rounded-md"><label for="inventory-item-slots">Slots: </label><input min='1'
                             class="text-input" id="item-slots" type="number"></div>
@@ -511,5 +519,6 @@
 <script src="modal.js" type="text/javascript"></script>
 <script src="adversary.js" type="text/javascript"></script>
 <script src="main.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
 </html>

@@ -254,3 +254,12 @@ input:checked+.slider:before {
     border-radius: 6px;
     font-weight: 600;
 }
+
+.editor{
+    max-height: 300px;
+    margin-bottom:1rem;
+}
+
+.editor-short{
+    height:150px;
+}
