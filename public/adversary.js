@@ -8,7 +8,7 @@ class Adversary {
 
 
     //Custom Methods Section
-    
+
     // **Adds - push new objects into Adversary arrays**
 
     // Add a trait to the passives primary
@@ -20,7 +20,7 @@ class Adversary {
         const modifier = document.getElementById('trait-modifier').value
         const type = 'trait'
 
-        const createTrait = (id,name, value, modifier, type) => ({
+        const createTrait = (id, name, value, modifier, type) => ({
             'id': id,
             'name': name,
             'type': type,
@@ -35,8 +35,8 @@ class Adversary {
     // Add an ability to the abilities array
     _add_ability() {
         const id = `ab-${generate_id()}`
-        const name = (document.getElementById('ability-name').value).toUpperCase() || 'UNNAMED ABILITY'
-        const description = document.getElementById('ability-description').value
+        const name = (document.getElementById('ability-name').value).toUpperCase()
+        const description = document.querySelector('#ability-div .editor').__quill.root.innerHTML
         const type = document.querySelector(`input[name='ability-type']:checked`).value
         const allegiance = parseInt(document.getElementById('ability-allegiance').value)
         const magic = document.getElementById('ability-magic').checked
@@ -85,9 +85,8 @@ class Adversary {
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
         this.abilities.push(new_ability)
 
-        
         this._calculate_speed()
-        this._adjust_allegiance()
+        this._calculate_allegiance()
         this._calculate_hearts()
         this._calculate_defense()
         this._calculate_atkbonus()
@@ -96,20 +95,21 @@ class Adversary {
 
     // Add items to the inventory array
     _add_item() {
-        const id = `it-${generate_id()}`;
-        const name = (document.getElementById('gear-name').value).toUpperCase();
-        const category = null
-        const type = document.getElementById('gear-item-type').value;
-        const subtype = document.getElementById('gear-item-subtype').value;
-        const description = document.getElementById('gear-item-description').value;
-        const denomination = document.querySelector(`input[name='gear-item-denomination']:checked`).value
-        const value = document.getElementById('gear-item-value').value;
-        const slots = document.getElementById('gear-item-slots').value
+        const id = `inv-${generate_id()}`;
+        const name = (document.getElementById('inventory-item-name').value).toUpperCase();
+        const category = (document.getElementById('inventory-item-category').value)
+        const type = document.getElementById('inventory-item-type').value;
+        const subtype = document.getElementById('inventory-item-subtype').value;
+        const description = document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML
+        const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value
+        const value = document.getElementById('inventory-item-value').value;
+        const slots = document.getElementById('inventory-item-slots').value
+        const allegiance = parseInt(document.getElementById('inventory-item-allegiance').value)
         // optional gear attributes that may affect combat stats
-        const defense = document.getElementById('gear-item-defense').value ? document.getElementById('gear-item-defense').value : null
-        const atkbonus = document.getElementById('gear-item-atkbonus').value ? document.getElementById('gear-item-atkbonus').value : null
-        const speed = document.getElementById('gear-item-speed').value ? document.getElementById('gear-item-speed').value : null
-        const max_speed = document.getElementById('gear-item-max-speed').value ? document.getElementById('gear-item-max-speed').value : null
+        const defense = parseInt(document.getElementById('inventory-item-defense').value) ? parseInt(document.getElementById('inventory-item-defense').value) : null
+        const atkbonus = parseInt(document.getElementById('inventory-item-atkbonus').value) ? parseInt(document.getElementById('inventory-item-atkbonus').value) : null
+        const speed = parseInt(document.getElementById('inventory-item-speed').value) ? parseInt(document.getElementById('inventory-item-speed').value) : null
+        const max_speed = document.getElementById('inventory-item-max-speed').value ? document.getElementById('inventory-item-max-speed').value : null
 
         const createItem = (
             id,
@@ -124,32 +124,55 @@ class Adversary {
             defense,
             atkbonus,
             speed,
-            max_speed) => ({
+            max_speed,
+            allegiance) => ({
 
-            'id': id,
-            'name': name,
-            'category' : category,
-            'type' : type,
-            'subtype' : subtype,
-            'description' : description,
-            'slots' : slots,
-            'denomination' : denomination,
-            'value' : value,
-            'defense' : defense,
-            'atkbonus' : atkbonus,
-            'speed' : speed,
-            'max_speed' : max_speed
-        });
+                'id': id,
+                'name': name,
+                'category': category,
+                'type': type,
+                'subtype': subtype,
+                'description': description,
+                'slots': slots,
+                'denomination': denomination,
+                'value': value,
+                'defense': defense,
+                'atkbonus': atkbonus,
+                'speed': speed,
+                'max_speed': max_speed,
+                'allegiance': allegiance,
+            });
 
+        if (allegiance > 0) {
+            this.bright_points = this.bright_points + allegiance
+        } else if (allegiance < 0) {
+            this.dark_points = this.dark_points + Math.abs(allegiance)
+        }
 
-        this.inventory.push(createItem(id,name,category,type,subtype,description,slots,denomination,value,defense,atkbonus,speed,max_speed))
-        this._adjust_gear()
+        this.inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance, linked_ability))
+
+        if (allegiance > 0 || allegiance < 0) {
+            this._calculate_allegiance()
+        }
+        if (defense) {
+            this._calculate_defense()
+        }
+        if (atkbonus) {
+            this._calculate_atkbonus()
+        }
+        if (speed != null || max_speed != null) {
+            this._calculate_speed()
+        }
+        if (hearts) {
+            this._calculate_hearts()
+        }
+        update_ui(this)
     }
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
 
     // Change allegiance by manipulating Bright and Dark point values
-    _adjust_allegiance() {
+    _calculate_allegiance() {
         const bright_points = parseInt(this.bright_points)
         const dark_points = parseInt(this.dark_points)
 
@@ -171,30 +194,28 @@ class Adversary {
     }
 
     // Change the menace tier with limited mook automation
-    _adjust_menace() {
+    _change_menace() {
         this.menace = document.getElementById('menace').value
         menace_color(document.getElementById('menace').value)
         update_ui(this)
     }
 
     // Change value of adversary name
-    _adjust_name() {
+    _change_name() {
         this.name = document.getElementById('adversary-name').value.toUpperCase()
         document.getElementById('adversary-name').value = this.name
-        current_adversary_card()
     }
 
     // Manipulate the Type and Subtype
-    _adjust_type_subtype() {
+    _change_type_subtype() {
         this.creature_type = document.getElementById('adversary-type').value
         this.creature_subtype = document.getElementById('adversary-subtype').value
-        current_adversary_card()
         update_ui(this)
     }
 
     // Make changes to adversary description
-    _adjust_description() {
-        this.description = document.getElementById('adversary-description').value
+    _change_description() {
+        this.description = document.querySelector('#description-container-div .editor').__quill.root.innerHTML
     }
 
     // Adjust primary attributes. 
@@ -216,7 +237,7 @@ class Adversary {
     }
 
     // Adjust the adversary's rank
-    _adjust_rank() {
+    _change_rank() {
         const rankElement = document.getElementById('rank')
         this.rank = rankElement.value
         this.hearts = rank_stats[this.rank][1]
@@ -229,12 +250,11 @@ class Adversary {
         } else if (parseInt(this.rank) >= 1) {
             document.getElementById('menace').value = 'boss'
         }
-        this._adjust_menace()
+        this._change_menace()
         // recalculate all attributes
         this._calculate_aptitudes()
         this._adjust_size()
         this._calculate_atkbonus()
-        current_adversary_card()
         update_ui(this)
     }
 
@@ -253,8 +273,8 @@ class Adversary {
 
         // set max speed based on item with the least permissable max speed
         const get_lowest_speed = () => {
-            const gear_list = this.gear
-            const speed_list = [...new Set(gear_list.map(item => item.max_speed))]
+            const inventory_list = this.inventory
+            const speed_list = [...new Set(inventory_list.map(item => item.max_speed))]
             return speed_list
         }
 
@@ -333,10 +353,9 @@ class Adversary {
         }
         // set new traits
         this.aptitudes = modified_aptitudes
-        
+
         // After this, rerun _adjust_traits so that new traits are re-incorporated
         this._calculate_defense()
-        current_adversary_card()
     }
 
     // Adjust fact text
@@ -358,76 +377,15 @@ class Adversary {
                 start: data[0],
                 stop: data[1]
             }
-            
-            const createMood = (rolls,mood,description) =>({
+
+            const createMood = (rolls, mood, description) => ({
                 'rolls': rolls,
-                'mood' : mood,
-                'description' : description
+                'mood': mood,
+                'description': description
 
             })
             this.moods.push(createMood(rolls, data[2], data[3]))
         }
-    }
-
-    // Adjust gear
-    _adjust_gear() {
-        const gear_container = document.getElementById('inventory-container')
-        gear_container.innerHTML = ''
-        this.gear.forEach(item => {
-            const gear_block = `
-            <div id="${item.id}" class="gear-item bg-slate-600 rounded-md p-3 mr-4 mb-4 max-w-sm">
-                <div class="text-white"><span class="font-bold">${item.name}</span> (<span
-                        class="italic">${item.subtype}</span>)</div>
-                <div class="gear-content bg-slate-200 p-1 rounded-md">
-                    <div>
-                        ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
-                        ${item.defense > 0 ? `<i class="fa-solid fa-shield"></i><span>+${item.defense}</span>` : ''}
-                        ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
-                        ${item.max_speed ? `<span class="font-bold">MAX </span><i class="fa-solid fa-person-running"></i><span>${item.max_speed}</span>` : ''}
-                    </div>
-                    ${item.description != 'None' ? `<div id=description" class="italic">${item.description}</div>` : ''}
-                </div>
-                <div class="text-stone-200 italic flex">
-                    <div class="basis-xs">Slots : ${item.slots}</div>
-                    <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
-                </div>
-            </div>
-            `
-            gear_container.insertAdjacentHTML('beforeend', gear_block)
-            const gear_div = document.getElementById(gear_id)
-            gear_div.setAttribute('onclick', `adversary._remove_gear('${item.name}')`)
-        })
-        this._calculate_aptitudes()
-        this._calculate_defense()
-        this._calculate_atkbonus()
-        this._calculate_speed()
-        update_ui(this)
-    }
-
-    // Adjust loot
-    _adjust_loot() {
-        const loot_container = document.getElementById('loot-container')
-        loot_container.innerHTML = ''
-        this.loot.forEach(item => {
-            const loot_id = `loot-${item.name}-${item.type}-${item.subtype}}`.replaceAll(" ","").toLowerCase()
-            const loot_block = `
-            <div id="${loot_id}" class="loot-item bg-teal-600 rounded-md p-3 mr-4 mb-4 max-w-sm">
-                <div class="text-white"><span class="font-bold">${item.name}</span> (<span
-                        class="italic">${item.subtype}</span>)</div>
-                <div class="loot-content bg-slate-200 p-1 rounded-md">
-                    ${item.description != 'None' ? `<div id=description" class="italic">${item.description}</div>` : ''}
-                </div>
-                <div class="text-stone-200 italic flex">
-                    <div class="basis-xs">Slots : ${item.slots}</div>
-                    <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
-                </div>
-            </div>
-            `
-            loot_container.insertAdjacentHTML('beforeend', loot_block)
-            const loot_div = document.getElementById(loot_id)
-            loot_div.setAttribute('onclick', `adversary._remove_loot('${item.name}')`)
-        })
-        update_ui(adversary)
     }
 
     // **Calculates - broader functions that integrate changes from a number of different sources to recalculate specific attributes
@@ -435,7 +393,7 @@ class Adversary {
     // Calculate atk bonus based on gear, abilities and rank
     _calculate_atkbonus() {
         // Calculate atkbonus from gear, then from ability-based passives
-        this.gear.forEach(this_item => {
+        this.inventory.forEach(this_item => {
             if (this_item.atkbonus > 0) {
                 this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
             }
@@ -488,7 +446,7 @@ class Adversary {
         aptitudeKeys.forEach(key => {
             this.passives.forEach(this_trait => {
                 if (this_trait.modifier == key) {
-                        this.aptitudes[key] = this.aptitudes[key] + this_trait.value
+                    this.aptitudes[key] = this.aptitudes[key] + this_trait.value
                 }
             })
         })
@@ -517,7 +475,7 @@ class Adversary {
         this.defense = def
         // Recalculate defense accounting for gear and passives 
 
-        this.gear.forEach(this_item => {
+        this.inventory.forEach(this_item => {
             if (this_item.defense > 0) {
                 this.defense = parseInt(this.defense) + parseInt(this_item.defense)
             }
@@ -535,32 +493,31 @@ class Adversary {
     }
 
     // **Removals - undo the addition of a trait, loot, gear or ability
-    
+
     _remove_trait(name) {
         const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.name == name && trait.type == 'trait'))
-        this.passives.splice(trait_to_remove, 1)
-        this._adjust_passives()
+        this.adversary.passives.splice(trait_to_remove, 1)
+        this._calculate_aptitudes
     }
 
-    _remove_loot(name) {
-        const loot_to_remove = this.loot.indexOf(this.loot.find(loot => loot.name === name))
-        this.loot.splice(loot_to_remove, 1)
-        this._adjust_loot()
-    }
+    _remove_item(name) {
+        const item_to_remove = this.inventory.indexOf(this.inventory.find(this_item => this_item.name === name))
+        const points = item_to_remove.allegiance
+        this.inventory.splice(item_to_remove, 1)
 
-    _remove_gear(name) {
-        const gear_to_remove = this.gear.indexOf(this.gear.find(gear => gear.item_name === name))
-        this.gear.splice(gear_to_remove, 1)
-        this._calculate_defense()
-        this._calculate_atkbonus()
-        this._adjust_gear()
-        this._adjust_rank()
+        //offset bright or dark point values 
+        if (points < 0) {
+            this.dark_points = this.dark_points + points
+        } else if (points > 0) {
+            this.bright_points = this.bright_points - points
+        }
+
     }
 
     _remove_ability(name) {
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities['name'] === name))]
         const points = ability_to_remove.allegiance
-       this.abilities.splice(ability_to_remove,1)
+        this.abilities.splice(ability_to_remove, 1)
 
         //remove any linked passives
         const passive_index = this.passives.findIndex(passive => passive.name == name)
@@ -573,9 +530,7 @@ class Adversary {
         } else if (points > 0) {
             this.bright_points = this.bright_points - points
         }
-        this._adjust_abilities()
-        this._adjust_passives()
-        this._adjust_allegiance()
+
     }
 
 }

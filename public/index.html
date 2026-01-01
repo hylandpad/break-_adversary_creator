@@ -17,13 +17,13 @@
         <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
             <div class="header break-adversary-header mb-5">
                 <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
-                        id="adversary-name" onchange="adversary._adjust_name()" placeholder="New Adversary" type="text"
+                        id="adversary-name" onchange="adversary._change_name()" placeholder="New Adversary" type="text"
                         class="basis-xl">
                 </h3>
                 <span class="w-50%"></span>
                 <span class="basis-4xs bg-white text-right p-1 rounded-xl">
-                    <span class="text-stone-50 font-bold px-2 mr-2 rounded-md">
-                        <select id="menace" class="rounded-lg" onchange="adversary._adjust_menace()">
+                    <span class="select-wrapper text-stone-50 font-bold px-2 mr-2 rounded-md">
+                        <select id="menace" class="rounded-lg" onchange="adversary._change_menace()">
                             <option value="" disabled selected hidden>Please Select</option>
                             <option value="mook">MOOK</option>
                             <option value="boss">BOSS</option>
@@ -31,14 +31,14 @@
                         </select></span>
                     <span class="font-bold text-blue-950 p-1 rounded-md"><label for="rank">RANK </label><input id="rank"
                             class="w-10" id="rank" value='0' type="number" min='0'
-                            onchange="adversary._adjust_rank()"></span>
+                            onchange="adversary._change_rank()"></span>
                 </span>
             </div>
             <div id="stats-card" class="main">
                 <div class="stats-card bg-gray-200">
-                    <h3 class="fading-header from-slate-600">ADVERSARY INFO</h3>
+                    <h3 class="section-header ">ADVERSARY INFO</h3>
                     <div class="my-3 flex items-center"><label for="adversary-type">Type: </label><select
-                            id="adversary-type" class="dropdown" onchange="adversary._adjust_type_subtype()">
+                            id="adversary-type" class="dropdown" onchange="adversary._change_type_subtype()">
                             <option value="beast">Beast</option>
                             <option value="celestial">Celestial</option>
                             <option value="folk">Folk</option>
@@ -67,122 +67,130 @@
 
                     </div>
                     <hr class="faded-hr" />
-                    <div class="item-container">
+                    <div id="description-container-div" class="item-continer">
                         <label>Description</label>
                         <div class="editor editor-short"></div>
-                        <button class="btn submit-btn">Save</button>
+                        <button class="btn submit-btn" onclick="adversary._change_description()">Save</button>
                     </div>
                     <!--<textarea id="adversary-description" placeholder="brief description here."
                         class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50"
                         onchange="adversary._adjust_description()"></textarea>-->
                 </div>
                 <div class="stats-container bg-gray-200">
-                    <div class="stat-block combat-values">
-                        <h3 class="fading-header from-slate-600">COMBAT VALUES</h3>
-                        <div class="stat-grid mx-2 my-4">
-                            <span class="stat-item"><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg">
-                                +<span id="atk-bonus"></span></span>
-                            <span class="stat-item"><i class="text-red-600 fa-solid fa-heart"></i> <span
-                                    id="hearts"></span></span>
-                            <span class="stat-item"><i class="fa-solid fa-shield"></i> <span id="defense"></span></span>
-                            <span class="stat-item"><i class="fa-solid fa-person-running"></i>
-                                <select id="speed" disabled onchange="adversary._adjust_speed()">
-                                    <option value="slow">Slow</option>
-                                    <option value="average">Average</option>
-                                    <option value="fast">Fast</option>
-                                    <option value="veryfast">Very Fast</option>
-                                </select></span>
+                    <div id="combat_card" class="flex">
+                        <div class="stat-block combat-values w-1/5 align-top pr-2">
+                            <h3 class="bg-slate-600 text-white font-bold pl-3">COMBAT VALUES</h3>
+                            
+                            <div class="stat-grid mx-2 my-4">
+                                <p class="Italic">Calculated Totals: </p>
+                                <div><label class="text-xl">Attack Bonus: </label><span class="stat-item"><img class="svg-icon"
+                                            src="images/sword-fill-svgrepo-com.svg">
+                                        +<span id="atk-bonus" class="text-xl"></span></span></div>
+                                <div><label class="text-xl">Hearts: </label><span class="stat-item"><i
+                                            class="text-red-600 fa-solid fa-heart"></i><span id="hearts" class="text-xl"></span></span>
+                                </div>
+                                <div><label class="text-xl">Defense: </label><span class="stat-item"><i class="fa-solid fa-shield"></i>
+                                        <span id="defense"></span class="text-xl"></span></div>
+                                <div><label class="text-xl">Speed: </label><span class="stat-item"><i
+                                            class="fa-solid fa-person-running"></i>
+                                        <select class="text-xl" id="speed" disabled onchange="adversary._adjust_speed()">
+                                            <option value="slow">Slow</option>
+                                            <option value="average">Average</option>
+                                            <option value="fast">Fast</option>
+                                            <option value="veryfast">Very Fast</option>
+                                        </select></span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="stat-block aptitudes w-4/5 align-top ">
+                            <h3 class="section-header ">APTITUDES</h3>
+                            <div class="m-auto p-8">
 
-                    <div class="stat-block aptitudes bg-gray-200">
-                        <h3 class="fading-header from-slate-600">APTITUDES</h3>
-                        <div class="max-w-4xl w-full m-auto  p-8">
+                                <!-- Visualization Area -->
+                                <div class="space-y-6 mb-2">
+                                    <!-- The Single Combined Bar -->
+                                    <div class="relative">
+                                        <div id="bar-container"
+                                            class="w-full h-7 bg-slate-100 rounded-md flex overflow-hidden border border-slate-200 shadow-inner">
+                                            <!-- Segments will be injected here -->
+                                        </div>
+                                    </div>
 
-                            <!-- Visualization Area -->
-                            <div class="space-y-6 mb-2">
-                                <!-- The Single Combined Bar -->
-                                <div class="relative">
-                                    <div id="bar-container"
-                                        class="w-full h-7 bg-slate-100 rounded-md flex overflow-hidden border border-slate-200 shadow-inner">
-                                        <!-- Segments will be injected here -->
+                                    <!-- Percentages Display -->
+                                    <div id="label-container" class="flex w-full text-xs font-bold text-slate-600 px-1">
+                                        <!-- Labels will be injected here -->
                                     </div>
                                 </div>
 
-                                <!-- Percentages Display -->
-                                <div id="label-container" class="flex w-full text-xs font-bold text-slate-600 px-1">
-                                    <!-- Labels will be injected here -->
-                                </div>
-                            </div>
-
-                            <!-- Inputs Section -->
-                            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-2">
-                                <div class="space-y-2">
-                                    <label
-                                        class="block text-[10px] font-bold uppercase tracking-wider text-red-600">Might</label>
-                                    <input type="number" id="input-0" value="10" disabled
-                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
-                                        placeholder="0">
-                                    <label class="switch">
-                                        <input id="might-primary" type="checkbox"
-                                            onchange="adversary._adjust_primary_aptitudes('might')">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div class="space-y-2">
-                                    <label
-                                        class="block text-[10px] font-bold uppercase tracking-wider text-orange-600">Deftness</label>
-                                    <input type="number" id="input-1" value="10" disabled
-                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
-                                        placeholder="0">
-                                    <label class="switch">
-                                        <input id="deftness-primary" type="checkbox"
-                                            onchange="adversary._adjust_primary_aptitudes('deftness')">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div class="space-y-2">
-                                    <label
-                                        class="block text-[10px] font-bold uppercase tracking-wider text-green-600">Grit</label>
-                                    <input type="number" id="input-2" value="10" disabled
-                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
-                                        placeholder="0">
-                                    <label class="switch">
-                                        <input id="grit-primary" type="checkbox"
-                                            onchange="adversary._adjust_primary_aptitudes('grit')">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div class="space-y-2">
-                                    <label
-                                        class="block text-[10px] font-bold uppercase tracking-wider text-blue-600">Insight</label>
-                                    <input type="number" id="input-3" value="10" disabled
-                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
-                                        placeholder="0">
-                                    <label class="switch">
-                                        <input id="insight-primary" type="checkbox"
-                                            onchange="adversary._adjust_primary_aptitudes('insight')">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div class="space-y-2">
-                                    <label
-                                        class="block text-[10px] font-bold uppercase tracking-wider text-purple-600">Aura</label>
-                                    <input type="number" id="input-4" value="10" disabled
-                                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
-                                        placeholder="0">
-                                    <label class="switch">
-                                        <input id="aura-primary" type="checkbox"
-                                            onchange="adversary._adjust_primary_aptitudes('aura')">
-                                        <span class="slider round"></span>
-                                    </label>
+                                <!-- Inputs Section -->
+                                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-2">
+                                    <div class="space-y-2">
+                                        <label
+                                            class="block text-[10px] font-bold uppercase tracking-wider text-red-600">Might</label>
+                                        <input type="number" id="input-0" value="10" disabled
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                            placeholder="0">
+                                        <label class="switch">
+                                            <input id="might-primary" type="checkbox"
+                                                onchange="adversary._adjust_primary_aptitudes('might')">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="block text-[10px] font-bold uppercase tracking-wider text-orange-600">Deftness</label>
+                                        <input type="number" id="input-1" value="10" disabled
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                            placeholder="0">
+                                        <label class="switch">
+                                            <input id="deftness-primary" type="checkbox"
+                                                onchange="adversary._adjust_primary_aptitudes('deftness')">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="block text-[10px] font-bold uppercase tracking-wider text-green-600">Grit</label>
+                                        <input type="number" id="input-2" value="10" disabled
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                            placeholder="0">
+                                        <label class="switch">
+                                            <input id="grit-primary" type="checkbox"
+                                                onchange="adversary._adjust_primary_aptitudes('grit')">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="block text-[10px] font-bold uppercase tracking-wider text-blue-600">Insight</label>
+                                        <input type="number" id="input-3" value="10" disabled
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                            placeholder="0">
+                                        <label class="switch">
+                                            <input id="insight-primary" type="checkbox"
+                                                onchange="adversary._adjust_primary_aptitudes('insight')">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="block text-[10px] font-bold uppercase tracking-wider text-purple-600">Aura</label>
+                                        <input type="number" id="input-4" value="10" disabled
+                                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg input-focus transition-all"
+                                            placeholder="0">
+                                        <label class="switch">
+                                            <input id="aura-primary" type="checkbox"
+                                                onchange="adversary._adjust_primary_aptitudes('aura')">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="adversary-traits" class="bg-gray-200">
-                    <p class="from-slate-600 fading-header">TRAITS & PASSIVES</p>
+                    <p class=" section-header">TRAITS & PASSIVES</p>
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
                         <div class="flex" id="trait-container">
                         </div>
@@ -191,7 +199,7 @@
                 </div>
 
                 <div id="adversary-inventory" class="bg-gray-200">
-                    <p class="from-slate-600 fading-header">INVENTORY</p>
+                    <p class=" section-header">INVENTORY</p>
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
                         <div class="flex flex-wrap" id="inventory-container">
                         </div>
@@ -200,7 +208,7 @@
                 </div>
 
                 <div id="adversary-abilitie" class="bg-gray-200">
-                    <p class="from-slate-600 fading-header">ABILITIES</p>
+                    <p class=" section-header">ABILITIES</p>
 
                     <div class="border-4 border-stone-300 border-dashed rounded-lg m-2 p-4">
                         <div class="flex" id="ability-container">
@@ -212,10 +220,10 @@
             </div>
             <div id="info-card">
                 <div class="quick-facts-section">
-                    <h3 class="fading-header from-slate-600">QUICK FACTS</h3>
+                    <h3 class="section-header ">QUICK FACTS</h3>
                     <div id="fact-container" class="rounded-md p-2 m-1 flex flex-wrap">
                         <div id="habitat-div" class="fact-card">
-                            <div class="flex fading-header from-slate-600"><i id="facts-habitat"
+                            <div class="flex section-header "><i id="facts-habitat"
                                     class="material-icons text-white mr-2">cottage</i>
                                 <h3>Habitat</h3>
                             </div>
@@ -223,7 +231,7 @@
                                 class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
                         </div>
                         <div id="communication-div" class="fact-card">
-                            <div class="flex fading-header from-slate-600"><i id="facts-communication"
+                            <div class="flex section-header "><i id="facts-communication"
                                     class="material-icons text-white mr-2">chat</i>
                                 <h3>Communication</h3>
                             </div>
@@ -231,7 +239,7 @@
                                 class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
                         </div>
                         <div id="tactics-div" class="fact-card">
-                            <div class="flex fading-header from-slate-600"><span class="material-symbols-outlined">
+                            <div class="flex section-header "><span class="material-symbols-outlined">
                                     tactic
                                 </span>
                                 <h3>Tactics</h3>
@@ -240,7 +248,7 @@
                                 class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
                         </div>
                         <div id="indicators-div" class="fact-card">
-                            <div class="flex fading-header from-slate-600"><i id="facts-indicators"
+                            <div class="flex section-header "><i id="facts-indicators"
                                     class="material-icons text-white mr-2">travel_explore</i>
                                 <h3>Indicators</h3>
                             </div>
@@ -248,7 +256,7 @@
                                 class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
                         </div>
                         <div id="role-playing-notes-div" class="fact-card">
-                            <div class="flex fading-header from-slate-600"><i id="facts-roleplay"
+                            <div class="flex section-header "><i id="facts-roleplay"
                                     class="material-icons text-white mr-2">theater_comedy</i>
                                 <h3>Role Playing Notes</h3>
                             </div>
@@ -256,7 +264,7 @@
                                 class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
                         </div>
                         <div id="customization-div" class="fact-card">
-                            <div class="flex fading-header from-slate-600"><i id="facts-customize"
+                            <div class="flex section-header "><i id="facts-customize"
                                     class="material-icons text-white mr-2">construction</i>
                                 <h3>Customization</h3>
                             </div>
@@ -266,7 +274,7 @@
                     </div>
                 </div>
                 <div class="mood-table-section">
-                    <h3 class="fading-header from-slate-600">MOOD TABLE</h3>
+                    <h3 class="section-header ">MOOD TABLE</h3>
                     <table id="mood-table"
                         class="table-fixed border-separate border-spacing-2 border border-gray-400 w-full">
                         <thead>
@@ -311,8 +319,9 @@
         <template id="trait-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
             <div>
                 <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
-                            id="trait-name" placeholder="New Trait" type="text" class="basis-xl"></h3>
+                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
+                            class="required" data-required id="trait-name" placeholder="New Trait" type="text"
+                            class="basis-xl"></h3>
                 </div>
                 <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize your
                     adversary or fit them into a role.
@@ -320,162 +329,190 @@
                 <label for="trait-value">Amount: </label><input data-required class="text-input" class="w-10"
                     id="trait-value" type="number">
                 <label for="trait-modifier">Aptitude: </label>
-                <select class="dropdown" id="trait-modifier">
-                    <option value="might">Might</option>
-                    <option value="deftness">Deftness</option>
-                    <option value="grit">Grit</option>
-                    <option value="insight">Insight</option>
-                    <option value="aura">Aura</option>
-                </select>
+                <span class="select-wrapper">
+                    <select class="dropdown" id="trait-modifier">
+                        <option value="might">Might</option>
+                        <option value="deftness">Deftness</option>
+                        <option value="grit">Grit</option>
+                        <option value="insight">Insight</option>
+                        <option value="aura">Aura</option>
+                    </select>
+                </span>
                 <br />
                 <button onclick="adversary._add_trait()" id="btnAddTrait" disabled
                     class="btn close-modal submit-btn">Add</button>
             </div>
         </template>
-        <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-3xl">
+        <template id="ability-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-4xl">
             <div id="ability-div">
                 <div class="item-container">
                     <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
-                            id="ability-name" placeholder="New Ability" type="text" class="basis-xl"></h3>
-                </div>
-                <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
-                    powerful abilities can only be assigned to Bosses or Megabosses of certain levels, and may be
-                    magical in
-                    nature
-                </p>
-                <hr class="faded-hr" />
-                <div class="inline-flex">
-                    <label>Allegiance Points: </label><input onchange="set_ability_allegiance()" id="ability-allegiance"
-                        class="w-10 text-right " type="number" value="0">
-                    <div id="ability-allegiance-icon-box" class="inline-flex">
-                        <span><i id="ability-bright" class="material-icons text-stone-200">brightness_5</i><i
-                                id="ability-unaligned" class="material-icons text-slate-400">circle</i><i
-                                id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
+                        <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
+                                data-required id="ability-name" placeholder="New Ability" type="text" class="basis-xl">
+                        </h3>
                     </div>
-                </div>
-                <div>
-                    <label for="ability-type">Ability Type: </label>
-                    <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label
-                        for="ability-basic">
-                        Basic</label>
-                    <input id="ability-advanced" name="ability-type" type="radio" value="Advanced"
-                        disabled="true"><label for="ability-advanced"> Advanced</label>
-                    <input id="ability-legendary" name="ability-type" type="radio" value="Legendary"
-                        disabled="true"><label for="ability-legendary"> Legendary</label>
-                </div>
-                <div class="flex text-center">
-                    <div><label for="ability-magic">Magic: </label></div>
-                    <div><label class="switch switch-small ml-3">
-                            <input id="ability-magic" type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
+                    <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
+                        powerful abilities can only be assigned to Bosses or Megabosses of certain levels, and may be
+                        magical in
+                        nature
+                    </p>
+                    <hr class="faded-hr" />
+                    <div class="inline-flex">
+                        <label>Allegiance Points: </label><input onchange="set_ability_allegiance()"
+                            id="ability-allegiance" class="w-10 text-right " type="number" value="0">
+                        <div id="ability-allegiance-icon-box" class="inline-flex">
+                            <span><i id="ability-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                    id="ability-unaligned" class="material-icons text-slate-400">circle</i><i
+                                    id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
+                        </div>
                     </div>
-                </div>
-                <div class="editor"></div>
-                <!--<textarea data-required id="ability-description" placeholder="Ability Explanation here"
+                    <div>
+                        <label for="ability-type">Ability Type: </label>
+                        <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label
+                            for="ability-basic">
+                            Basic</label>
+                        <input id="ability-advanced" name="ability-type" type="radio" value="Advanced"
+                            disabled="true"><label for="ability-advanced"> Advanced</label>
+                        <input id="ability-legendary" name="ability-type" type="radio" value="Legendary"
+                            disabled="true"><label for="ability-legendary"> Legendary</label>
+                    </div>
+                    <div class="flex text-center">
+                        <div><label for="ability-magic">Magic: </label></div>
+                        <div><label class="switch switch-small ml-3">
+                                <input id="ability-magic" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="editor"></div>
+                    <!--<textarea data-required id="ability-description" placeholder="Ability Explanation here"
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
-                <h4 class="fading-header from-slate-400 mb-2">Optional Passives</h4>
-                <div class="mb-2">
-                    <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
-                        id="ability-atkbonus" type="number">
-                    <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
-                        type="number">
-                    <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input" id="ability-hearts"
-                        type="number">
-                    <i class="fa-solid fa-person-running"></i><select id="ability-base-speed-override" class="dropdown">
-                        <option value=""></option>
-                        <option value="slow">Slow</option>
-                        <option value="average">Average</option>
-                        <option value="fast">Fast</option>
-                        <option value="veryfast">Very Fast</option>
-                    </select>
-                </div>
-                <button id="btnAddAbility" onclick="adversary._add_ability()" disabled
-                    class="btn close-modal submit-btn">Add</button>
+                    <h4 class="section-header from-slate-400 mb-2">Optional Passives</h4>
+                    <div class="mb-2">
+                        <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
+                            id="ability-atkbonus" type="number">
+                        <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
+                            type="number">
+                        <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input"
+                            id="ability-hearts" type="number">
+                        <i class="fa-solid fa-person-running"></i><label> BASE </label><select
+                            id="ability-base-speed-override" class="dropdown">
+                            <option value=""></option>
+                            <option value="slow">Slow</option>
+                            <option value="average">Average</option>
+                            <option value="fast">Fast</option>
+                            <option value="veryfast">Very Fast</option>
+                        </select>
+                    </div>
+                    <button id="btnAddAbility" onclick="adversary._add_ability()" disabled
+                        class="btn close-modal submit-btn">Add</button>
                 </div>
             </div>
         </template>
         <template id="item-add" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-xl">
-            <div class="item-container">
-                <div class="header break-adversary-header">
-                    <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input data-required
-                            id="item-name" placeholder="New Item" class="basis-xl">
-                    </h3>
-                </div>
-                <p class="italic slate-400 p-2">An adversary's inventory is comprised of its usable equipment, its
-                    carried items and whatever yield might be garnered from defeating them.
-                </p>
-                <div id="item-category-div" class="mb-2">
-                    <label for="item-category">Category: </label><select class="dropdown" id="item-category">
-                        <option value="yield">Yield</option>
-                        <option value="equipment">Equipment</option>
-                        <option value="item">Item</option>
-                    </select>
-                </div>
-                <label class="font-bold" for="item-type">Item Type: </label>
-                <select class="dropdown" data-required id="inventory-item-type">
-                    <option disabled selected value=""></option>
-                    <option value="weapon">Weapon</option>
-                    <option value="armor">Armor</option>
-                    <option value="shield">Shield</option>
-                    <option value="outfit">Outfit</option>
-                    <option value="mount">Mount</option>
-                    <option value="accessories">Accessories</option>
-                    <option value="wayfinding">Wayfinding</option>
-                    <option value="illumination">Illumination</option>
-                    <option value="kits">Specialist Kit</option>
-                    <option value="books">Books</option>
-                    <option value="consumables">Consumable</option>
-                    <option value="explosives">Explosives</option>
-                    <option value="chemicals">Chemicals</option>
-                    <option value="reagent">Crafting Reagent</option>
-                    <option value="misc">Miscellaneous</option>
-                    <option value="curiosity">Curiosity</option>
-                    <option value="gadget">Gadget</option>
-                    <option value="artifact">Artifact</option>
-                    <option value="otherworld">Otherworldy Items</option>
-                    <option value="vehicle">Vehicle</option>
-                    <option value="companion">Companion</option>
-                </select>
-                <span id="item-subtype-container"></span>
-                <hr class="faded-hr" />
-                <div id="equipment-combat-modifiers" class="hidden mb-1" class="mb-2">
-                    <p class="italic">Combat Modifiers</p>
-                    <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
-                        id="item-atkbonus" type="number">
-                    <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="item-defense" type="number">
-                    <i class="fa-solid fa-person-running"></i><input class="text-input" id="item-speed" type="number">
-                    <label>MAX </label><i class="fa-solid fa-person-running"></i><select class="dropdown font-bold"
-                        id="item-max-speed">
-                        <option value=""></option>
-                        <option value='slow'>Slow</option>
-                        <option value='average'>Average</option>
-                        <option value='fast'>Fast</option>
-                        <option value='veryfast'>Very Fast</option>
-                    </select>
-                </div>
-                <!--<textarea data-required id="inventory-item-description" placeholder="brief description here."
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
-                <div class="editor"></div>
-                <div class="flex">
-                    <div class="basis-sm rounded-md"><label for="inventory-item-slots">Slots: </label><input min='1'
-                            class="text-input" id="item-slots" type="number"></div>
-                    <div id="inventory-item-value" class="basis-md">
-                        <label for="item-value">Value: </label><input type="number" value=1 id="item-value"
-                            class="text-input">
-                        <input type="radio" id="item-stones" name="item-denomination" value="stones"><label
-                            for="item-stones"> Stones </label>
-                        <input type="radio" id="items-coins" name="item-denomination" value="coins" checked><label
-                            for="item-coins"> Coins </label>
-                        <input type="radio" id="items-gems" name="item-denomination" value="gems"><label
-                            for="item-gems">
-                            Gems </label>
+            <div id="inventory-item-div">
+                <div class="item-container">
+                    <div class="header break-adversary-header">
+                        <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
+                                data-required id="inventory-item-name" placeholder="New Item" class="basis-xl">
+                        </h3>
                     </div>
+                    <p class="italic slate-400 p-2">An adversary's inventory is comprised of its usable equipment, its
+                        carried items and whatever yield might be garnered from defeating them.
+                    </p>
+                    <div id="item-category-div" class="mb-2">
+                        <label for="inventory-item-category">Category: </label>
+                        <span class="select-wrapper">
+                            <select class="dropdown" id="item-category">
+                                <option value="yield">Yield</option>
+                                <option value="equipment" selected>Equipment</option>
+                                <option value="item">Item</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div id="item-type-subtype-div" class="mb-1">
+                        <label class="font-bold" for="inventory-item-type">Item Type: </label>
+                        <span class="select-wrapper mb-2">
+                            <select class="dropdown" data-required id="inventory-item-type">
+                                <option disabled selected value=""></option>
+                                <option value="weapon">Weapon</option>
+                                <option value="armor">Armor</option>
+                                <option value="shield">Shield</option>
+                                <option value="outfit">Outfit</option>
+                                <option value="mount">Mount</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="wayfinding">Wayfinding</option>
+                                <option value="illumination">Illumination</option>
+                                <option value="kits">Specialist Kit</option>
+                                <option value="books">Books</option>
+                                <option value="consumables">Consumable</option>
+                                <option value="explosives">Explosives</option>
+                                <option value="chemicals">Chemicals</option>
+                                <option value="reagent">Crafting Reagent</option>
+                                <option value="misc">Miscellaneous</option>
+                                <option value="curiosity">Curiosity</option>
+                                <option value="gadget">Gadget</option>
+                                <option value="artifact">Artifact</option>
+                                <option value="otherworld">Otherworldy Items</option>
+                                <option value="vehicle">Vehicle</option>
+                                <option value="companion">Companion</option>
+                            </select>
+                        </span>
+                        <span id="item-subtype-container"></span>
+                    </div>
+                    <div id="equipment-combat-modifiers" class="hidden mb-1" class="mb-2">
+                        <hr class="faded-hr" />
+                        <p class="italic">Combat Modifiers</p>
+                        <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
+                            id="item-atkbonus" type="number">
+                        <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="item-defense"
+                            type="number">
+                        <i class="fa-solid fa-person-running"></i><input class="text-input" id="item-speed"
+                            type="number">
+                        <i class="fa-solid fa-person-running"></i> <label> MAX </label>
+                        <span class="select-wrapper">
+                            <select class="dropdown font-bold" id="item-max-speed">
+                                <option value=""></option>
+                                <option value='slow'>Slow</option>
+                                <option value='average'>Average</option>
+                                <option value='fast'>Fast</option>
+                                <option value='veryfast'>Very Fast</option>
+                            </select>
+                        </span>
+                    </div>
+                    <!--<textarea data-required id="inventory-item-description" placeholder="brief description here."
+                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
+                    <div class="editor"></div>
+                    <div class="flex">
+                        <div id="inventory-item-slots-div" class="basis-xs">
+                            <label for="inventory-item-slots">Slots: </label>
+                            <input min='0' class="text-input" id="inventory-item-slots" type="number">
+                        </div>
+                        <div id="inventory-item-allegiance-div" class="basis-xs">
+                            <label for="inventory-item-allegiance">Allegiance: </label>
+                            <input class="text-input" id="inventory-item-allegiance" type="number">
+                        </div>
+                        <div id="inventory-item-value-div" class="basis-xs">
+                            <label for="inventory-item-value">Value: </label>
+                            <input type="number" id="item-value" class="text-input">
+                            <div id="inventory-item-denomination-div">
+                                <input type="radio" id="item-stones" name="inventory_item-denomination"
+                                    value="stones"><label for="item-stones"> Stones </label>
+                                <input type="radio" id="items-coins" name="inventory_item-denomination" value="coins"
+                                    checked><label for="item-coins"> Coins </label>
+                                <input type="radio" id="items-gems" name="inventory_item-denomination"
+                                    value="gems"><label for="item-gems">
+                                    Gems </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btnAddItem" onclick="adversary._add_item()" disabled
+                        class="btn close-modal submit-btn">Add</button>
                 </div>
-                <button id="btnAddItem" onclick="adversary._add_item()" disabled
-                    class="btn close-modal submit-btn">Add</button>
             </div>
+        </template>
+        <template id="generic-confirm-modal">
+            <div id="generic-confirm-modal-container"></div>
         </template>
         <template id="export">
             <div>
@@ -519,6 +556,7 @@
 <script src="modal.js" type="text/javascript"></script>
 <script src="adversary.js" type="text/javascript"></script>
 <script src="main.js" type="text/javascript"></script>
+<script src="renderui.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
 </html>
