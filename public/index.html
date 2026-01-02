@@ -302,8 +302,8 @@
                     <p class="italic text-sm text-center">Current Adversary</p>
                     <hr class="faded-hr" />
                     <div class="p-4 text-center rounded-lg bg-cyan-500 text-white">
-                        <h4 class="font-bold" id="adversary-card-name">TEST</h4>
-                        <p class="italic text-sm" id="adversary-card-subname">Medium Rank 3 Monster</p>
+                        <h4 class="font-bold" id="adversary-card-name"></h4>
+                        <p class="italic text-sm" id="adversary-card-subname"></p>
                     </div>
                     <div class="text-center">
                         <button id="save-adversary-btn" class="btn" onclick="save_adversary()">Save
@@ -493,16 +493,29 @@
                     <!--<textarea data-required id="inventory-item-description" placeholder="brief description here."
                     class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
                     <div class="editor"></div>
-                    <div class="flex">
-                        <div id="inventory-item-slots-div" class="basis-xs">
+                    <div class="flex flew-row align-top">
+                        <div id="inventory-item-slots-div" class="basis-2xs">
                             <label for="inventory-item-slots">Slots: </label>
                             <input min='0' class="text-input" id="inventory-item-slots" type="number">
                         </div>
-                        <div id="inventory-item-allegiance-div" class="basis-xs">
-                            <label for="inventory-item-allegiance">Allegiance: </label>
-                            <input class="text-input" id="inventory-item-allegiance" type="number">
+                        <div id="inventory-item-allegiance-div" class="basis-md">
+                            <!--<label for="inventory-item-allegiance">Allegiance: </label>
+                            <input class="text-input" id="inventory-item-allegiance" type="number">-->
+
+                            <label for="inventory-item-allegiance">Allegiance Points: </label><input
+                                onchange="set_item_allegiance()" id="inventory-item-allegiance"
+                                class="w-10 text-right text-input " type="number" value="0">
+                            <span id="item-allegiance-icon-box" class="inline-flex">
+                                <span><i id="item-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                        id="item-unaligned" class="material-icons text-slate-400">circle</i><i
+                                        id="item-dark" class="material-icons text-stone-200">cyclone</i></span>
+                                </span>
+
+
+
+
                         </div>
-                        <div id="inventory-item-value-div" class="basis-xs">
+                        <div id="inventory-item-value-div" class="basis-sm">
                             <label for="inventory-item-value">Value: </label>
                             <input type="number" id="inventory-item-value" class="text-input">
                             <div id="inventory-item-denomination-div">

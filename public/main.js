@@ -1,4 +1,107 @@
-var saved_adversaries = {}
+var saved_adversaries = {
+  "JELLY MONSTER": {
+    "name": "JELLY MONSTER",
+    "menace": "mook",
+    "rank": "0",
+    "description": "<p>Jelly Monsters, or Jellies, are caustic amoebas that are largely harmless on their own. However, they can meld themselves together to create massive unicellular organisms that can take up entire corridors in deep, dark dungeons. Do not underestimate Jelly Monsters. If an infestation is left untreated, it grows - literally.</p>",
+    "size": "small",
+    "hearts": 1,
+    "atkbonus": 0,
+    "bright_points": 0,
+    "dark_points": 0,
+    "defense": 11,
+    "speed": "average",
+    "creature_type": "monster",
+    "creature_subtype": "Abberant",
+    "primary_aptitudes": [
+      "grit",
+      "deftness",
+      "might"
+    ],
+    "inventory": [],
+    "passives": [
+      {
+        "id": "tr-339a59jjmjq",
+        "name": "Resilient",
+        "type": "trait",
+        "modifier": "grit",
+        "value": 2
+      },
+      {
+        "id": "tr-a76sm3t58tw",
+        "name": "Primitive",
+        "type": "trait",
+        "modifier": "insight",
+        "value": -1
+      }
+    ],
+    "abilities": [
+      {
+        "id": "ab-8zlevun60rw",
+        "name": "BLOBBIFY",
+        "description": "<p>A Jelly Monster may spend its action to combine with another Jelly Monster of the same size in the same combat area. Doing so does the following:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Increases its Maximum Hearts by 1 (up to a maximum of 4)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Increases its Attack Bonus by 1 (up to a maximum of 3)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Increases its Size by 1 size category (up to a maximum of Large)</li></ol>",
+        "allegiance": 0,
+        "bound_passive": false,
+        "type": "Basic",
+        "magic": false
+      }
+    ],
+    "facts": {
+      "habitat": {
+        "description": ""
+      },
+      "communication": {
+        "description": ""
+      },
+      "tactics": {
+        "description": ""
+      },
+      "indicators": {
+        "description": ""
+      },
+      "role-playing-notes": {
+        "description": ""
+      },
+      "customization": {
+        "description": ""
+      }
+    },
+    "moods": [
+      {
+        "rolls": {
+          "start": 1,
+          "stop": 5
+        },
+        "mood": "Friendly/Benign",
+        "mood_text": "This creature seems to have a favorable disposition to you"
+      },
+      {
+        "rolls": {
+          "start": 6,
+          "stop": 14
+        },
+        "mood": "Indifferent/Wary",
+        "mood_text": "This creature is not immediately interested in harming you, but is watchful"
+      },
+      {
+        "rolls": {
+          "start": 15,
+          "stop": 20
+        },
+        "mood": "Hostile/Bloodthirsty",
+        "mood_text": "This creature is angry or aggressive. Prepare for combat"
+      }
+    ],
+    "max_speed": "veryfast",
+    "aptitudes": {
+      "might": 6,
+      "deftness": 6,
+      "grit": 8,
+      "insight": 5,
+      "aura": 6
+    }
+  }
+}
 var current_quill_content = ''
 
 function initializeEditors(scope = document) {
@@ -44,6 +147,7 @@ function initialize_mood_table_event_handlers() {
 window.addEventListener('load', function () {
     console.log("Page fully loaded, initializing editors...");
     initializeEditors();
+    update_ui(adversary)
 });
 
 
@@ -179,7 +283,6 @@ function save_adversary() {
 
 function load_adversary(adv_name) {
     adversary = new Adversary({ ...saved_adversaries[adv_name] })
-    full_reload
     update_ui(adversary)
 }
 
@@ -206,6 +309,7 @@ function render_current_adversary_card() {
 }
 
 function initialize_mood_table() {
+    document.querySelector('#mood-table tbody').innerHTML = ''
     const moods = adversary.moods
     for (const this_mood of moods) {
         add_row(
@@ -222,9 +326,9 @@ function add_row(roll1 = "", roll2 = "", moodname = "", mooddesc = "") {
     const row_number = document.querySelectorAll('#mood-table > tbody > tr').length + 1
     const row_html = `
     <tr id="mood-table-row-${row_number}">    
-        <td><input type="text" class="w-7 bg-slate-400 rounded-sm pl-1" value="${roll1}" inputmode="numeric" pattern="[0-9]*"> - <input class="w-7 bg-slate-400 rounded-sm pl-1" type="text" value="${roll2}" inputmode="numeric" pattern="[0-9]*"></td>
-        <td><input type="text" class="bg-slate-400 rounded-sm w-full pl-2" value="${moodname}"></td>
-        <td><input type="text" class="bg-slate-400 rounded-sm w-full pl-2" value="${mooddesc}"></td>
+        <td><input type="text" class="w-7 bg-slate-300 rounded-sm pl-1" value="${roll1}" inputmode="numeric" pattern="[0-9]*"> - <input class="w-7 bg-slate-300 rounded-sm pl-1" type="text" value="${roll2}" inputmode="numeric" pattern="[0-9]*"></td>
+        <td><input type="text" class="bg-slate-300 rounded-sm w-full pl-2" value="${moodname}"></td>
+        <td><input type="text" class="bg-slate-300 rounded-sm w-full pl-2" value="${mooddesc}"></td>
         <td><button onclick="remove_row("${row_number}")" class="btn">X</button></td>
     </tr>
         `
@@ -258,6 +362,35 @@ function set_ability_allegiance() {
     const unaligned = document.getElementById('ability-unaligned')
     const bright = document.getElementById('ability-bright')
     const dark = document.getElementById('ability-dark')
+    if (allegiance == 0) {
+        unaligned.classList.add('text-slate-400')
+        unaligned.classList.remove('text-stone-200')
+        bright.classList.add('text-stone-200')
+        bright.classList.remove('text-yellow-500')
+        dark.classList.add('text-stone-200')
+        dark.classList.remove('text-purple-900')
+    } else if (allegiance > 0) {
+        unaligned.classList.remove('text-slate-400')
+        unaligned.classList.add('text-stone-200')
+        bright.classList.remove('text-stone-200')
+        bright.classList.add('text-yellow-500')
+        dark.classList.add('text-stone-200')
+        dark.classList.remove('text-purple-900')
+    } else if (allegiance < 0) {
+        unaligned.classList.remove('text-slate-400')
+        unaligned.classList.add('text-stone-200')
+        bright.classList.add('text-stone-200')
+        bright.classList.remove('text-yellow-500')
+        dark.classList.remove('text-stone-200')
+        dark.classList.add('text-purple-900')
+    }
+}
+
+function set_item_allegiance() {
+    var allegiance = document.getElementById('inventory-item-allegiance').value
+    const unaligned = document.getElementById('item-unaligned')
+    const bright = document.getElementById('item-bright')
+    const dark = document.getElementById('item-dark')
     if (allegiance == 0) {
         unaligned.classList.add('text-slate-400')
         unaligned.classList.remove('text-stone-200')
@@ -370,6 +503,7 @@ var adversary = new Adversary({
     name: 'New Adversary',
     menace: "",
     rank: 1,
+    description: "",
     size: 'medium',
     hearts: rank_stats[1][1],
     atkbonus: rank_stats[1][0],
@@ -381,7 +515,6 @@ var adversary = new Adversary({
     creature_subtype: 'Abberant',
     primary_aptitudes: [],
     inventory: [],
-    description: null,
     passives: [],
     abilities: [],
     facts: {
@@ -545,7 +678,7 @@ function update_ui(adversary) {
         `
         ability_container.insertAdjacentHTML('beforeend', ability_block)
         const ability_div = document.getElementById(id)
-        ability_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
+        ability_div.setAttribute('onclick', `confirm_prompt('${ability.id}')`)
         if (ability.allegiance != 0) {
             const allegiance_box = `<div class="${allegiance > 0 ? 'ability-bright-allegiance' : allegiance < 0 ? 'ability-dark-allegiance' : ''}" id="allegiance-box-${name}-${type}">Adds ${Math.abs(allegiance)} ${allegiance > 0 ? 'Bright' : allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
             ability_div.insertAdjacentHTML('beforeend', allegiance_box)
@@ -584,9 +717,22 @@ function update_ui(adversary) {
         item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
     })
 
+    Object.keys(adversary.facts).forEach(fact_key => {
+        const fact_textarea = document.getElementById(`${fact_key}`)
+        fact_textarea.value = adversary.facts[fact_key].description
+    })
     //update the data bars
     updateVisualization()
+
+    //update mood table on every refresh
+    initialize_mood_table()
+
+    //Update current adversary card
     render_current_adversary_card()
+
+    //fill quill editor with description from adversary
+    const description_editor = document.querySelector('#description-container-div div.editor').__quill
+    description_editor.root.innerHTML = adversary.description;
 }
 
 const exportAdversariesJson = (data, filename = 'adversaries.json') => {
@@ -628,9 +774,8 @@ const importAdversariesJson = () => {
 
 // On page loads
 adversary._calculate_aptitudes()
-initialize_mood_table()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
-update_ui(adversary)
+
 render_current_adversary_card()
 render_saved_list()

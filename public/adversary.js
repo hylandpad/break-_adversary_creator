@@ -55,8 +55,10 @@ class Adversary {
         // adjust allegiance appropriately based on a positive or negative value
         if (allegiance > 0) {
             this.bright_points = this.bright_points + allegiance
+            this._calculate_allegiance()
         } else if (allegiance < 0) {
             this.dark_points = this.dark_points + Math.abs(allegiance)
+            this._calculate_allegiance()
         }
 
         // then create a new passive if this ability has any linked passives
@@ -75,16 +77,23 @@ class Adversary {
                 'type': type
             })
             this.passives.push(createPassive(name, passives, type))
+
+            if (passive_atkbonus){
+                this._calculate_atkbonus()
+            }
+            if (passive_defense){
+                this._calculate_defense()
+            }
+            if (passive_speed != ''){
+                this._calculate_speed()
+            }
+            if (passive_hearts){
+                this._calculate_hearts()
+            }
         }
         // create & add new ability object to abilities array in adversary
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
         this.abilities.push(new_ability)
-
-        this._calculate_speed()
-        this._calculate_allegiance()
-        this._calculate_hearts()
-        this._calculate_defense()
-        this._calculate_atkbonus()
         update_ui(this)
     }
 
@@ -381,6 +390,7 @@ class Adversary {
             })
             this.moods.push(createMood(rolls, data[2], data[3]))
         }
+        update_ui(this)
     }
 
     // **Calculates - broader functions that integrate changes from a number of different sources to recalculate specific attributes
@@ -538,20 +548,38 @@ class Adversary {
     _remove_ability(id) {
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance
-        this.abilities.splice(ability_to_remove, 1)
-
+        const atkbonus = ability_to_remove.passive_atkbonus
+        const defense = ability_to_remove.passive_defense
+        const speed = ability_to_remove.passive_speed
+        const hearts = ability_to_remove.passive_hearts
         //remove any linked passives
-        const passive_index = this.passives.findIndex(passive => passive.name == this.abilities[ability_to_remove].name)
+        const passive_index = this.passives.findIndex(passives => passives.name == ability_to_remove.name)
         if (passive_index !== -1) {
             this.passives.splice(passive_index, 1);
+            if (atkbonus != undefined || atkbonus != null || atkbonus != 0) {
+                this._calculate_atkbonus()
+            }
+            if (hearts != undefined || hearts != null || hearts != 0) {
+                this._calculate_hearts()
+            }
+            if (defense != undefined || defense != null || defense != 0) {
+                this._calculate_defense()
+            }
+            if ((speed != null || speed != 0 || speed != undefined) || (max_speed != null || max_speed != undefined)) {
+                this._calculate_speed()
+            }
         }
         //offset bright or dark point values 
         if (points < 0) {
             this.dark_points = this.dark_points + points
+            this._calculate_allegiance()
         } else if (points > 0) {
             this.bright_points = this.bright_points - points
+            this._calculate_allegiance()
         }
-
+        this.abilities.splice(ability_to_remove, 1)
+        closeModal()
+        update_ui(this)
     }
 
 }
