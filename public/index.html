@@ -45,8 +45,8 @@
                             <option value="monster">Monster</option>
                         </select><label for="adversary-subtype">Subtype: </label><input
                             onchange="adversary._change_type_subtype()" id="adversary-subtype"
-                            class="text-input w-30 mr-2" type="text" placeholder="Subtype"> <label for="size">Size:
-                        </label><select class="dropdown" id="size" onchange="adversary._adjust_size()">
+                            class="text-input w-30 mr-2" type="text" placeholder="Subtype"> <label class="mr-1" for="size">Size:
+                        </label><select class="mr-2" id="size" disabled onchange="adversary._adjust_size()">
                             <option value="tiny">Tiny</option>
                             <option value="small">Small</option>
                             <option value="medium">Medium</option>
@@ -72,9 +72,6 @@
                         <div class="editor editor-short"></div>
                         <button class="btn submit-btn" onclick="adversary._change_description()">Save</button>
                     </div>
-                    <!--<textarea id="adversary-description" placeholder="brief description here."
-                        class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50"
-                        onchange="adversary._adjust_description()"></textarea>-->
                 </div>
                 <div class="stats-container bg-gray-200">
                     <div id="combat_card" class="flex">
@@ -407,6 +404,14 @@
                             <option value="average">Average</option>
                             <option value="fast">Fast</option>
                             <option value="veryfast">Very Fast</option>
+                        </select>
+                        <i class="fa-solid fa-person"></i><label> SIZE </label><select
+                            id="ability-size-override" class="dropdown">
+                            <option value=""></option>
+                            <option value="tiny">Tiny</option>
+                            <option value="small">Small</option>
+                            <option value="large">Large</option>
+                            <option value="massive">Massive</option>
                         </select>
                     </div>
                     <button id="btnAddAbility" onclick="adversary._add_ability()" disabled

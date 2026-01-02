@@ -301,6 +301,191 @@ var saved_adversaries = {
       "insight": 9,
       "aura": 6
     }
+  },
+  "EXTRASOLAR": {
+    "name": "EXTRASOLAR",
+    "menace": "megaboss",
+    "rank": "7",
+    "description": "<p>Shards of the shattered sun machine, animated by highly volatile motes of Bright mana, these so-called Extrasolar are angelic in their appearance and stoic defenders of the Light. Their forms burn brilliantly, being to blindingly radiant for most people to look directly at, which makes them incredibly difficult to describe. Most who have witnessed them described them as humanoid-shaped, with wings that look like glowing shattered glass and halos of slowly-orbiting crystals. They abhor the Darkness, and seek out creatures of the Dark with a fury that is unmatched.</p>",
+    "size": "large",
+    "hearts": 5,
+    "atkbonus": 8,
+    "bright_points": 6,
+    "dark_points": 0,
+    "defense": 11,
+    "speed": "average",
+    "creature_type": "celestial",
+    "creature_subtype": "Angelar",
+    "primary_aptitudes": [
+      "might",
+      "aura",
+      "deftness"
+    ],
+    "inventory": [
+      {
+        "id": "inv-ywuz44hnyw",
+        "name": "RADIANT GREATSWORD",
+        "category": "equipment",
+        "type": "weapon",
+        "subtype": "Mighty Weapon",
+        "description": "<p>This massive weapon glimmers with incorporeal light, and the Extrasolar swings it as if it weighs nothing. </p><p><br></p><p>This item dissolves into a useless golden hilt unless it is wielded by an Extrasolar</p>",
+        "slots": "2",
+        "denomination": "gems",
+        "value": "1",
+        "defense": null,
+        "atkbonus": 3,
+        "speed": null,
+        "max_speed": null,
+        "allegiance": 2
+      },
+      {
+        "id": "inv-5kk02i2kkb6",
+        "name": "BRIGHT INFUSED DUST",
+        "category": "yield",
+        "type": "curiosity",
+        "subtype": "Byproduct",
+        "description": "<p>A slain Extrasolar loses its cohesion and form, its crystalline body reducing itself to fine, glowing sand. This sand retains a small amount of latent warmth and exudes a dim light, which grows in luminosity as it nears a shard of the Sun Machine.</p>",
+        "slots": ".5",
+        "denomination": "coins",
+        "value": "70",
+        "defense": null,
+        "atkbonus": null,
+        "speed": null,
+        "max_speed": null,
+        "allegiance": 0
+      }
+    ],
+    "passives": [
+      {
+        "id": "tr-7qnpev3poby",
+        "name": "Might of the Sun",
+        "type": "trait",
+        "modifier": "might",
+        "value": 2
+      },
+      {
+        "id": "tr-tree1eslatr",
+        "name": "Commanding Aura",
+        "type": "trait",
+        "modifier": "aura",
+        "value": 2
+      },
+      {
+        "id": "tr-15c1057auh3",
+        "name": "Crystalline Structure",
+        "type": "trait",
+        "modifier": "grit",
+        "value": -1
+      },
+      {
+        "id": "tr-bevrwnn7ge4",
+        "name": "Single-Minded",
+        "type": "trait",
+        "modifier": "insight",
+        "value": -1
+      },
+      {
+        "id": "ab-passive-0jdnbd63aeqn",
+        "name": "TENSILE ARMOR",
+        "modifiers": {
+          "defense": 2
+        },
+        "type": "ability"
+      }
+    ],
+    "abilities": [
+      {
+        "id": "ab-zs3phdzz6j",
+        "name": "RADIANCE",
+        "description": "<p>At the start of their turn, any <strong>Non-Bright</strong> aligned Player in the same combat area as an Extrasolar must succeed an Aura Check or become <strong>Blinded</strong></p>",
+        "allegiance": 1,
+        "bound_passive": false,
+        "type": "Advanced",
+        "magic": true
+      },
+      {
+        "id": "ab-ul93khgtzlm",
+        "name": "BLAZING MARCH",
+        "description": "<p>The combat zone occupied by the Extrasolar is set alight by its radiance, turning the immediate area into a Burning Hazard. Characters without proper protection from Burning will take 1 Fire Damage every turn. The hazard remains in that combat zone for as long as the Extrasolar remains in the combat zone</p>",
+        "allegiance": 1,
+        "bound_passive": false,
+        "type": "Advanced",
+        "magic": true
+      },
+      {
+        "id": "ab-65so92xqg7",
+        "name": "TENSILE ARMOR",
+        "description": "<p>The hardened crystal skin of the Extrasolar provides some basic protection against wounds from all but the most sure of strikes</p>",
+        "allegiance": 0,
+        "bound_passive": true,
+        "type": "Basic",
+        "magic": false
+      },
+      {
+        "id": "ab-d6nnwu7erzs",
+        "name": "SUNBURST",
+        "description": "<p>Upon taking a Heart of Damage, all Players in the same combat area must make a <strong>Deftness Check:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On failure - Take 1 Heart of Damage</li></ol><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is Dark Damage.</p>",
+        "allegiance": 2,
+        "bound_passive": false,
+        "type": "Legendary",
+        "magic": false
+      }
+    ],
+    "facts": {
+      "habitat": {
+        "description": "Extrasolar generally coalesce around small, isolated Shards of the Sunmachine, and jealously guard its periphery.  They are permissive of visitors and worshippers of these shards, but they maintain authority over them."
+      },
+      "communication": {
+        "description": "Between Extrasolars, they communicate with crystalline tinkles in barely audible frequencies. They are capable of speech across many different languages, but are almost always of few words."
+      },
+      "tactics": {
+        "description": "Extrasolar will work together insofar as they need to guard their Shard. They are reticent to be led too far from it, and they are almost magnetically drawn back to it if there is an attempt to kite them away."
+      },
+      "indicators": {
+        "description": "A moving glow in the distant darkness, a sudden luminosity in the periphery of a Sun Shard."
+      },
+      "role-playing-notes": {
+        "description": "Extrasolar found in the wild will likely have seen their old Shard destroyed and be questing for a new Shard. They will work with anyone who help get them closer to a new Shard, and zealously endeavor to smite anyone they see as Dark aligned."
+      },
+      "customization": {
+        "description": ""
+      }
+    },
+    "moods": [
+      {
+        "rolls": {
+          "start": "1",
+          "stop": "5"
+        },
+        "mood": "Unthreatened",
+        "mood_text": "The Wulfolk is aware of your presence, but is more interested in cooking its prey over a campfire"
+      },
+      {
+        "rolls": {
+          "start": "6",
+          "stop": "14"
+        },
+        "mood": "Wary",
+        "mood_text": "This Wulfolk is carefully observing you, though not making any sudden moves"
+      },
+      {
+        "rolls": {
+          "start": "15",
+          "stop": "20"
+        },
+        "mood": "Hunting",
+        "mood_text": "The Wulfolk is circling you, snarling with teeth bared, looking for an opportunity to strike"
+      }
+    ],
+    "max_speed": "veryfast",
+    "aptitudes": {
+      "might": 13,
+      "deftness": 11,
+      "grit": 9,
+      "insight": 9,
+      "aura": 13
+    },
+    "allegiance": "bright"
   }
 }
 var current_quill_content = ''
@@ -857,6 +1042,10 @@ function update_ui(adversary) {
                 const speed_span = `<span><i class="fa-solid fa-person-running"></i>Base Speed - ${(passive.modifiers.speed).toUpperCase()}</span>`
                 passive_span.insertAdjacentHTML('beforeend', speed_span)
             }
+            if (passive.modifiers.size) {
+                const size_span = `<span><i class="fa-solid fa-person"></i>Size - ${(passive.modifiers.size).toUpperCase()}</span>`
+                passive_span.insertAdjacentHTML('beforeend', size_span)
+            }
         }
     })
 
@@ -974,6 +1163,7 @@ const exportAdversariesJson = (data, filename = 'adversaries.json') => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    closeModal();
 }
 
 const importAdversariesJson = () => {

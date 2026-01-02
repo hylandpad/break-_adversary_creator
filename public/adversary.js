@@ -39,6 +39,7 @@ class Adversary {
         const passive_defense = parseInt(document.getElementById('ability-defense').value)
         const passive_speed = document.getElementById('ability-base-speed-override').value
         const passive_hearts = parseInt(document.getElementById('ability-hearts').value)
+        const passive_size = document.getElementById('ability-size-override').value
         var bound_passive = false
 
         // first create a new ability
@@ -67,6 +68,7 @@ class Adversary {
         passive_defense && (passives.defense = passive_defense)
         passive_speed != '' && (passives.speed = passive_speed)
         passive_hearts && (passives.hearts = passive_hearts)
+        passive_size != '' && (passives.size = passive_size)
 
         if (Object.keys(passives).length > 0) {
             const passive_id = `ab-passive-${generate_id()}`
@@ -91,6 +93,9 @@ class Adversary {
             }
             if (passive_hearts){
                 this._calculate_hearts()
+            }
+            if (passive_size != ''){
+                this._adjust_size()
             }
         }
         // create & add new ability object to abilities array in adversary
@@ -324,8 +329,15 @@ class Adversary {
 
     // Adjust adversary size and manipulate aptitudes and other combat values based on the changes
     _adjust_size() {
-        const sizeElement = document.getElementById('size')
-        this.size = sizeElement.value.toLowerCase()
+        
+        this.passives.forEach(this_passive => {
+            if (this_passive.type != 'ability') {
+                return
+            } else if (this_passive.modifiers.size) {
+                this.size = this_passive.modifiers.size
+            }
+        })
+
         //Get all current aptitude values
         // prior to doing any math at all, recalculate base aptitudes by running _calculate_aptitudes to set BACK to a baseline then do one of the following:
         this._calculate_aptitudes()

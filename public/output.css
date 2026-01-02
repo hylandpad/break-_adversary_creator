@@ -537,9 +537,6 @@
   .bg-amber-200 {
     background-color: var(--color-amber-200);
   }
-  .bg-amber-400 {
-    background-color: var(--color-amber-400);
-  }
   .bg-black\/60 {
     background-color: color-mix(in srgb, #000 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -552,23 +549,14 @@
   .bg-cyan-500 {
     background-color: var(--color-cyan-500);
   }
-  .bg-cyan-700 {
-    background-color: var(--color-cyan-700);
-  }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
   }
   .bg-green-500 {
     background-color: var(--color-green-500);
   }
-  .bg-lime-500 {
-    background-color: var(--color-lime-500);
-  }
   .bg-orange-500 {
     background-color: var(--color-orange-500);
-  }
-  .bg-pink-600 {
-    background-color: var(--color-pink-600);
   }
   .bg-purple-500 {
     background-color: var(--color-purple-500);
@@ -1024,7 +1012,7 @@
     background-color: var(--color-pink-600);
   }
 }
-#speed {
+#speed, #size {
   appearance: none;
 }
 .svg-icon {
