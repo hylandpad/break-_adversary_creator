@@ -72,7 +72,9 @@
         @apply bg-red-400 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
     }
 
-
+    .item-card{
+        @apply bg-blue-500 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
+    }
 
     .item-content{
         @apply text-black bg-slate-200 rounded-md
@@ -81,6 +83,11 @@
     .fact-card{
         @apply basis-1/2 p-2
     }
+
+    .fact-card textarea{
+        @apply max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2 pl-2
+    }
+
     a{
         @apply cursor-pointer
     }

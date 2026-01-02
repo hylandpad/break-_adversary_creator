@@ -385,7 +385,7 @@ class Adversary {
             const createMood = (rolls, mood, description) => ({
                 'rolls': rolls,
                 'mood': mood,
-                'description': description
+                'mood_text': description
 
             })
             this.moods.push(createMood(rolls, data[2], data[3]))

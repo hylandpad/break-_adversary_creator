@@ -654,6 +654,9 @@
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
   }
+  .px-4 {
+    padding-inline: calc(var(--spacing) * 4);
+  }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
   }
@@ -985,6 +988,15 @@
     padding: calc(var(--spacing) * 3);
     color: var(--color-white);
   }
+  .item-card {
+    margin-right: calc(var(--spacing) * 4);
+    margin-bottom: calc(var(--spacing) * 4);
+    max-width: var(--container-sm);
+    border-radius: var(--radius-md);
+    background-color: var(--color-blue-500);
+    padding: calc(var(--spacing) * 3);
+    color: var(--color-white);
+  }
   .item-content {
     border-radius: var(--radius-md);
     background-color: var(--color-slate-200);
@@ -993,6 +1005,15 @@
   .fact-card {
     flex-basis: calc(1/2 * 100%);
     padding: calc(var(--spacing) * 2);
+  }
+  .fact-card textarea {
+    margin-top: calc(var(--spacing) * 2);
+    max-height: calc(var(--spacing) * 50);
+    min-height: calc(var(--spacing) * 30);
+    width: 100%;
+    border-radius: var(--radius-md);
+    background-color: var(--color-amber-200);
+    padding-left: calc(var(--spacing) * 2);
   }
   a {
     cursor: pointer;

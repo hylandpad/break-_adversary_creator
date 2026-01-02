@@ -232,16 +232,14 @@
                                     class="material-icons text-white mr-2">cottage</i>
                                 <h3>Habitat</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('habitat')" id="habitat"
-                                class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                            <textarea onchange="adversary._adjust_facts('habitat')" id="habitat"></textarea>
                         </div>
                         <div id="communication-div" class="fact-card">
                             <div class="flex section-header "><i id="facts-communication"
                                     class="material-icons text-white mr-2">chat</i>
                                 <h3>Communication</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('communication')" id="communication"
-                                class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                            <textarea onchange="adversary._adjust_facts('communication')" id="communication"></textarea>
                         </div>
                         <div id="tactics-div" class="fact-card">
                             <div class="flex section-header "><span class="material-symbols-outlined">
@@ -249,50 +247,48 @@
                                 </span>
                                 <h3>Tactics</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('tactics')" id="tactics"
-                                class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                            <textarea onchange="adversary._adjust_facts('tactics')" id="tactics"></textarea>
                         </div>
                         <div id="indicators-div" class="fact-card">
                             <div class="flex section-header "><i id="facts-indicators"
                                     class="material-icons text-white mr-2">travel_explore</i>
                                 <h3>Indicators</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('indicators')" id="indicators"
-                                class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                            <textarea onchange="adversary._adjust_facts('indicators')" id="indicators"></textarea>
                         </div>
                         <div id="role-playing-notes-div" class="fact-card">
                             <div class="flex section-header "><i id="facts-roleplay"
                                     class="material-icons text-white mr-2">theater_comedy</i>
                                 <h3>Role Playing Notes</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('role-playing-notes')" id='role-playing-notes'
-                                class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                            <textarea onchange="adversary._adjust_facts('role-playing-notes')" id='role-playing-notes'></textarea>
                         </div>
                         <div id="customization-div" class="fact-card">
                             <div class="flex section-header "><i id="facts-customize"
                                     class="material-icons text-white mr-2">construction</i>
                                 <h3>Customization</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('customization')" id="customization"
-                                class="max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2"></textarea>
+                            <textarea onchange="adversary._adjust_facts('customization')" id="customization"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="mood-table-section">
                     <h3 class="section-header ">MOOD TABLE</h3>
-                    <table id="mood-table"
-                        class="table-fixed border-separate border-spacing-2 border border-gray-400 w-full">
-                        <thead>
-                            <tr class="text-left">
-                                <th class="w-1/12">Roll</th>
-                                <th class="w-1/4">Mood</th>
-                                <th class="w-3/5">Situation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <button id="add-mood-row" class="btn" onclick="add_row()">Add Row</button>
+                    <div class="border border-gray-400 px-4">
+                        <table id="mood-table" class="table-fixed border-separate border-spacing-2 w-full">
+                            <thead>
+                                <tr class="text-left">
+                                    <th class="w-1/12">Roll</th>
+                                    <th class="w-1/4">Mood</th>
+                                    <th class="w-3/5">Situation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <button id="add-mood-row" class="btn" onclick="add_row()">Add Row</button> <button
+                            id="save-moods" class="btn" onclick="adversary._adjust_mood_table()">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -508,12 +504,9 @@
                             <span id="item-allegiance-icon-box" class="inline-flex">
                                 <span><i id="item-bright" class="material-icons text-stone-200">brightness_5</i><i
                                         id="item-unaligned" class="material-icons text-slate-400">circle</i><i
-                                        id="item-dark" class="material-icons text-stone-200">cyclone</i></span>
+                                        id="item-dark" class="material-icons text-stone-200">cyclone</i>
                                 </span>
-
-
-
-
+                            </span>
                         </div>
                         <div id="inventory-item-value-div" class="basis-sm">
                             <label for="inventory-item-value">Value: </label>

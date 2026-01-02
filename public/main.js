@@ -12,7 +12,7 @@ var saved_adversaries = {
     "defense": 11,
     "speed": "average",
     "creature_type": "monster",
-    "creature_subtype": "Abberant",
+    "creature_subtype": "Abberation",
     "primary_aptitudes": [
       "grit",
       "deftness",
@@ -77,26 +77,35 @@ var saved_adversaries = {
         "bound_passive": false,
         "type": "Basic",
         "magic": false
+      },
+      {
+        "id": "ab-3siv2n4nvlo",
+        "name": "CAUSTIC SLIME",
+        "description": "<p>All attacks that hit a character also do Sundering Damage to that character's shield. If they have no usable shield, or their shield has been sundered, the Damage is dealt to their Armor. If they have no armor, or their armor has been sundered, the Damage is dealt to their Weapon. </p>",
+        "allegiance": 0,
+        "bound_passive": false,
+        "type": "Basic",
+        "magic": false
       }
     ],
     "facts": {
       "habitat": {
-        "description": ""
+        "description": "Dank, dark subterranean corridors and old ruins are where Jellies are most likely to be found, but there are a number of subnautical species that live in tidal caves and grottos."
       },
       "communication": {
-        "description": ""
+        "description": "There is no known communication method by which Jelly Monsters can convey any sort of meaningful information"
       },
       "tactics": {
-        "description": ""
+        "description": "Lacking any discernable brainstem or central nervous system, the Jellies are driven by hunger and survival only. They will not endeavor to work together, but they will merge when threatened."
       },
       "indicators": {
-        "description": ""
+        "description": "Slime trails on walls, floors or ceilings - skeletal remains of rodents and small animals still covered in slightly steaming goop."
       },
       "role-playing-notes": {
-        "description": ""
+        "description": "Jelly Monsters do not have any orifices with which to make sounds, save for the sound of them squelching beneath doors or from the crevices of rock formations."
       },
       "customization": {
-        "description": ""
+        "description": "These can be reflavored to be more generic \"Slime Cube\" enemies by putting them in a pit or in a hallway, and upping the lethality of their Caustic Slime ability."
       }
     },
     "moods": [
@@ -169,20 +178,11 @@ document.addEventListener('change', function (event) {
     }
 });
 
-function initialize_mood_table_event_handlers() {
-    const inputs = document.querySelectorAll('#mood-table > tbody input')
-    inputs.forEach(input => {
-        input.addEventListener('change', adversary._adjust_mood_table)
-    }
-    )
-}
-
 window.addEventListener('load', function () {
     console.log("Page fully loaded, initializing editors...");
     initializeEditors();
     update_ui(adversary)
 });
-
 
 // Utility Functions
 const generate_id = () => {
@@ -240,18 +240,18 @@ function fill_subtypes(select_element) {
         <label>Subtype: </label>
         <span class="select-wrapper">
         <select class="dropdown" id="inventory-item-subtype">
-            <option value="weapon-standard">Standard</option>
-            <option value="weapon-quick">Quick</option>
-            <option value="weapon-master">Master</option>
-            <option value="weapon-mighty">Mighty</option>
-            <option value="weapon-concealed">Concealed</option>
-            <option value="weapon-lash">Lash</option>
-            <option value="weapon-arc">Arc</option>
-            <option value="weapon-thrown">Thrown</option>
-            <option value="weapon-drawn">Drawn</option>
-            <option value="weapon-sm-mech">Mechanical, Small</option>
-            <option value="weapon-lg-mech">Mechanical, Large</option>
-            <option value="weapon-other">Other</option>
+            <option value="Standard Weapon">Standard</option>
+            <option value="Quick Weapon">Quick</option>
+            <option value="Master Weapon">Master</option>
+            <option value="Mighty Weapon">Mighty</option>
+            <option value="Concealed Weapon">Concealed</option>
+            <option value="Lash Weapon">Lash</option>
+            <option value="Arc Weapon">Arc</option>
+            <option value="Thrown Weapon">Thrown</option>
+            <option value="Drawn Weapon">Drawn</option>
+            <option value="Mechanical Weapon, Small">Mechanical, Small</option>
+            <option value="Mechanical Weapon, Large">Mechanical, Large</option>
+            <option value="Other Weapon">Other</option>
         </select>
         </span>
         `
@@ -261,11 +261,11 @@ function fill_subtypes(select_element) {
         <label>Subtype: </label>
         <span class="select-wrapper">
         <select class="dropdown" id="inventory-item-subtype">
-            <option value="armor-light">Light</option>
-            <option value="armor-medium">Medium</option>
-            <option value="armor-heavy">Heavy</option>
-            <option value="armor-superheavy">Superheavy</option>
-            <option value="armor-other">Other</option>
+            <option value="Light Armor">Light</option>
+            <option value="Medium Armor">Medium</option>
+            <option value="Heavy Armor">Heavy</option>
+            <option value="Superheavy Armor">Superheavy</option>
+            <option value="Other Armor">Other</option>
         </select>
         </span>
         `
@@ -275,10 +275,10 @@ function fill_subtypes(select_element) {
         <label>Subtype: </label>
         <span class="select-wrapper">
         <select class="dropdown" id="inventory-item-subtype">
-            <option value="shield-small">Small</option>
-            <option value="shield-standard">Standard</option>
-            <option value="shield-large">Large</option>
-            <option value="shield-other">Other</option>
+            <option value="Small ">Small</option>
+            <option value="Standard Shield">Standard</option>
+            <option value="Large Shield">Large</option>
+            <option value="Other Shield">Other</option>
         </select>
         </span>
         `
@@ -366,7 +366,6 @@ function add_row(roll1 = "", roll2 = "", moodname = "", mooddesc = "") {
     </tr>
         `
     table.insertAdjacentHTML('beforeend', row_html)
-    initialize_mood_table_event_handlers()
 }
 
 function remove_row(row_number) {
