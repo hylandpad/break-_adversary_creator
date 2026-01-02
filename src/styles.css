@@ -91,6 +91,18 @@
     a{
         @apply cursor-pointer
     }
+
+    .mook{
+        @apply bg-lime-500
+    }
+
+    .boss{
+        @apply bg-amber-400
+    }
+
+    .megaboss{
+        @apply bg-pink-600
+    }
 }
 
 #speed{

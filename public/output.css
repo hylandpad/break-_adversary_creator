@@ -1014,6 +1014,15 @@
   a {
     cursor: pointer;
   }
+  .mook {
+    background-color: var(--color-lime-500);
+  }
+  .boss {
+    background-color: var(--color-amber-400);
+  }
+  .megaboss {
+    background-color: var(--color-pink-600);
+  }
 }
 #speed {
   appearance: none;

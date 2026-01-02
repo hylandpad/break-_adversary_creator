@@ -153,14 +153,14 @@ var saved_adversaries = {
     "atkbonus": 2,
     "bright_points": 0,
     "dark_points": 0,
-    "defense": 12,
-    "speed": "average",
+    "defense": 14,
+    "speed": "fast",
     "creature_type": "folk",
     "creature_subtype": "Beastfolk",
     "primary_aptitudes": [
       "deftness",
-      "insight",
-      "might"
+      "might",
+      "insight"
     ],
     "inventory": [
       {
@@ -217,53 +217,80 @@ var saved_adversaries = {
         "type": "trait",
         "modifier": "aura",
         "value": -1
+      },
+      {
+        "id": "ab-passive-1qeo2zfummw",
+        "name": "WOODSPEED",
+        "modifiers": {
+          "speed": "fast"
+        },
+        "type": "ability"
       }
     ],
-    "abilities": [],
+    "abilities": [
+      {
+        "id": "ab-8izs521pv8u",
+        "name": "WOODSPEED",
+        "description": "<p>The Wulfolk's base speed is <strong>Fast</strong></p>",
+        "allegiance": 0,
+        "bound_passive": true,
+        "type": "Basic",
+        "magic": false
+      },
+      {
+        "id": "ab-7jckfy1piqw",
+        "name": "HUNTED",
+        "description": "<p>At the start of Combat, choose one player character. This player character becomes Hunted as the Wulfolk enter a state of extreme concentration and focus. All Wulfolk Adversaries gain an Edge against any checks or contests imposed on them by that character. However, they suffer a Snag on any checks or contested imposed upon them by other characters. If the Hunted character becomes unable to fight due to loss of consciousness or death, the Hunted status can be assigned to any other Player Character adjacent to any Wulfolk.</p>",
+        "allegiance": 0,
+        "bound_passive": false,
+        "type": "Basic",
+        "magic": false
+      }
+    ],
     "facts": {
       "habitat": {
-        "description": ""
+        "description": "Wulfolk are native to forested areas, and prefer to live there in packs. However, Lone Wulfolk hunters often find homes in cities where they can put their bounty hunting skills to use for coin."
       },
       "communication": {
-        "description": ""
+        "description": "Wulfolk communicate with each other via barks and snarls in a language that is largely unintelligible to non-canines. They also leave messages via pheromone marking that can be read by other canines for weeks."
       },
       "tactics": {
-        "description": ""
+        "description": "In packs, Wulfolk will corral and harry their prey. They are opportunists rather than brutes, and will attempt to use numbers to subdue one target. Lone Wulfolk will use stealth and subterfuge to get the upper hand on a target they have been stalking"
       },
       "indicators": {
-        "description": ""
+        "description": "Howling in the distance, glowing eyes in the dark, snapping and snarling and panting"
       },
       "role-playing-notes": {
-        "description": ""
+        "description": "Wulfolk are more reserved than Mundymutts, but much more intense. They are not known to have a sense of humor or good manners, and are much less likely to bond with characters outside of their immediate pack."
       },
       "customization": {
-        "description": ""
+        "description": "If you need a stronger solo encounter, bump up the rank and use this as a stronger Boss character"
       }
     },
     "moods": [
       {
         "rolls": {
-          "start": 1,
-          "stop": 5
+          "start": "1",
+          "stop": "5"
         },
-        "mood": "Friendly/Benign",
-        "mood_text": "This creature seems to have a favorable disposition to you"
+        "mood": "Unthreatened",
+        "mood_text": "The Wulfolk is aware of your presence, but is more interested in cooking its prey over a campfire"
       },
       {
         "rolls": {
-          "start": 6,
-          "stop": 14
+          "start": "6",
+          "stop": "14"
         },
-        "mood": "Indifferent/Wary",
-        "mood_text": "This creature is not immediately interested in harming you, but is watchful"
+        "mood": "Wary",
+        "mood_text": "This Wulfolk is carefully observing you, though not making any sudden moves"
       },
       {
         "rolls": {
-          "start": 15,
-          "stop": 20
+          "start": "15",
+          "stop": "20"
         },
-        "mood": "Hostile/Bloodthirsty",
-        "mood_text": "This creature is angry or aggressive. Prepare for combat"
+        "mood": "Hunting",
+        "mood_text": "The Wulfolk is circling you, snarling with teeth bared, looking for an opportunity to strike"
       }
     ],
     "max_speed": "veryfast",
@@ -425,13 +452,13 @@ function menace_color(menace) {
 
     if (menace == 'mook') {
         document.getElementById('menace').className = ''
-        document.getElementById('menace').classList.add('rounded-lg', 'bg-lime-500')
+        document.getElementById('menace').classList.add('rounded-lg', 'mook')
     } else if (menace == 'boss') {
         document.getElementById('menace').className = ''
-        document.getElementById('menace').classList.add('rounded-lg', 'bg-amber-400')
+        document.getElementById('menace').classList.add('rounded-lg', 'boss')
     } else if (menace == 'megaboss') {
         document.getElementById('menace').className = ''
-        document.getElementById('menace').classList.add('rounded-lg', 'bg-pink-600')
+        document.getElementById('menace').classList.add('rounded-lg', 'megaboss')
     } else {
         document.getElementById('menace').className = ''
         document.getElementById('menace').classList.add('rounded-lg', 'bg-slate-500')
@@ -456,9 +483,10 @@ function render_saved_list() {
     container.innerHTML = '';
 
     Object.keys(saved_adversaries).forEach(name => {
+        const menace_class = saved_adversaries[name].menace
         const subname = (`${saved_adversaries[name].size} Rank ${saved_adversaries[name].rank} ${saved_adversaries[name].creature_type}`).toUpperCase()
         const adversary_sidebar_card = `
-        <div class="p-4 mb-2 text-center rounded-lg bg-cyan-700 text-white" id="load-${name}" onclick="load_adversary('${name}')">
+        <div class="p-4 mb-2 text-center rounded-lg ${menace_class} text-white" id="load-${name}" onclick="load_adversary('${name}')">
             <h4 class="font-bold adversary-list-name">${name.toUpperCase()}</h4>
             <p class="italic text-sm adversary-list-subname">${subname}</p>
         </div>`
