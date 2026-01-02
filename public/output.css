@@ -301,9 +301,6 @@
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
-  .mt-2 {
-    margin-top: calc(var(--spacing) * 2);
-  }
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
   }
@@ -363,9 +360,6 @@
   }
   .min-h-25 {
     min-height: calc(var(--spacing) * 25);
-  }
-  .min-h-30 {
-    min-height: calc(var(--spacing) * 30);
   }
   .w-1\/2 {
     width: calc(1/2 * 100%);
@@ -874,7 +868,6 @@
   }
   .trait-span {
     margin-right: calc(var(--spacing) * 4);
-    margin-bottom: calc(var(--spacing) * 4);
     max-width: var(--container-md);
     border-radius: var(--radius-md);
     background-color: var(--color-slate-400);
@@ -955,7 +948,6 @@
   }
   .passive-span {
     margin-right: calc(var(--spacing) * 4);
-    margin-bottom: calc(var(--spacing) * 4);
     max-width: var(--container-md);
     border-radius: var(--radius-md);
     background-color: var(--color-teal-500);
@@ -965,6 +957,7 @@
   .ability-card {
     margin-right: calc(var(--spacing) * 4);
     margin-bottom: calc(var(--spacing) * 4);
+    height: fit-content;
     max-width: var(--container-sm);
     border-radius: var(--radius-md);
     background-color: var(--color-teal-500);
@@ -973,6 +966,7 @@
   .equipment-card {
     margin-right: calc(var(--spacing) * 4);
     margin-bottom: calc(var(--spacing) * 4);
+    height: fit-content;
     max-width: var(--container-sm);
     border-radius: var(--radius-md);
     background-color: var(--color-slate-500);
@@ -982,6 +976,7 @@
   .yield-card {
     margin-right: calc(var(--spacing) * 4);
     margin-bottom: calc(var(--spacing) * 4);
+    height: fit-content;
     max-width: var(--container-sm);
     border-radius: var(--radius-md);
     background-color: var(--color-red-400);
@@ -991,6 +986,7 @@
   .item-card {
     margin-right: calc(var(--spacing) * 4);
     margin-bottom: calc(var(--spacing) * 4);
+    height: fit-content;
     max-width: var(--container-sm);
     border-radius: var(--radius-md);
     background-color: var(--color-blue-500);
@@ -1196,7 +1192,7 @@ input:checked+.slider:before {
   height: 150px;
 }
 ul,ol {
-  list-style: circle;
+  list-style-type: disc;
   list-style-position: inside;
 }
 @property --tw-border-spacing-x {

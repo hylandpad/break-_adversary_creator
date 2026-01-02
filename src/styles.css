@@ -21,7 +21,7 @@
     }
 
     .trait-span {
-        @apply bg-slate-400 text-white rounded-md p-2 mr-4 mb-4 max-w-md font-bold
+        @apply bg-slate-400 text-white rounded-md p-2 mr-4 max-w-md font-bold
     }
 
     .btn {
@@ -57,23 +57,23 @@
     }
 
     .passive-span{
-        @apply bg-teal-500 text-white rounded-md p-2 mr-4 mb-4 max-w-md
+        @apply bg-teal-500 text-white rounded-md p-2 mr-4 max-w-md
     }
 
     .ability-card{
-        @apply bg-teal-500 rounded-md p-3 mr-4 mb-4 max-w-sm
+        @apply bg-teal-500 rounded-md p-3 mr-4 mb-4 max-w-sm h-fit
     }
 
     .equipment-card{
-        @apply bg-slate-500 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
+        @apply bg-slate-500 rounded-md p-3 mr-4 mb-4 max-w-sm text-white h-fit
     }
 
     .yield-card{
-        @apply bg-red-400 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
+        @apply bg-red-400 rounded-md p-3 mr-4 mb-4 max-w-sm text-white h-fit
     }
 
     .item-card{
-        @apply bg-blue-500 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
+        @apply bg-blue-500 rounded-md p-3 mr-4 mb-4 max-w-sm text-white h-fit
     }
 
     .item-content{
@@ -305,6 +305,6 @@ input:checked+.slider:before {
 }
 
 ul,ol{
-    list-style: circle;
+    list-style-type: disc;
     list-style-position: inside;
 }

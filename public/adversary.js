@@ -69,14 +69,16 @@ class Adversary {
         passive_hearts && (passives.hearts = passive_hearts)
 
         if (Object.keys(passives).length > 0) {
+            const passive_id = `ab-passive-${generate_id()}`
             bound_passive = true
             const type = 'ability'
-            const createPassive = (name, modifiers) => ({
+            const createPassive = (id, name, modifiers, type) => ({
+                'id': id,
                 'name': name,
                 'modifiers': modifiers,
                 'type': type
             })
-            this.passives.push(createPassive(name, passives, type))
+            this.passives.push(createPassive(passive_id, name, passives, type))
 
             if (passive_atkbonus){
                 this._calculate_atkbonus()
@@ -227,14 +229,16 @@ class Adversary {
 
     _adjust_primary_aptitudes(attr = None) {
         //add passed argument to the primary attributes array on the adversary object
+        var primary_aptitudes_copy = [...this.primary_aptitudes]
         if (document.getElementById(`${attr}-primary`).checked) {
-            this.primary_aptitudes.push(attr)
+            primary_aptitudes_copy.push(attr)
         } else {
-            const i = this.primary_aptitudes.indexOf(attr)
+            const i = primary_aptitudes_copy.indexOf(attr)
             if (i > -1) {
-                this.primary_aptitudes.splice(i, 1)
+                primary_aptitudes_copy.splice(i, 1)
             }
         }
+        this.primary_aptitudes = primary_aptitudes_copy
         this._calculate_aptitudes()
         this._adjust_size()
         update_ui(adversary)

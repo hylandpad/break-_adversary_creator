@@ -142,6 +142,138 @@ var saved_adversaries = {
       "insight": 5,
       "aura": 6
     }
+  },
+  "WULFOLK": {
+    "name": "WULFOLK",
+    "menace": "boss",
+    "rank": "2",
+    "description": "<p>Primal ancestors of both Proudhounds and Mundymutts, Wulfolk are taller, broader and much more savage. Armed with sharp teeth, claws and an excellent sense of smell, Wulfolk are the ultimate predators. They have made a name for themselves as excellent bounty hunters, capable of tracking a single target a great many leagues on scent alone. While many prefer to stay to packs led by powerful alphas, some prefer to stay solitary.</p>",
+    "size": "medium",
+    "hearts": 2,
+    "atkbonus": 2,
+    "bright_points": 0,
+    "dark_points": 0,
+    "defense": 12,
+    "speed": "average",
+    "creature_type": "folk",
+    "creature_subtype": "Beastfolk",
+    "primary_aptitudes": [
+      "deftness",
+      "insight",
+      "might"
+    ],
+    "inventory": [
+      {
+        "id": "inv-25pusfuyff6",
+        "name": "HUNTING LEATHERS",
+        "category": "equipment",
+        "type": "armor",
+        "subtype": "Light Armor",
+        "description": "<p>Simple leather armor that provides the Wulfolk some protection without impeding their movement</p>",
+        "slots": "2",
+        "denomination": "coins",
+        "value": "30",
+        "defense": 2,
+        "atkbonus": null,
+        "speed": null,
+        "max_speed": "veryfast",
+        "allegiance": 0
+      },
+      {
+        "id": "inv-1dk8928qhbh",
+        "name": "BAG OF ORNATE BONE DICE",
+        "category": "item",
+        "type": "curiosity",
+        "subtype": "Dice",
+        "description": "<p>A velvet bag containing an assortment of dice fashioned from bones. The dice faces vary from bone to bone, with some having dots, others having roughly carved numbers and some having symbols. They are beautiful in a savage way, and would likely fetch a high price from a wealthy collector or travelling gambler.</p>",
+        "slots": "1",
+        "denomination": "coins",
+        "value": "70",
+        "defense": null,
+        "atkbonus": null,
+        "speed": null,
+        "max_speed": null,
+        "allegiance": 0
+      }
+    ],
+    "passives": [
+      {
+        "id": "tr-b4x5oqccz9f",
+        "name": "Keen Nose",
+        "type": "trait",
+        "modifier": "insight",
+        "value": 1
+      },
+      {
+        "id": "tr-vpd2v9r67x8",
+        "name": "Lithe",
+        "type": "trait",
+        "modifier": "deftness",
+        "value": 1
+      },
+      {
+        "id": "tr-08iqlbe0asbr",
+        "name": "Savage Demeanor",
+        "type": "trait",
+        "modifier": "aura",
+        "value": -1
+      }
+    ],
+    "abilities": [],
+    "facts": {
+      "habitat": {
+        "description": ""
+      },
+      "communication": {
+        "description": ""
+      },
+      "tactics": {
+        "description": ""
+      },
+      "indicators": {
+        "description": ""
+      },
+      "role-playing-notes": {
+        "description": ""
+      },
+      "customization": {
+        "description": ""
+      }
+    },
+    "moods": [
+      {
+        "rolls": {
+          "start": 1,
+          "stop": 5
+        },
+        "mood": "Friendly/Benign",
+        "mood_text": "This creature seems to have a favorable disposition to you"
+      },
+      {
+        "rolls": {
+          "start": 6,
+          "stop": 14
+        },
+        "mood": "Indifferent/Wary",
+        "mood_text": "This creature is not immediately interested in harming you, but is watchful"
+      },
+      {
+        "rolls": {
+          "start": 15,
+          "stop": 20
+        },
+        "mood": "Hostile/Bloodthirsty",
+        "mood_text": "This creature is angry or aggressive. Prepare for combat"
+      }
+    ],
+    "max_speed": "veryfast",
+    "aptitudes": {
+      "might": 8,
+      "deftness": 9,
+      "grit": 7,
+      "insight": 9,
+      "aura": 6
+    }
   }
 }
 var current_quill_content = ''
@@ -613,6 +745,17 @@ function update_ui(adversary) {
     document.getElementById('adversary-subtype').value = adversary.creature_subtype
 
     // Primary Aptitudes check
+    const primary_aptitude_checkboxes = [
+        document.getElementById('might-primary'),
+        document.getElementById('deftness-primary'),
+        document.getElementById('grit-primary'),
+        document.getElementById('insight-primary'),
+        document.getElementById('aura-primary')
+    ]
+    primary_aptitude_checkboxes.forEach(checkbox => {
+        checkbox.checked = false
+    })
+    
     document.getElementById('input-0').value = adversary.aptitudes.might
     if (adversary.primary_aptitudes.includes('might')) { document.getElementById('might-primary').checked = true }
     document.getElementById('input-1').value = adversary.aptitudes.deftness
@@ -660,17 +803,16 @@ function update_ui(adversary) {
     const trait_container = document.getElementById('trait-container')
     trait_container.innerHTML = ''
     adversary.passives.forEach(passive => {
-        const passive_id = (`${passive.type}-${passive.id}`)
         if (passive.type == 'trait') {
             const trait_span = `<span class="trait-span" id="${passive.id}" onclick="confirm_prompt('${passive.id}')">${(passive.name).toUpperCase()} (${passive.value >= 0 ? '+' : ''}${passive.value} ${passive.modifier.toUpperCase()})</span>`
             trait_container.insertAdjacentHTML('beforeend', trait_span)
 
         } else if (passive.type = "ability") {
             const passive_span_html = `
-            <span id="${passive_id}" class="passive-span font-bold">${passive.name}: </span>
+            <span class="passive-span font-bold" id="${passive.id}">${passive.name}: </span>
             `
             trait_container.insertAdjacentHTML('beforeend', passive_span_html)
-            const passive_span = document.getElementById(passive_id)
+            const passive_span = document.getElementById(passive.id)
             if (passive.modifiers.atkbonus) {
                 const atk_span = `<span><svg class="svg-icon"><use href="images/sword-fill-svgrepo-com.svg"></use></svg>+${passive.modifiers.atkbonus}</span>`
                 passive_span.insertAdjacentHTML('beforeend', atk_span)
@@ -721,6 +863,15 @@ function update_ui(adversary) {
     const inventory_container = document.getElementById('inventory-container')
     inventory_container.innerHTML = ''
     adversary.inventory.forEach(item => {
+        var max_speed_text = ''
+        if (item.max_speed){
+            if (item.max_speed == 'veryfast'){
+                var max_speed_text = 'VERY FAST'
+            } else {
+                var max_speed_text = item.max_speed.toUpperCase()
+            }
+        }
+
         const item_block = `
             <div id="${item.category}-${item.id}" class="${item.category == 'equipment' ? 'equipment-card' : item.category == 'item' ? 'item-card' : item.category == 'yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
                 <div class="text-white"><span class="font-bold">${item.name}</span> (<span
@@ -730,22 +881,36 @@ function update_ui(adversary) {
                         ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
                         ${item.defense > 0 ? `<i class="fa-solid fa-shield"></i><span>+${item.defense}</span>` : ''}
                         ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
-                        ${item.max_speed ? `<span class="font-bold">MAX </span><i class="fa-solid fa-person-running"></i><span>${item.max_speed}</span>` : ''}
+                        ${item.max_speed ? `<span class="font-bold"></span><i class="fa-solid fa-person-running"></i><span><strong>MAX: </strong>${max_speed_text}</span>` : ''}
                     </div>
                     ${item.description != 'None' ? `<div id=${item.id}-description" class="italic">${item.description}</div>` : ''}
                 </div>
                 <div class="text-stone-200 italic flex">
-                    <div class="basis-xs">Slots : ${item.slots}</div>
-                    <div class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
+                    <div id="${item.category}-${item.id}-slots" class="basis-xs">Slots : ${item.slots}</div>
+                    <div id="${item.category}-${item.id}-value" class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
                 </div>
             </div>
             `
         inventory_container.insertAdjacentHTML('beforeend', item_block)
         const item_div = document.getElementById(`${item.category}-${item.id}`)
+
+        //insert allegiance box if item has allegiance
         if (item.allegiance) {
             const allegiance_box = `<div class="${item.allegiance > 0 ? 'item-bright-allegiance' : item.allegiance < 0 ? 'item-dark-allegiance' : ''}" id="allegiance-box-${item.id}">Adds ${Math.abs(item.allegiance)} ${item.allegiance > 0 ? 'Bright' : item.allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
             item_div.insertAdjacentHTML('beforeend', allegiance_box)
         }
+
+        //hide slots and values if slots is 0 and value is 0
+        if (item.slots == 0 || item.slots == '' || item.slots == null) {
+            const slots_div = document.getElementById(`${item.category}-${item.id}-slots`)
+            slots_div.classList.add('hidden')
+        }
+        if (item.value == 0 || item.value == '' || item.value == null) {
+            const value_div = document.getElementById(`${item.category}-${item.id}-value`)
+            value_div.classList.add('hidden')
+        }
+
+        //Add confirm prompt to item div
         item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
     })
 
