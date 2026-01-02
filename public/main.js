@@ -25,7 +25,7 @@ var saved_adversaries = {
         "category": "yield",
         "type": "reagent",
         "subtype": "Byproduct",
-        "description": "<p>Jelly remains useful for salves, machine lubricant or -in some cultures- culinary application</p>",
+        "description": "<p>Jellified remains are useful for salves, machine lubricant or -in some cultures- culinary application</p>",
         "slots": "1",
         "denomination": "coins",
         "value": "20",
@@ -40,7 +40,7 @@ var saved_adversaries = {
         "name": "PSEUDOPOD",
         "category": "equipment",
         "type": "weapon",
-        "subtype": "weapon-standard",
+        "subtype": "Standard Weapon",
         "description": "<p>On hit:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Deftness Check:</li><li data-list=\"bullet\" class=\"ql-indent-1\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On Fail: Become Disoriented for One Round</li></ol>",
         "slots": "",
         "denomination": "coins",
@@ -66,6 +66,14 @@ var saved_adversaries = {
         "type": "trait",
         "modifier": "insight",
         "value": -1
+      },
+      {
+        "id": "ab-passive-l2uazgkmn4i",
+        "name": "BLOBLET",
+        "modifiers": {
+          "size": "small"
+        },
+        "type": "ability"
       }
     ],
     "abilities": [
@@ -84,6 +92,15 @@ var saved_adversaries = {
         "description": "<p>All attacks that hit a character also do Sundering Damage to that character's shield. If they have no usable shield, or their shield has been sundered, the Damage is dealt to their Armor. If they have no armor, or their armor has been sundered, the Damage is dealt to their Weapon. </p>",
         "allegiance": 0,
         "bound_passive": false,
+        "type": "Basic",
+        "magic": false
+      },
+      {
+        "id": "ab-x9qt6pjd88k",
+        "name": "BLOBLET",
+        "description": "<p>The Jelly Monster's size is <strong>Small</strong>.</p>",
+        "allegiance": 0,
+        "bound_passive": true,
         "type": "Basic",
         "magic": false
       }
@@ -114,24 +131,24 @@ var saved_adversaries = {
           "start": 1,
           "stop": 5
         },
-        "mood": "Friendly/Benign",
-        "mood_text": "This creature seems to have a favorable disposition to you"
+        "mood": "Benign",
+        "mood_text": "This creature has taken to dissolving a chunk of organic matter and doesn't seem to care about you."
       },
       {
         "rolls": {
           "start": 6,
           "stop": 14
         },
-        "mood": "Indifferent/Wary",
-        "mood_text": "This creature is not immediately interested in harming you, but is watchful"
+        "mood": "Wary",
+        "mood_text": "The eyestalks of this creature are swiveling to keep you in view, but it hasn't made any aggressive moves yet."
       },
       {
         "rolls": {
           "start": 15,
           "stop": 20
         },
-        "mood": "Hostile/Bloodthirsty",
-        "mood_text": "This creature is angry or aggressive. Prepare for combat"
+        "mood": "Hungry",
+        "mood_text": "Pseudopods extend and retract as this creature prepares to attack you."
       }
     ],
     "max_speed": "veryfast",
@@ -315,7 +332,7 @@ var saved_adversaries = {
     "defense": 11,
     "speed": "average",
     "creature_type": "celestial",
-    "creature_subtype": "Angelar",
+    "creature_subtype": "Shardbound",
     "primary_aptitudes": [
       "might",
       "aura",
@@ -391,6 +408,14 @@ var saved_adversaries = {
           "defense": 2
         },
         "type": "ability"
+      },
+      {
+        "id": "ab-passive-o26msrn92oe",
+        "name": "HECULEAN",
+        "modifiers": {
+          "size": "large"
+        },
+        "type": "ability"
       }
     ],
     "abilities": [
@@ -429,6 +454,15 @@ var saved_adversaries = {
         "bound_passive": false,
         "type": "Legendary",
         "magic": false
+      },
+      {
+        "id": "ab-asyothy63t",
+        "name": "HECULEAN",
+        "description": "<p>The Extrasolar is a <strong>Large</strong> creature</p>",
+        "allegiance": 0,
+        "bound_passive": true,
+        "type": "Basic",
+        "magic": false
       }
     ],
     "facts": {
@@ -448,7 +482,7 @@ var saved_adversaries = {
         "description": "Extrasolar found in the wild will likely have seen their old Shard destroyed and be questing for a new Shard. They will work with anyone who help get them closer to a new Shard, and zealously endeavor to smite anyone they see as Dark aligned."
       },
       "customization": {
-        "description": ""
+        "description": "Changing around some descriptive text can turn an Extrasolar into a powerful Fire elemental or a more generic Seraphim-like angelic enemy."
       }
     },
     "moods": [
@@ -457,29 +491,29 @@ var saved_adversaries = {
           "start": "1",
           "stop": "5"
         },
-        "mood": "Unthreatened",
-        "mood_text": "The Wulfolk is aware of your presence, but is more interested in cooking its prey over a campfire"
+        "mood": "Perimeter Secured",
+        "mood_text": "The area around the Sun Shard is secure, and the Extrasolar is calmly watching over it"
       },
       {
         "rolls": {
           "start": "6",
           "stop": "14"
         },
-        "mood": "Wary",
-        "mood_text": "This Wulfolk is carefully observing you, though not making any sudden moves"
+        "mood": "Unthreatened but Watchful",
+        "mood_text": "The Extrasolar is aware of your presence and watching, but feels no immediate threat to the Sun Shard"
       },
       {
         "rolls": {
           "start": "15",
           "stop": "20"
         },
-        "mood": "Hunting",
-        "mood_text": "The Wulfolk is circling you, snarling with teeth bared, looking for an opportunity to strike"
+        "mood": "Threat Identified",
+        "mood_text": "The Extrasolar has identified you as a threat to the Sun Shard and is preparing to eliminate you"
       }
     ],
     "max_speed": "veryfast",
     "aptitudes": {
-      "might": 13,
+      "might": 14,
       "deftness": 11,
       "grit": 9,
       "insight": 9,
