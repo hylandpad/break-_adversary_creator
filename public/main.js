@@ -6,7 +6,7 @@ var saved_adversaries = {
     "description": "<p>Jelly Monsters, or Jellies, are caustic amoebas that are largely harmless on their own. However, they can meld themselves together to create massive unicellular organisms that can take up entire corridors in deep, dark dungeons. Do not underestimate Jelly Monsters. If an infestation is left untreated, it grows - literally.</p>",
     "size": "small",
     "hearts": 1,
-    "atkbonus": 0,
+    "atkbonus": 1,
     "bright_points": 0,
     "dark_points": 0,
     "defense": 11,
@@ -18,7 +18,40 @@ var saved_adversaries = {
       "deftness",
       "might"
     ],
-    "inventory": [],
+    "inventory": [
+      {
+        "id": "inv-1lcmiupo88u",
+        "name": "INERT JELLY",
+        "category": "yield",
+        "type": "reagent",
+        "subtype": "Byproduct",
+        "description": "<p>Jelly remains useful for salves, machine lubricant or -in some cultures- culinary application</p>",
+        "slots": "1",
+        "denomination": "coins",
+        "value": "20",
+        "defense": null,
+        "atkbonus": null,
+        "speed": null,
+        "max_speed": null,
+        "allegiance": 0
+      },
+      {
+        "id": "inv-i30ps1ygey",
+        "name": "PSEUDOPOD",
+        "category": "equipment",
+        "type": "weapon",
+        "subtype": "weapon-standard",
+        "description": "<p>On hit:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Deftness Check:</li><li data-list=\"bullet\" class=\"ql-indent-1\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On Fail: Become Disoriented for One Round</li></ol>",
+        "slots": "",
+        "denomination": "coins",
+        "value": "",
+        "defense": null,
+        "atkbonus": 1,
+        "speed": null,
+        "max_speed": null,
+        "allegiance": 0
+      }
+    ],
     "passives": [
       {
         "id": "tr-339a59jjmjq",
@@ -700,7 +733,7 @@ function update_ui(adversary) {
                         ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
                         ${item.max_speed ? `<span class="font-bold">MAX </span><i class="fa-solid fa-person-running"></i><span>${item.max_speed}</span>` : ''}
                     </div>
-                    ${item.description != 'None' ? `<div id=description" class="italic">${item.description}</div>` : ''}
+                    ${item.description != 'None' ? `<div id=${item.id}-description" class="italic">${item.description}</div>` : ''}
                 </div>
                 <div class="text-stone-200 italic flex">
                     <div class="basis-xs">Slots : ${item.slots}</div>
@@ -729,6 +762,9 @@ function update_ui(adversary) {
 
     //Update current adversary card
     render_current_adversary_card()
+
+    //get proper color for menace
+    menace_color(adversary.menace)
 
     //fill quill editor with description from adversary
     const description_editor = document.querySelector('#description-container-div div.editor').__quill

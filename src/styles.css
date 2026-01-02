@@ -68,6 +68,12 @@
         @apply bg-slate-500 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
     }
 
+    .yield-card{
+        @apply bg-red-400 rounded-md p-3 mr-4 mb-4 max-w-sm text-white 
+    }
+
+
+
     .item-content{
         @apply text-black bg-slate-200 rounded-md
     }
@@ -289,4 +295,9 @@ input:checked+.slider:before {
 
 .editor-short{
     height:150px;
+}
+
+ul,ol{
+    list-style: circle;
+    list-style-position: inside;
 }
