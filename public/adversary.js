@@ -6,11 +6,6 @@ class Adversary {
         this.max_speed = data.max_speed || 'veryfast';
     }
 
-
-    //Custom Methods Section
-
-    // **Adds - push new objects into Adversary arrays**
-
     // Add a trait to the passives primary
     _add_trait() {
         // create trait in adversary object
@@ -149,9 +144,9 @@ class Adversary {
             this.dark_points = this.dark_points + Math.abs(allegiance)
         }
 
-        this.inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance, linked_ability))
+        this.inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
 
-        if (allegiance > 0 || allegiance < 0) {
+        if (allegiance) {
             this._calculate_allegiance()
         }
         if (defense) {
@@ -392,6 +387,9 @@ class Adversary {
 
     // Calculate atk bonus based on gear, abilities and rank
     _calculate_atkbonus() {
+        //set back to atkbonus based on rank
+        this.atkbonus = rank_stats[this.rank][0]
+        
         // Calculate atkbonus from gear, then from ability-based passives
         this.inventory.forEach(this_item => {
             if (this_item.atkbonus > 0) {
@@ -410,6 +408,10 @@ class Adversary {
 
     // Calculate hearts based on rank and abilities
     _calculate_hearts() {
+        //set back to hearts based on rank
+        this.hearts = rank_stats[this.rank][1]
+
+        // Calculate hearts from ability-based passives
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
                 return
@@ -454,14 +456,15 @@ class Adversary {
 
     // Calculate defense based on size, speed, abilities and gear
     _calculate_defense() {
+        //set defense back to base 10
         let def = 10
 
+        // Recalculate defense accounting for size and speed
         if (this.speed == 'fast') {
             def = def + 2
         } else if (this.speed == 'veryfast') {
             def = def + 4
         }
-
         if (this.size == 'tiny') {
             def = def + 3
         } else if (this.size == 'small') {
@@ -494,33 +497,51 @@ class Adversary {
 
     // **Removals - undo the addition of a trait, loot, gear or ability
 
-    _remove_trait(name) {
-        const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.name == name && trait.type == 'trait'))
-        this.adversary.passives.splice(trait_to_remove, 1)
-        this._calculate_aptitudes
+    _remove_trait(id) { 
+        const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.id === id && trait.type == 'trait'))
+        this.passives.splice(trait_to_remove, 1)
+        this._calculate_aptitudes()
+        closeModal()
+        update_ui(this)
     }
 
-    _remove_item(name) {
-        const item_to_remove = this.inventory.indexOf(this.inventory.find(this_item => this_item.name === name))
+    _remove_item(id) {
+        const item_to_remove = this.inventory.indexOf(this.inventory.find(this_item => this_item.id === id))
         const points = item_to_remove.allegiance
+        const atkbonus = item_to_remove.atkbonus
+        const defense = item_to_remove.defense
+        const speed = item_to_remove.speed
+        const max_speed = item_to_remove.max_speed
         this.inventory.splice(item_to_remove, 1)
-
+        //recalculate any affected stats
+        if (atkbonus != undefined || atkbonus != null || atkbonus != 0) {
+            this._calculate_atkbonus()
+        }
+        if (defense != undefined || defense != null || defense != 0) {
+            this._calculate_defense()
+        }
+        if ((speed != null || speed != 0 || speed != undefined) || (max_speed != null || max_speed != undefined)) {
+            this._calculate_speed()
+        }
         //offset bright or dark point values 
         if (points < 0) {
             this.dark_points = this.dark_points + points
+            this._calculate_allegiance()
         } else if (points > 0) {
             this.bright_points = this.bright_points - points
+            this._calculate_allegiance()
         }
-
+        closeModal()
+        update_ui(this)
     }
 
-    _remove_ability(name) {
-        const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities['name'] === name))]
+    _remove_ability(id) {
+        const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance
         this.abilities.splice(ability_to_remove, 1)
 
         //remove any linked passives
-        const passive_index = this.passives.findIndex(passive => passive.name == name)
+        const passive_index = this.passives.findIndex(passive => passive.name == this.abilities[ability_to_remove].name)
         if (passive_index !== -1) {
             this.passives.splice(passive_index, 1);
         }

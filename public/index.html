@@ -67,7 +67,7 @@
 
                     </div>
                     <hr class="faded-hr" />
-                    <div id="description-container-div" class="item-continer">
+                    <div id="description-container-div" class="item-container">
                         <label>Description</label>
                         <div class="editor editor-short"></div>
                         <button class="btn submit-btn" onclick="adversary._change_description()">Save</button>
@@ -80,20 +80,23 @@
                     <div id="combat_card" class="flex">
                         <div class="stat-block combat-values w-1/5 align-top pr-2">
                             <h3 class="bg-slate-600 text-white font-bold pl-3">COMBAT VALUES</h3>
-                            
+
                             <div class="stat-grid mx-2 my-4">
                                 <p class="Italic">Calculated Totals: </p>
-                                <div><label class="text-xl">Attack Bonus: </label><span class="stat-item"><img class="svg-icon"
-                                            src="images/sword-fill-svgrepo-com.svg">
+                                <div><label class="text-xl">Attack Bonus: </label><span class="stat-item"><img
+                                            class="svg-icon" src="images/sword-fill-svgrepo-com.svg">
                                         +<span id="atk-bonus" class="text-xl"></span></span></div>
                                 <div><label class="text-xl">Hearts: </label><span class="stat-item"><i
-                                            class="text-red-600 fa-solid fa-heart"></i><span id="hearts" class="text-xl"></span></span>
+                                            class="text-red-600 fa-solid fa-heart"></i><span id="hearts"
+                                            class="text-xl"></span></span>
                                 </div>
-                                <div><label class="text-xl">Defense: </label><span class="stat-item"><i class="fa-solid fa-shield"></i>
+                                <div><label class="text-xl">Defense: </label><span class="stat-item"><i
+                                            class="fa-solid fa-shield"></i>
                                         <span id="defense"></span class="text-xl"></span></div>
                                 <div><label class="text-xl">Speed: </label><span class="stat-item"><i
                                             class="fa-solid fa-person-running"></i>
-                                        <select class="text-xl" id="speed" disabled onchange="adversary._adjust_speed()">
+                                        <select class="text-xl" id="speed" disabled
+                                            onchange="adversary._adjust_speed()">
                                             <option value="slow">Slow</option>
                                             <option value="average">Average</option>
                                             <option value="fast">Fast</option>
@@ -195,7 +198,8 @@
                         <div class="flex" id="trait-container">
                         </div>
                     </div>
-                    <button id="open-trait-modal" class="btn modal-trigger" data-target="trait-add">Add Trait</button>
+                    <button id="open-trait-modal" class="btn modal-trigger" data-target="trait-add">Add
+                        Trait</button>
                 </div>
 
                 <div id="adversary-inventory" class="bg-gray-200">
@@ -204,7 +208,8 @@
                         <div class="flex flex-wrap" id="inventory-container">
                         </div>
                     </div>
-                    <button id="open-item-modal" class="btn modal-trigger" data-target="item-add">Add Item</button>
+                    <button id="open-item-modal" class="btn modal-trigger" data-target="item-add">Add
+                        Item</button>
                 </div>
 
                 <div id="adversary-abilitie" class="bg-gray-200">
@@ -301,7 +306,8 @@
                         <p class="italic text-sm" id="adversary-card-subname">Medium Rank 3 Monster</p>
                     </div>
                     <div class="text-center">
-                        <button id="save-adversary-btn" class="btn" onclick="save_adversary()">Save Adversary</button>
+                        <button id="save-adversary-btn" class="btn" onclick="save_adversary()">Save
+                            Adversary</button>
                     </div>
                 </div>
                 <div id="adversaries-container" class="h-5/8">
@@ -323,7 +329,8 @@
                             class="required" data-required id="trait-name" placeholder="New Trait" type="text"
                             class="basis-xl"></h3>
                 </div>
-                <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize your
+                <p class="italic slate-400 p-2">Traits modify an adversary's aptitudes. Use them to specialize
+                    your
                     adversary or fit them into a role.
                 </p>
                 <label for="trait-value">Amount: </label><input data-required class="text-input" class="w-10"
@@ -351,8 +358,10 @@
                                 data-required id="ability-name" placeholder="New Ability" type="text" class="basis-xl">
                         </h3>
                     </div>
-                    <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses. Especially
-                        powerful abilities can only be assigned to Bosses or Megabosses of certain levels, and may be
+                    <p class="italic slate-400 p-2">Abilities grant your adversary powers or passive bonuses.
+                        Especially
+                        powerful abilities can only be assigned to Bosses or Megabosses of certain levels, and
+                        may be
                         magical in
                         nature
                     </p>
@@ -417,20 +426,21 @@
                                 data-required id="inventory-item-name" placeholder="New Item" class="basis-xl">
                         </h3>
                     </div>
-                    <p class="italic slate-400 p-2">An adversary's inventory is comprised of its usable equipment, its
+                    <p class="italic slate-400 p-2">An adversary's inventory is comprised of its usable
+                        equipment, its
                         carried items and whatever yield might be garnered from defeating them.
                     </p>
-                    <div id="item-category-div" class="mb-2">
+                    <div id="inventory-item-category-div" class="mb-2">
                         <label for="inventory-item-category">Category: </label>
                         <span class="select-wrapper">
-                            <select class="dropdown" id="item-category">
+                            <select class="dropdown" id="inventory-item-category">
                                 <option value="yield">Yield</option>
                                 <option value="equipment" selected>Equipment</option>
                                 <option value="item">Item</option>
                             </select>
                         </span>
                     </div>
-                    <div id="item-type-subtype-div" class="mb-1">
+                    <div id="inventory-item-type-subtype-div" class="mb-1">
                         <label class="font-bold" for="inventory-item-type">Item Type: </label>
                         <span class="select-wrapper mb-2">
                             <select class="dropdown" data-required id="inventory-item-type">
@@ -458,20 +468,20 @@
                                 <option value="companion">Companion</option>
                             </select>
                         </span>
-                        <span id="item-subtype-container"></span>
+                        <span id="inventory-item-subtype-container"></span>
                     </div>
                     <div id="equipment-combat-modifiers" class="hidden mb-1" class="mb-2">
                         <hr class="faded-hr" />
                         <p class="italic">Combat Modifiers</p>
                         <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
-                            id="item-atkbonus" type="number">
-                        <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="item-defense"
+                            id="inventory-item-atkbonus" type="number">
+                        <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="inventory-item-defense"
                             type="number">
-                        <i class="fa-solid fa-person-running"></i><input class="text-input" id="item-speed"
+                        <i class="fa-solid fa-person-running"></i><input class="text-input" id="inventory-item-speed"
                             type="number">
                         <i class="fa-solid fa-person-running"></i> <label> MAX </label>
                         <span class="select-wrapper">
-                            <select class="dropdown font-bold" id="item-max-speed">
+                            <select class="dropdown font-bold" id="inventory-item-max-speed">
                                 <option value=""></option>
                                 <option value='slow'>Slow</option>
                                 <option value='average'>Average</option>
@@ -494,14 +504,14 @@
                         </div>
                         <div id="inventory-item-value-div" class="basis-xs">
                             <label for="inventory-item-value">Value: </label>
-                            <input type="number" id="item-value" class="text-input">
+                            <input type="number" id="inventory-item-value" class="text-input">
                             <div id="inventory-item-denomination-div">
-                                <input type="radio" id="item-stones" name="inventory_item-denomination"
-                                    value="stones"><label for="item-stones"> Stones </label>
-                                <input type="radio" id="items-coins" name="inventory_item-denomination" value="coins"
-                                    checked><label for="item-coins"> Coins </label>
-                                <input type="radio" id="items-gems" name="inventory_item-denomination"
-                                    value="gems"><label for="item-gems">
+                                <input type="radio" id="inventory-item-stones" name="inventory-item-denomination"
+                                    value="stones"><label for="inventory-item-stones"> Stones </label>
+                                <input type="radio" id="items-coins" name="inventory-item-denomination" value="coins"
+                                    checked><label for="inventory-item-coins"> Coins </label>
+                                <input type="radio" id="items-gems" name="inventory-item-denomination"
+                                    value="gems"><label for="inventory-item-gems">
                                     Gems </label>
                             </div>
                         </div>
@@ -517,7 +527,8 @@
         <template id="export">
             <div>
                 <h3>Choose your Export Format</h3>
-                <p class="italic text-slate-400">Currently only JSON export is supported. Print and Plain Text will be
+                <p class="italic text-slate-400">Currently only JSON export is supported. Print and Plain Text
+                    will be
                     coming in the future</p>
                 <div class="flex">
                     <button id="export-json-btn" class="btn"
@@ -544,7 +555,8 @@
     <div relative width-full>
         <div class="text-italic p-5 text-sm text-white text-center w-full bg-gradient-to-r from-cyan-500 to-green-600">
             <p>Community Project for Break!! Tabletop RPG by Reynaldo Madrinan and Carlo Tartaglia</p>
-            <p>Break!! Adversary Creator is an independent product published under BREAK!! RPG's Non-Commercial License
+            <p>Break!! Adversary Creator is an independent product published under BREAK!! RPG's Non-Commercial
+                License
                 and is not affiliated with BREAK!!'s creators or publishers.</p>
             <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator/issues"
                 target="_blank">Report a Bug/Request a Feature</a>

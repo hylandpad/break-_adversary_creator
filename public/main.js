@@ -1,5 +1,5 @@
 var saved_adversaries = {}
-var current_quill_content =''
+var current_quill_content = ''
 
 function initializeEditors(scope = document) {
     const editorElements = scope.querySelectorAll('.editor');
@@ -52,16 +52,32 @@ const generate_id = () => {
     return Math.random().toString(36).slice(2)
 }
 
-function confirm_prompt(id){
-    const type = id.split("_")[0]
-    const name = id.split("_")[1]
+function confirm_prompt(id) {
+    const type_designator = id.split("-")[0]
+    var type = ''
+    var type_friendly = ''
+    var remover = ''
+    if (type_designator == 'tr') {
+        type = 'passives'
+        type_friendly = 'Trait'
+        remover = `_remove_trait('${id}')`
+    } else if (type_designator == 'ab') {
+        type = 'abilities'
+        type_friendly = 'Ability'
+        remover = `_remove_ability('${id}')`
+    } else if (type_designator == 'inv') {
+        type = 'inventory'
+        type_friendly = 'Item'
+        remover = `_remove_item('${id}')`
+    }
+    const obj_name = adversary[type].find(item => item.id == id).name
     const htmlbody = `
         <div>
-            <p>Are you sure you want to remove the ${type} <strong>${name}</strong>?</p>
+            <p>Are you sure you want to remove the ${type_friendly} <strong>${obj_name}</strong>?</p>
             <p>This action cannot be undone.</p>
         </div>
-        <btn class="btn modal-close confirm-btn" onclick="remove_trait()">Confirm</button>
-        <btn class="btn modal-close cancel-btn">Cancel</button>
+        <button class="btn" onclick="adversary.${remover}">Confirm</button>
+        <button class="btn" onclick="closeModal()">Cancel</button>
         `
     openModal('generic-confirm-modal')
     modalBody.innerHTML = htmlbody
@@ -81,12 +97,12 @@ function show_hide_combat_modifiers(select_element) {
 // Fill out the item subtypes based on type selected
 function fill_subtypes(select_element) {
     const item_type = select_element
-    const subtype_select = document.getElementById('item-subtype-container')
+    const subtype_select = document.getElementById('inventory-item-subtype-container')
     if (item_type.value == 'weapon') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="item.subtype">
+        <select class="dropdown" id="inventory-item-subtype">
             <option value="weapon-standard">Standard</option>
             <option value="weapon-quick">Quick</option>
             <option value="weapon-master">Master</option>
@@ -107,7 +123,7 @@ function fill_subtypes(select_element) {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="item-subtype">
+        <select class="dropdown" id="inventory-item-subtype">
             <option value="armor-light">Light</option>
             <option value="armor-medium">Medium</option>
             <option value="armor-heavy">Heavy</option>
@@ -121,7 +137,7 @@ function fill_subtypes(select_element) {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="item-subtype">
+        <select class="dropdown" id="inventory-item-subtype">
             <option value="shield-small">Small</option>
             <option value="shield-standard">Standard</option>
             <option value="shield-large">Large</option>
@@ -131,7 +147,7 @@ function fill_subtypes(select_element) {
         `
     }
     else {
-        subtype_select.innerHTML = `<label>Subtype: </label><input id="item_subtype" class="text-input w-55" type="text" placeholder="Enter Subtype">`
+        subtype_select.innerHTML = `<label>Subtype: </label><input id="inventory-item-subtype" class="text-input w-55" type="text" placeholder="Enter Subtype">`
     }
 }
 
@@ -355,8 +371,8 @@ var adversary = new Adversary({
     menace: "",
     rank: 1,
     size: 'medium',
-    hearts: rank_stats[0][1],
-    atkbonus: rank_stats[0][1],
+    hearts: rank_stats[1][1],
+    atkbonus: rank_stats[1][0],
     bright_points: 0,
     dark_points: 0,
     defense: 10,
@@ -445,28 +461,28 @@ function update_ui(adversary) {
 
     // Allegiance visualization
     const app_main_div = document.getElementById('app-main')
-    if (adversary.allegiance = 'unaligned') {
+    if (adversary.allegiance == 'unaligned' || adversary.allegiance == undefined) {
         document.getElementById('unaligned').classList.remove('hidden')
         document.getElementById('bright').classList.add('hidden')
         document.getElementById('dark').classList.add('hidden')
         document.getElementById('twilight').classList.add('hidden')
         app_main_div.classList.add('unaligned-allegiance')
         app_main_div.classList.remove('dark-allegiance', 'bright-allegiance', 'twilight-allegiance')
-    } else if (adversary.allegiance = 'bright') {
+    } else if (adversary.allegiance == 'bright') {
         document.getElementById('unaligned').classList.add('hidden')
         document.getElementById('bright').classList.remove('hidden')
         document.getElementById('dark').classList.add('hidden')
         document.getElementById('twilight').classList.add('hidden')
         app_main_div.classList.add('bright-allegiance')
         app_main_div.classList.remove('dark-allegiance', 'unaligned-allegiance', 'twilight-allegiance')
-    } else if (adversary.allegiance = 'dark') {
+    } else if (adversary.allegiance == 'dark') {
         document.getElementById('unaligned').classList.add('hidden')
         document.getElementById('bright').classList.add('hidden')
         document.getElementById('dark').classList.remove('hidden')
         document.getElementById('twilight').classList.add('hidden')
         app_main_div.classList.add('dark-allegiance')
         app_main_div.classList.remove('bright-allegiance', 'unaligned-allegiance', 'twilight-allegiance')
-    } else {
+    } else if (adversary.allegiance == 'twilight') {
         document.getElementById('unaligned').classList.add('hidden')
         document.getElementById('bright').classList.add('hidden')
         document.getElementById('dark').classList.add('hidden')
@@ -479,9 +495,9 @@ function update_ui(adversary) {
     const trait_container = document.getElementById('trait-container')
     trait_container.innerHTML = ''
     adversary.passives.forEach(passive => {
-        const passive_id = (`${ability.type}-${ability.id}`)
+        const passive_id = (`${passive.type}-${passive.id}`)
         if (passive.type == 'trait') {
-            const trait_span = `<span id="${passive.id}" onclick='adversary._remove_trait("${passive.id}")'>${(passive.name).toUpperCase()} (${passive.value >= 0 ? '+' : ''}${passive.value} ${passive.modifier.toUpperCase()})</span>`
+            const trait_span = `<span class="trait-span" id="${passive.id}" onclick="confirm_prompt('${passive.id}')">${(passive.name).toUpperCase()} (${passive.value >= 0 ? '+' : ''}${passive.value} ${passive.modifier.toUpperCase()})</span>`
             trait_container.insertAdjacentHTML('beforeend', trait_span)
 
         } else if (passive.type = "ability") {
@@ -529,13 +545,14 @@ function update_ui(adversary) {
         `
         ability_container.insertAdjacentHTML('beforeend', ability_block)
         const ability_div = document.getElementById(id)
-        ability_div.setAttribute('onclick', `adversary._remove_ability('${name}')`)
+        ability_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
         if (ability.allegiance != 0) {
             const allegiance_box = `<div class="${allegiance > 0 ? 'ability-bright-allegiance' : allegiance < 0 ? 'ability-dark-allegiance' : ''}" id="allegiance-box-${name}-${type}">Adds ${Math.abs(allegiance)} ${allegiance > 0 ? 'Bright' : allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
             ability_div.insertAdjacentHTML('beforeend', allegiance_box)
         }
     })
 
+    // make changes to inventory container
     const inventory_container = document.getElementById('inventory-container')
     inventory_container.innerHTML = ''
     adversary.inventory.forEach(item => {
@@ -547,7 +564,7 @@ function update_ui(adversary) {
                     <div>
                         ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
                         ${item.defense > 0 ? `<i class="fa-solid fa-shield"></i><span>+${item.defense}</span>` : ''}
-                        ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>MAX: ${item.speed}</span>` : ''}
+                        ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
                         ${item.max_speed ? `<span class="font-bold">MAX </span><i class="fa-solid fa-person-running"></i><span>${item.max_speed}</span>` : ''}
                     </div>
                     ${item.description != 'None' ? `<div id=description" class="italic">${item.description}</div>` : ''}
@@ -558,13 +575,13 @@ function update_ui(adversary) {
                 </div>
             </div>
             `
-        if (item.allegiance != 0) {
-            const allegiance_box = `<div class="${item.allegiance > 0 ? 'item-bright-allegiance' : item.allegiance < 0 ? 'item-dark-allegiance' : ''}" id="allegiance-box-${item.id}">Adds ${Math.abs(item.allegiance)} ${item.allegiance > 0 ? 'Bright' : item.allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
-            ability_div.insertAdjacentHTML('beforeend', allegiance_box)
-        }
         inventory_container.insertAdjacentHTML('beforeend', item_block)
-        const item_div = document.getElementById(item.id)
-        item_div.setAttribute('onclick', `adversary._remove_item('${item.name}')`)
+        const item_div = document.getElementById(`${item.category}-${item.id}`)
+        if (item.allegiance) {
+            const allegiance_box = `<div class="${item.allegiance > 0 ? 'item-bright-allegiance' : item.allegiance < 0 ? 'item-dark-allegiance' : ''}" id="allegiance-box-${item.id}">Adds ${Math.abs(item.allegiance)} ${item.allegiance > 0 ? 'Bright' : item.allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
+            item_div.insertAdjacentHTML('beforeend', allegiance_box)
+        }
+        item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
     })
 
     //update the data bars
