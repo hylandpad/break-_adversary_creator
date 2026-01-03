@@ -24,6 +24,10 @@ function openModal(targetId) {
     ability_types_access()
   }
 
+  if(document.getElementById('help-message')){
+    fill_version_num()
+  }
+
   initializeEditors(modalBody);
 
   // Remove hiding classes, Add showing classes

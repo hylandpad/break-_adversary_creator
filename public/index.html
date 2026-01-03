@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=tactic" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=help" />
     <title>Break!! Adversary Creator</title>
 </head>
 
 <body id="app-main" class="unaligned-allegiance transition ease-in-out delay-150 duration-2500">
-    <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-2"><img class="w-[250px] m-auto"
-            src="/images/breakcommunity.png">
+    <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-2"><img class="w-[250px] m-auto inline"
+            src="/images/breakcommunity.png"><i id="help-btn" data-target="help"  class="inline material-symbols-outlined text-white modal-trigger">help</i>
     </div>
     <div id="toast-container h-[40px] block"><p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center"></p></div>
     <div class="container m-auto">
@@ -386,8 +387,6 @@
                         </div>
                     </div>
                     <div class="editor"></div>
-                    <!--<textarea data-required id="ability-description" placeholder="Ability Explanation here"
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
                     <h4 class="section-header from-slate-400 mb-2">Optional Passives</h4>
                     <div class="mb-2">
                         <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
@@ -490,8 +489,6 @@
                             </select>
                         </span>
                     </div>
-                    <!--<textarea data-required id="inventory-item-description" placeholder="brief description here."
-                    class="bg-amber-200 rounded-md mb-2 p-2 w-full min-h-25 max-h-50 "></textarea>-->
                     <div class="editor"></div>
                     <div class="flex flew-row align-top">
                         <div id="inventory-item-slots-div" class="basis-2xs">
@@ -499,9 +496,6 @@
                             <input min='0' class="text-input" id="inventory-item-slots" type="number">
                         </div>
                         <div id="inventory-item-allegiance-div" class="basis-md">
-                            <!--<label for="inventory-item-allegiance">Allegiance: </label>
-                            <input class="text-input" id="inventory-item-allegiance" type="number">-->
-
                             <label for="inventory-item-allegiance">Allegiance Points: </label><input
                                 onchange="set_item_allegiance()" id="inventory-item-allegiance"
                                 class="w-10 text-right text-input " type="number" value="0">
@@ -545,6 +539,22 @@
                         onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button disabled
                         class="btn">Text</button><button disabled class="btn">Print</button>
                 </div>
+            </div>
+        </template>
+        <template id="help">
+            <div id="help-message">
+                <h2 class="text-xl font-bold">Break!! Adversary Creator v.<span id="version"></span></h2>
+                <p>This is a tool to easily put together and export Break Adversaries. It does the following:</p>
+                <ul>
+                    <li>Aptitude Calculations are completely automated</li>
+                    <li>All size and speed calculations are factored into Combat values and aptitudes</li>
+                    <li>Adding traits, items and abilities can manipulate combat values and aptitudes</li>
+                    <li>You can import and export your adversary list in the form of a JSON file - future enhancements will allow for print-friendly cards, and markdown exports</li>
+                </ul>
+                <br />
+                <p>You can remove any Trait, Inventory item or Ability by clicking on them.</p>
+                <p>Ability bound passives will be removed when the bound ability is removed.</p>
+                <p class="font-bold">Please report bugs or request features on the <a class="underline text-blue-700" href="https://github.com/hylandpad/break-_adversary_creator/issues" target="_blank">Project Github</a></p>
             </div>
         </template>
     </div>

@@ -29,6 +29,11 @@
         @apply disabled:bg-gray-300
     }
 
+    .btn-hollow {
+        @apply text-white font-bold bg-transparent border-white border-2 rounded-md hover:bg-white hover:bg-white/50 cursor-pointer;
+        @apply disabled:bg-gray-300
+    }
+
     .text-input {
         @apply w-15 bg-slate-300 rounded-md ml-1 pl-2
     }
@@ -118,6 +123,10 @@
 
     #toast-content{
         @apply transition-all duration-1000 text-center ease-in-out
+    }
+
+    #help-btn {
+        @apply transition-all duration-1000 text-center cursor-pointer ease-in-out opacity-50 hover:opacity-100
     }
 }
 
@@ -340,3 +349,4 @@ ul,ol{
 #adversaries-scrollable{
      scrollbar-color: #898a8c #e6e7eb;
 }
+
