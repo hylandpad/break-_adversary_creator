@@ -612,9 +612,8 @@ function confirm_prompt(id_or_name) {
         } else if (type_designator == 'inv') {
             type = 'inventory'
             type_friendly = 'Item'
-            remover = `_remove_item('${id_or_name}')`
-        } else {
-        }
+            remover = `_remove_item('${id_or_name}')`}
+        
         const obj_name = adversary[type].find(item => item.id == id_or_name).name
         const htmlbody = `
         <div>

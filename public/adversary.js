@@ -330,7 +330,7 @@ class Adversary {
 
     // Adjust adversary size and manipulate aptitudes and other combat values based on the changes
     _adjust_size() {
-        
+        this.size = 'medium'
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
                 return
@@ -534,7 +534,7 @@ class Adversary {
     }
 
     _remove_item(id) {
-        const item_to_remove = this.inventory.indexOf(this.inventory.find(this_item => this_item.id === id))
+        const item_to_remove = this.inventory[this.inventory.indexOf(this.inventory.find(this_item => this_item.id === id))]
         const points = item_to_remove.allegiance
         const atkbonus = item_to_remove.atkbonus
         const defense = item_to_remove.defense
@@ -566,13 +566,17 @@ class Adversary {
     _remove_ability(id) {
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance
-        const atkbonus = ability_to_remove.passive_atkbonus
-        const defense = ability_to_remove.passive_defense
-        const speed = ability_to_remove.passive_speed
-        const hearts = ability_to_remove.passive_hearts
         //remove any linked passives
         const passive_index = this.passives.findIndex(passives => passives.name == ability_to_remove.name)
         if (passive_index !== -1) {
+
+            const atkbonus = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.atkbonus
+            const defense = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.defense
+            const speed = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.speed
+            const max_speed = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.max_speed
+            const hearts = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.hearts
+            const size = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.size
+
             this.passives.splice(passive_index, 1);
             if (atkbonus != undefined || atkbonus != null || atkbonus != 0) {
                 this._calculate_atkbonus()
@@ -586,6 +590,9 @@ class Adversary {
             if ((speed != null || speed != 0 || speed != undefined) || (max_speed != null || max_speed != undefined)) {
                 this._calculate_speed()
             }
+            if (size != null || size != undefined) {
+                this._adjust_size()
+            }
         }
         //offset bright or dark point values 
         if (points < 0) {
@@ -595,7 +602,7 @@ class Adversary {
             this.bright_points = this.bright_points - points
             this._calculate_allegiance()
         }
-        this.abilities.splice(ability_to_remove, 1)
+        this.abilities.splice(this.abilities.indexOf(ability_to_remove), 1)
         closeModal()
         update_ui(this)
     }
