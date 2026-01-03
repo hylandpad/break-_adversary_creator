@@ -608,7 +608,7 @@ function confirm_prompt(id_or_name) {
         } else if (type_designator == 'ab') {
             type = 'abilities'
             type_friendly = 'Ability'
-            remover = `_remove_ability('${id}')`
+            remover = `_remove_ability('${id_or_name}')`
         } else if (type_designator == 'inv') {
             type = 'inventory'
             type_friendly = 'Item'
