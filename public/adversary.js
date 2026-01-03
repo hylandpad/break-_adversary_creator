@@ -540,7 +540,7 @@ class Adversary {
         const defense = item_to_remove.defense
         const speed = item_to_remove.speed
         const max_speed = item_to_remove.max_speed
-        this.inventory.splice(item_to_remove, 1)
+        this.inventory.splice(this.inventory.indexOf(item_to_remove), 1)
         //recalculate any affected stats
         if (atkbonus != undefined || atkbonus != null || atkbonus != 0) {
             this._calculate_atkbonus()
