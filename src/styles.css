@@ -16,16 +16,21 @@
         @apply font-bold pr-1
     }
 
-    .fading-header {
-        @apply bg-gradient-to-r to-transparent text-stone-50 font-bold pl-2
+    .section-header {
+        @apply bg-slate-600 text-stone-50 font-bold pl-2
     }
 
     .trait-span {
-        @apply bg-slate-400 text-white rounded-md p-2 mr-4 mb-4 max-w-md
+        @apply bg-slate-400 text-white rounded-md p-2 m-2 max-w-md font-bold
     }
 
     .btn {
         @apply text-white font-bold bg-blue-600 rounded-md px-3 py-1 my-2 mr-2 hover:bg-blue-800 cursor-pointer;
+        @apply disabled:bg-gray-300
+    }
+
+    .btn-hollow {
+        @apply text-white font-bold bg-transparent border-white border-2 rounded-md hover:bg-white hover:bg-white/50 cursor-pointer;
         @apply disabled:bg-gray-300
     }
 
@@ -57,21 +62,75 @@
     }
 
     .passive-span{
-        @apply bg-teal-500 text-white rounded-md p-2 mr-4 mb-4 max-w-md
+        @apply bg-teal-500 text-white rounded-md p-2 m-2 max-w-md
     }
 
     .ability-card{
-        @apply bg-teal-500 rounded-md p-3 mr-4 mb-4 max-w-sm
+        @apply bg-teal-500 rounded-md p-3 mr-4 mb-4 max-w-lg h-fit
     }
+
+    .equipment-card{
+        @apply bg-slate-500 rounded-md p-3 mr-4 mb-4 max-w-lg text-white h-fit
+    }
+
+    .yield-card{
+        @apply bg-red-400 rounded-md p-3 mr-4 mb-4 max-w-lg text-white h-fit
+    }
+
+    .item-card{
+        @apply bg-blue-500 rounded-md p-3 mr-4 mb-4 max-w-lg text-white h-fit
+    }
+
+    .item-content{
+        @apply text-black bg-slate-200 rounded-md
+    }
+
     .fact-card{
         @apply basis-1/2 p-2
     }
+
+    .fact-card textarea{
+        @apply max-h-50 min-h-30 w-full bg-amber-200 rounded-md mt-2 pl-2
+    }
+
     a{
         @apply cursor-pointer
     }
+
+    .mook{
+        @apply bg-lime-500
+    }
+
+    .boss{
+        @apply bg-amber-400
+    }
+
+    .megaboss{
+        @apply bg-pink-600
+    }
+
+    #inventory-container{
+        @apply flex flex-wrap justify-evenly
+    }
+
+    #ability-container{
+        @apply flex flex-wrap justify-evenly
+    }
+
+    #trait-container{
+        @apply flex flex-wrap justify-evenly
+    }
+
+    #toast-content{
+        @apply transition-all duration-1000 text-center ease-in-out
+    }
+
+    #help-btn {
+        @apply transition-all duration-1000 text-center cursor-pointer ease-in-out opacity-50 hover:opacity-100
+    }
 }
 
-#speed{
+#speed, #size{
     appearance: none;
 }
 
@@ -254,3 +313,40 @@ input:checked+.slider:before {
     border-radius: 6px;
     font-weight: 600;
 }
+
+.item-dark-allegiance{
+    padding: .25rem;
+    margin-top: .5rem;
+    background-color: purple;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.item-bright-allegiance{
+    padding: .25rem;
+    margin-top: .5rem;
+    background-color: rgb(206, 22, 151);
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.editor{
+    max-height: 300px;
+    margin-bottom:1rem;
+}
+
+.editor-short{
+    height:150px;
+}
+
+ul,ol{
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+#adversaries-scrollable{
+     scrollbar-color: #898a8c #e6e7eb;
+}
+

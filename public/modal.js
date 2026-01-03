@@ -24,6 +24,12 @@ function openModal(targetId) {
     ability_types_access()
   }
 
+  if(document.getElementById('help-message')){
+    fill_version_num()
+  }
+
+  initializeEditors(modalBody);
+
   // Remove hiding classes, Add showing classes
   overlay.classList.remove('opacity-0', 'pointer-events-none');
   overlay.classList.add('opacity-100', 'pointer-events-auto');
