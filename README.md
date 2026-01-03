@@ -4,6 +4,22 @@ This is a personal project im working on to create a web-app capable of creating
 Someday, it would be really cool to be able to export for a VTT importer.
 This will also be my submission for a code bootcamp personal project.
 
+*1/03/26* - **1.0 Release Highlights**
+- Restructured the UI Refresh so that Save/Load Adversary now works properly
+- Added feedback through Toast Messages for all sorts of user actions
+- Added Modal Confirm windows to Delete Actions
+- Added a Help Button with version info and basic instructions
+- Changed display of Traits, Items and Abilitys to make better use of their containers and have a much cleaner display when there are many abilities with a lot of text
+- Implemented Quill editors as a WYSIWYG rich text editor for Adversary Description and Item/Ability descriptions
+- Bound speed and size to abilities - they are no longer individually editable (per Adversary creation rules)
+- Changed layout of certain sections
+- Added a "Create New Adversary" button to cut down on accidentally overwriting a Saved Adversary
+- Added a Delete function for removing saved Adversaries
+
+**Known Issues**
+- Currently attributes, descriptions, adversary info, and quick facts all save ONLY after manually saving an adversary. However, Gear, ability and Trait removals automatically save without manually saving the Adversary. This is a bit confusing and can lead to difficulties reverting changes that you didn't intend to make. 1.1 should have a fix for this. For now, take care when you delete abilities, traits or items.
+
+
 *12/29/2025* - **I think we're about ready for a beta release. Features of this release is as follows:**
 - Autocalculation of Aptitudes and combat values based on traits, ability passives, gear, size and rank
 - Logging of a creature's allegiance, descriptors, facts and mood table values
