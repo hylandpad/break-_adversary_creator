@@ -227,6 +227,7 @@ class Adversary {
     // Make changes to adversary description
     _change_description() {
         this.description = document.querySelector('#description-container-div .editor').__quill.root.innerHTML
+        save_adversary()
     }
 
     // Adjust primary attributes. 
@@ -407,6 +408,7 @@ class Adversary {
             this.moods.push(createMood(rolls, data[2], data[3]))
         }
         update_ui(this)
+        save_adversary()
     }
 
     // **Calculates - broader functions that integrate changes from a number of different sources to recalculate specific attributes

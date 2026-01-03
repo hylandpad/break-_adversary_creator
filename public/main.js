@@ -544,7 +544,6 @@ function initializeEditors(scope = document) {
     });
 }
 
-
 //Event Handlers
 document.addEventListener('change', function (event) {
     // Check if the changed element is the one we care about
@@ -563,6 +562,17 @@ window.addEventListener('load', function () {
 });
 
 // Utility Functions
+const show_toast = (message, duration = 3000) => {
+    const toast = document.getElementById('toast-content')
+    toast.innerText = message
+    toast.classList.remove('opacity-0')
+    toast.classList.add('opacity-100')
+    setTimeout(() => {
+        toast.classList.add('opacity-0')
+        toast.classList.remove('opacity-100')
+    }, duration)
+}
+
 const generate_id = () => {
     return Math.random().toString(36).slice(2)
 }
@@ -666,7 +676,6 @@ function fill_subtypes(select_element) {
     }
 }
 
-
 function menace_color(menace) {
 
     if (menace == 'mook') {
@@ -687,14 +696,27 @@ function menace_color(menace) {
 
 function save_adversary() {
     const name = adversary.name;
+    const toast_message = 'Adversary "' + name + '" saved!';
 
     saved_adversaries[name] = JSON.parse(JSON.stringify(adversary));
     render_saved_list();
+    show_toast(toast_message, 2000);
 }
 
 function load_adversary(adv_name) {
     adversary = new Adversary({ ...saved_adversaries[adv_name] })
+    const toast_message = 'Adversary "' + adv_name + '" loaded!';
+
     update_ui(adversary)
+    show_toast(toast_message, 2000);
+}
+
+function create_new_adversary() {
+    adversary = new Adversary(adversary_template);
+    const toast_message = 'New Adversary created!';
+    adversary._calculate_aptitudes()
+    update_ui(adversary)
+    show_toast(toast_message, 2000);
 }
 
 function render_saved_list() {
@@ -711,13 +733,6 @@ function render_saved_list() {
         </div>`
         container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
     });
-}
-
-function render_current_adversary_card() {
-    const name = adversary.name ? adversary.name.toUpperCase() : 'UNNAMED ADVERSARY'
-    const subname = (`${adversary.size} Rank ${adversary.rank} ${adversary.creature_type}`).toUpperCase()
-    document.getElementById('adversary-card-name').innerHTML = name
-    document.getElementById('adversary-card-subname').innerHTML = subname
 }
 
 function initialize_mood_table() {
@@ -977,6 +992,8 @@ var adversary = new Adversary({
     ]
 })
 
+var adversary_template = JSON.parse(JSON.stringify(adversary))
+
 // make changes on the page to represent changes in the data structure for the current adversary
 
 function update_ui(adversary) {
@@ -1175,9 +1192,6 @@ function update_ui(adversary) {
     //update mood table on every refresh
     initialize_mood_table()
 
-    //Update current adversary card
-    render_current_adversary_card()
-
     //get proper color for menace
     menace_color(adversary.menace)
 
@@ -1228,6 +1242,4 @@ const importAdversariesJson = () => {
 adversary._calculate_aptitudes()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
-
-render_current_adversary_card()
 render_saved_list()

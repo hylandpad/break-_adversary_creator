@@ -12,7 +12,9 @@
 
 <body id="app-main" class="unaligned-allegiance transition ease-in-out delay-150 duration-2500">
     <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-2"><img class="w-[250px] m-auto"
-            src="/images/breakcommunity.png"></div>
+            src="/images/breakcommunity.png">
+    </div>
+    <div id="toast-container h-[40px] block"><p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center"></p></div>
     <div class="container m-auto">
         <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
             <div class="header break-adversary-header mb-5">
@@ -292,11 +294,8 @@
         <div class="sidebar inline-block align-top w-1/5">
             <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">
                 <div id="current-adversary" class="h-1/8">
-                    <p class="italic text-sm text-center">Current Adversary</p>
-                    <hr class="faded-hr" />
-                    <div class="p-4 text-center rounded-lg bg-cyan-500 text-white">
-                        <h4 class="font-bold" id="adversary-card-name"></h4>
-                        <p class="italic text-sm" id="adversary-card-subname"></p>
+                    <div class="text-center">
+                        <button id="new-adversary-btn" class="btn" onclick="create_new_adversary()">Create New Adversary</button>
                     </div>
                     <div class="text-center">
                         <button id="save-adversary-btn" class="btn" onclick="save_adversary()">Save
@@ -304,9 +303,9 @@
                     </div>
                 </div>
                 <div id="adversaries-container" class="h-5/8">
-                    <p class="italic text-sm text-center">Created Adversaries</p>
+                    <p class="font-bold text-sm text-center">SAVED ADVERSARIES</p>
                     <hr class="faded-hr" />
-                    <div id="adversaries-scrollable"></div>
+                    <div id="adversaries-scrollable" class="overflow-x-hidden overflow-y-scroll max-h-7/8 h-full"></div>
                 </div>
                 <div id="control-button-group" class="block align-bottom text-center">
                     <button id="import-adversaries-btn" class="btn" onclick="importAdversariesJson()">Import</button>

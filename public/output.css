@@ -14,6 +14,7 @@
     --color-orange-600: oklch(64.6% 0.222 41.116);
     --color-amber-200: oklch(92.4% 0.12 95.746);
     --color-amber-400: oklch(82.8% 0.189 84.429);
+    --color-amber-600: oklch(66.6% 0.179 58.318);
     --color-yellow-300: oklch(90.5% 0.182 98.111);
     --color-yellow-400: oklch(85.2% 0.199 91.936);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
@@ -352,8 +353,14 @@
   .h-7 {
     height: calc(var(--spacing) * 7);
   }
+  .h-\[40px\] {
+    height: 40px;
+  }
   .h-full {
     height: 100%;
+  }
+  .max-h-7\/8 {
+    max-height: calc(7/8 * 100%);
   }
   .max-h-50 {
     max-height: calc(var(--spacing) * 50);
@@ -491,6 +498,12 @@
   .overflow-hidden {
     overflow: hidden;
   }
+  .overflow-x-hidden {
+    overflow-x: hidden;
+  }
+  .overflow-y-scroll {
+    overflow-y: scroll;
+  }
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
@@ -536,6 +549,9 @@
   }
   .bg-amber-200 {
     background-color: var(--color-amber-200);
+  }
+  .bg-amber-600 {
+    background-color: var(--color-amber-600);
   }
   .bg-black\/60 {
     background-color: color-mix(in srgb, #000 60%, transparent);
@@ -1026,6 +1042,16 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
+  #toast-content {
+    text-align: center;
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 1000ms;
+    transition-duration: 1000ms;
+    --tw-ease: var(--ease-in-out);
+    transition-timing-function: var(--ease-in-out);
+  }
 }
 #speed, #size {
   appearance: none;
@@ -1206,6 +1232,9 @@ input:checked+.slider:before {
 ul,ol {
   list-style-type: disc;
   list-style-position: inside;
+}
+#adversaries-scrollable {
+  scrollbar-color: #898a8c #e6e7eb;
 }
 @property --tw-border-spacing-x {
   syntax: "<length>";

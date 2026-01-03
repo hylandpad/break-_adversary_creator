@@ -115,6 +115,10 @@
     #trait-container{
         @apply flex flex-wrap justify-evenly
     }
+
+    #toast-content{
+        @apply transition-all duration-1000 text-center ease-in-out
+    }
 }
 
 #speed, #size{
@@ -331,4 +335,8 @@ input:checked+.slider:before {
 ul,ol{
     list-style-type: disc;
     list-style-position: inside;
+}
+
+#adversaries-scrollable{
+     scrollbar-color: #898a8c #e6e7eb;
 }
