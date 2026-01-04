@@ -26,6 +26,7 @@ function openModal(targetId) {
 
   if(document.getElementById('help-message')){
     fill_version_num()
+    fill_help_text()
   }
 
   initializeEditors(modalBody);
