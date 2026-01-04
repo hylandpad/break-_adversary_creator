@@ -523,7 +523,7 @@ var saved_adversaries = {
     }
 }
 var current_quill_content = ''
-var app_version = parseFloat(1.0).toFixed(3)
+const app_version = parseFloat(app_version_number).toFixed(3)
 
 function initializeEditors(scope = document) {
     const editorElements = scope.querySelectorAll('.editor');
@@ -547,6 +547,10 @@ function initializeEditors(scope = document) {
 
 function fill_version_num() {
     document.getElementById('version').innerText = app_version
+}
+
+function fill_help_text(){
+    document.getElementById('help-content').innerHTML = help_text
 }
 
 //Event Handlers
@@ -960,6 +964,13 @@ function set_max_rank() {
 // Load page with some preformatted adversary data
 var adversary = new Adversary({
     name: 'New Adversary',
+    aptitudes: {
+            "might": 7,
+            "deftness": 7,
+            "grit": 7,
+            "insight": 7,
+            "aura": 7
+        },
     menace: "",
     rank: 1,
     description: "",
@@ -971,7 +982,7 @@ var adversary = new Adversary({
     defense: 10,
     speed: 'average',
     creature_type: 'monster',
-    creature_subtype: 'Abberant',
+    creature_subtype: '',
     primary_aptitudes: [],
     inventory: [],
     passives: [],
@@ -1272,7 +1283,6 @@ const importAdversariesJson = () => {
 }
 
 // On page loads
-//adversary._calculate_aptitudes()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
 render_saved_list()
