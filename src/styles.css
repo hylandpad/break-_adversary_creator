@@ -29,6 +29,10 @@
         @apply disabled:bg-gray-300
     }
 
+    .btn-light{
+        @apply text-white font-bold bg-blue-400 rounded-md px-3 py-1 my-2 mr-2 hover:bg-blue-800 cursor-pointer;
+    }
+
     .btn-hollow {
         @apply text-white font-bold bg-transparent border-white border-2 rounded-md hover:bg-white hover:bg-white/50 cursor-pointer;
         @apply disabled:bg-gray-300

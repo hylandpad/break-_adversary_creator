@@ -1,4 +1,4 @@
-var saved_adversaries = {
+var example_adversaries = {
     "JELLY MONSTER": {
         "name": "JELLY MONSTER",
         "menace": "mook",
@@ -522,6 +522,7 @@ var saved_adversaries = {
         "allegiance": "bright"
     }
 }
+var saved_adversaries = {}
 var current_quill_content = ''
 const app_version = parseFloat(app_version_number).toFixed(3)
 
@@ -571,7 +572,36 @@ window.addEventListener('load', function () {
     update_ui(adversary)
 });
 
-// Utility Functions
+// Utility Functions;
+
+window.onload = () => {
+    menace_color(document.getElementById('menace').value)
+    set_max_rank()
+
+    // Load saved adversaries from localStorage
+    const storedData = localStorage.getItem('saved_adversaries');
+
+    if (storedData) {
+        saved_adversaries = JSON.parse(storedData);
+        console.log("Adversaries loaded:", saved_adversaries);
+        render_saved_list(saved_adversaries);
+    } else {
+        console.log("No saved data found.");
+    }
+};
+
+function load_example_adversaries(){
+    Object.keys(example_adversaries).forEach(name => {
+        saved_adversaries[name] = example_adversaries[name];
+    });
+    render_saved_list();
+    // Save to localStorage
+    const stringData = JSON.stringify(saved_adversaries);
+    localStorage.setItem('saved_adversaries', stringData);
+    console.log("Example Adversaries loaded and saved locally!");
+    show_toast("Example Adversaries loaded!", 2000);
+}
+
 const show_toast = (message, duration = 3000) => {
     const toast = document.getElementById('toast-content')
     toast.innerText = message
@@ -725,6 +755,11 @@ function save_adversary() {
     saved_adversaries[name] = JSON.parse(JSON.stringify(adversary));
     render_saved_list();
     show_toast(toast_message, 2000);
+
+    // Save to localStorage
+    const stringData = JSON.stringify(saved_adversaries);
+    localStorage.setItem('saved_adversaries', stringData);
+    console.log("Adversaries saved locally!");
 }
 
 function load_adversary(adv_name) {
@@ -747,6 +782,11 @@ function remove_saved_adversary(adv_name) {
     delete saved_adversaries[adv_name];
     const toast_message = 'Adversary "' + adv_name + '" removed from saved list!';
     closeModal();
+    
+    // Save to localStorage
+    const stringData = JSON.stringify(saved_adversaries);
+    localStorage.setItem('saved_adversaries', stringData);
+
     render_saved_list();
     show_toast(toast_message, 2000);
 }
@@ -1270,19 +1310,20 @@ const importAdversariesJson = () => {
         reader.onload = (e) => {
             try {
                 const importedData = JSON.parse(e.target.result);
+                for (const advName in importedData) {
+                    saved_adversaries[advName] = importedData[advName];
+                }
                 console.log("Data imported successfully:", importedData);
-                saved_adversaries = importedData;
                 render_saved_list();
             } catch (err) {
                 console.error("Error parsing JSON:", err);
             }
         };
         reader.readAsText(file);
+        // Save to localStorage
+        const stringData = JSON.stringify(saved_adversaries);
+        localStorage.setItem('saved_adversaries', stringData);
     };
     input.click();
 }
 
-// On page loads
-set_max_rank()
-menace_color(document.getElementById('menace').value)
-render_saved_list()
