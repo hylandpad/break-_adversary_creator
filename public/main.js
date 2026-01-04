@@ -1272,7 +1272,7 @@ const importAdversariesJson = () => {
 }
 
 // On page loads
-adversary._calculate_aptitudes()
+//adversary._calculate_aptitudes()
 set_max_rank()
 menace_color(document.getElementById('menace').value)
 render_saved_list()

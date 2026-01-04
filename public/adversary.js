@@ -9,6 +9,7 @@ class Adversary {
     // Add a trait to the passives primary
     _add_trait() {
         // create trait in adversary object
+        const passives = [...this.passives]
         const id = `tr-${generate_id()}`
         const name = document.getElementById('trait-name').value
         const value = parseInt(document.getElementById('trait-value').value)
@@ -22,13 +23,20 @@ class Adversary {
             'modifier': modifier,
             'value': value
         })
-        this.passives.push(createTrait(id, name, value, modifier, type))
-        this._calculate_aptitudes()
+        passives.push(createTrait(id, name, value, modifier, type))
+        this.passives = passives
+        //this._calculate_aptitudes()
+        this._integrate_passive(id)
+        //temporary solution to offset issue with primary aptitudes not updating immediately
+        this._adjust_size()
+        closeModal()
         update_ui(this)
     }
 
     // Add an ability to the abilities array
     _add_ability() {
+        const abilities = [...this.abilities]
+        const passives = [...this.passives]
         const id = `ab-${generate_id()}`
         const name = (document.getElementById('ability-name').value).toUpperCase()
         const description = document.querySelector('#ability-div .editor').__quill.root.innerHTML
@@ -63,14 +71,13 @@ class Adversary {
         }
 
         // then create a new passive if this ability has any linked passives
-        var passives = {}
-        passive_atkbonus && (passives.atkbonus = passive_atkbonus)
-        passive_defense && (passives.defense = passive_defense)
-        passive_speed != '' && (passives.speed = passive_speed)
-        passive_hearts && (passives.hearts = passive_hearts)
-        passive_size != '' && (passives.size = passive_size)
-
-        if (Object.keys(passives).length > 0) {
+        var ability_passives = {}
+        passive_atkbonus && (ability_passives.atkbonus = passive_atkbonus)
+        passive_defense && (ability_passives.defense = passive_defense)
+        passive_speed != '' && (ability_passives.speed = passive_speed)
+        passive_hearts && (ability_passives.hearts = passive_hearts)
+        passive_size != '' && (ability_passives.size = passive_size)
+        if (Object.keys(ability_passives).length > 0) {
             const passive_id = `ab-passive-${generate_id()}`
             bound_passive = true
             const type = 'ability'
@@ -80,32 +87,37 @@ class Adversary {
                 'modifiers': modifiers,
                 'type': type
             })
-            this.passives.push(createPassive(passive_id, name, passives, type))
+            passives.push(createPassive(passive_id, name, ability_passives, type))
+            this.passives = passives
+            // recalculate any affected stats
 
-            if (passive_atkbonus){
-                this._calculate_atkbonus()
-            }
-            if (passive_defense){
-                this._calculate_defense()
-            }
-            if (passive_speed != ''){
-                this._calculate_speed()
-            }
-            if (passive_hearts){
-                this._calculate_hearts()
-            }
-            if (passive_size != ''){
-                this._adjust_size()
-            }
+            //if (passive_atkbonus){
+            //    this._calculate_atkbonus()
+            //}
+            //if (passive_defense){
+            //    this._calculate_defense()
+            //}
+            //if (passive_speed != ''){
+            //    this._calculate_speed()
+            //}
+            //if (passive_hearts){
+            //    this._calculate_hearts()
+            //}
+            //if (passive_size != ''){
+            //    this._adjust_size()
+            //}
+            this._integrate_passive(id)
         }
         // create & add new ability object to abilities array in adversary
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
-        this.abilities.push(new_ability)
+        abilities.push(new_ability)
+        this.abilities = abilities
         update_ui(this)
     }
 
     // Add items to the inventory array
     _add_item() {
+        const inventory = [...this.inventory]
         const id = `inv-${generate_id()}`;
         const name = (document.getElementById('inventory-item-name').value).toUpperCase();
         const category = (document.getElementById('inventory-item-category').value)
@@ -160,7 +172,8 @@ class Adversary {
             this.dark_points = this.dark_points + Math.abs(allegiance)
         }
 
-        this.inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
+        inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
+        this.inventory = inventory
 
         if (allegiance) {
             this._calculate_allegiance()
@@ -183,6 +196,29 @@ class Adversary {
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
 
     // Change allegiance by manipulating Bright and Dark point values
+    _integrate_passive(passive_id){
+        const passive = this.passives.find(passive => passive.id === passive_id)
+        if (passive.type == 'ability') {
+            if (passive.modifiers.atkbonus){
+                this._calculate_atkbonus()
+            }
+            if (passive.modifiers.defense){
+                this._calculate_defense()
+            }
+            if (passive.modifiers.speed != undefined){
+                this._calculate_speed()
+            }
+            if (passive.modifiers.hearts){
+                this._calculate_hearts()
+            }
+            if (passive.modifiers.size != undefined){
+                this._adjust_size()
+            }
+        } else if(passive.type == "trait") {
+            this._calculate_aptitudes()
+        }
+    }
+    
     _calculate_allegiance() {
         const bright_points = parseInt(this.bright_points)
         const dark_points = parseInt(this.dark_points)
@@ -235,17 +271,16 @@ class Adversary {
 
     _adjust_primary_aptitudes(attr = None) {
         //add passed argument to the primary attributes array on the adversary object
-        var primary_aptitudes_copy = [...this.primary_aptitudes]
+        var primary_aptitudes = [...this.primary_aptitudes]
         if (document.getElementById(`${attr}-primary`).checked) {
-            primary_aptitudes_copy.push(attr)
+            primary_aptitudes.push(attr)
         } else {
-            const i = primary_aptitudes_copy.indexOf(attr)
+            const i = primary_aptitudes.indexOf(attr)
             if (i > -1) {
-                primary_aptitudes_copy.splice(i, 1)
+                primary_aptitudes.splice(i, 1)
             }
         }
-        this.primary_aptitudes = primary_aptitudes_copy
-        this._calculate_aptitudes()
+        this.primary_aptitudes = primary_aptitudes
         this._adjust_size()
         update_ui(adversary)
     }
@@ -338,44 +373,7 @@ class Adversary {
                 this.size = this_passive.modifiers.size
             }
         })
-
-        //Get all current aptitude values
-        // prior to doing any math at all, recalculate base aptitudes by running _calculate_aptitudes to set BACK to a baseline then do one of the following:
         this._calculate_aptitudes()
-        let modified_aptitudes = { ...this.aptitudes }
-        // for tiny add +3 defense rating, -1 might, +1 deft to baseline
-        if (this.size == 'tiny') {
-            modified_aptitudes.deftness++
-            modified_aptitudes.might--
-
-        }
-        // for small, add +1 Deft, -1 Might + 1 Def to baseline based on rank
-        else if (this.size == 'small') {
-            modified_aptitudes.deftness++
-            modified_aptitudes.might--
-
-        }
-        // for medium ensure baseline based on rank
-        else if (this.size == 'medium') {
-            this.defense = 10
-
-        }
-        // for large add +1 might, -defense to baseline based on rank
-        else if (this.size == 'large') {
-            modified_aptitudes.might++
-            this.defense = 9
-
-        }
-        // for massive add +2 Might, -2 defense to baseline, add Massive Species abilities (Sweep Attack and Focus Attack)
-        else if (this.size == 'massive') {
-            modified_aptitudes.might = modified_aptitudes.might + 2
-            this.defense = 9
-
-        }
-        // set new traits
-        this.aptitudes = modified_aptitudes
-
-        // After this, rerun _adjust_traits so that new traits are re-incorporated
         this._calculate_defense()
     }
 
@@ -451,6 +449,7 @@ class Adversary {
 
     // Calculate aptitudes based on primary aptitudes, rank, traits and size
     _calculate_aptitudes() {
+        // Get primary and secondary values from rank stats
         const primary_val = rank_stats[this.rank][2]
         const secondary_val = rank_stats[this.rank][3]
 
@@ -470,16 +469,34 @@ class Adversary {
                 base_aptitudes[key] = secondary_val
             }
         })
-        this.aptitudes = base_aptitudes
+        var aptitudes = base_aptitudes
 
         // Trait based modifications to aptitudes
         aptitudeKeys.forEach(key => {
             this.passives.forEach(this_trait => {
                 if (this_trait.modifier == key) {
-                    this.aptitudes[key] = this.aptitudes[key] + this_trait.value
+                    aptitudes[key] = aptitudes[key] + this_trait.value
                 }
             })
         })
+
+        // Size based modifications to aptitudes
+        if (this.size == 'tiny') {
+            aptitudes.deftness++
+            aptitudes.might--
+        }
+        else if (this.size == 'small') {
+            aptitudes.deftness++
+            aptitudes.might--
+        }
+        else if (this.size == 'large') {
+            aptitudes.might++
+        }
+        else if (this.size == 'massive') {
+            aptitudes.might = modified_aptitudes.might + 2
+        }
+        this.aptitudes = aptitudes
+        update_ui(this)
     }
 
     // Calculate defense based on size, speed, abilities and gear
@@ -526,21 +543,25 @@ class Adversary {
     // **Removals - undo the addition of a trait, loot, gear or ability
 
     _remove_trait(id) { 
+        const passives = [...this.passives]
         const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.id === id && trait.type == 'trait'))
-        this.passives.splice(trait_to_remove, 1)
+        passives.splice(trait_to_remove, 1)
+        this.passives = passives
         this._calculate_aptitudes()
         closeModal()
         update_ui(this)
     }
 
     _remove_item(id) {
+        const inventory = [...this.inventory]
         const item_to_remove = this.inventory[this.inventory.indexOf(this.inventory.find(this_item => this_item.id === id))]
         const points = item_to_remove.allegiance
         const atkbonus = item_to_remove.atkbonus
         const defense = item_to_remove.defense
         const speed = item_to_remove.speed
         const max_speed = item_to_remove.max_speed
-        this.inventory.splice(this.inventory.indexOf(item_to_remove), 1)
+        inventory.splice(this.inventory.indexOf(item_to_remove), 1)
+        this.inventory = inventory
         //recalculate any affected stats
         if (atkbonus != undefined || atkbonus != null || atkbonus != 0) {
             this._calculate_atkbonus()
@@ -564,20 +585,23 @@ class Adversary {
     }
 
     _remove_ability(id) {
+        const abilities = [...this.abilities]
+        const passives = [...this.passives]
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance
         //remove any linked passives
-        const passive_index = this.passives.findIndex(passives => passives.name == ability_to_remove.name)
+        const passive_index = passives.findIndex(passives => passives.name == ability_to_remove.name)
         if (passive_index !== -1) {
 
-            const atkbonus = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.atkbonus
-            const defense = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.defense
-            const speed = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.speed
-            const max_speed = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.max_speed
-            const hearts = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.hearts
-            const size = this.passives.find(passive => passive.name == ability_to_remove.name).modifiers.size
+            const atkbonus = passives.find(passive => passive.name == ability_to_remove.name).modifiers.atkbonus
+            const defense = passives.find(passive => passive.name == ability_to_remove.name).modifiers.defense
+            const speed = passives.find(passive => passive.name == ability_to_remove.name).modifiers.speed
+            const max_speed = passives.find(passive => passive.name == ability_to_remove.name).modifiers.max_speed
+            const hearts = passives.find(passive => passive.name == ability_to_remove.name).modifiers.hearts
+            const size = passives.find(passive => passive.name == ability_to_remove.name).modifiers.size
 
-            this.passives.splice(passive_index, 1);
+            passives.splice(passive_index, 1);
+            this.passives = passives
             if (atkbonus != undefined || atkbonus != null || atkbonus != 0) {
                 this._calculate_atkbonus()
             }
@@ -593,6 +617,7 @@ class Adversary {
             if (size != null || size != undefined) {
                 this._adjust_size()
             }
+            
         }
         //offset bright or dark point values 
         if (points < 0) {
@@ -602,7 +627,8 @@ class Adversary {
             this.bright_points = this.bright_points - points
             this._calculate_allegiance()
         }
-        this.abilities.splice(this.abilities.indexOf(ability_to_remove), 1)
+        abilities.splice(abilities.indexOf(ability_to_remove), 1)
+        this.abilities = abilities
         closeModal()
         update_ui(this)
     }
