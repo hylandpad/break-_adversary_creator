@@ -3,10 +3,14 @@
 This is a personal project im working on to create a web-app capable of creating a break adversary card that can be customized, exported and printed for use physically or as a card on a VTT.
 Someday, it would be really cool to be able to export for a VTT importer.
 This will also be my submission for a code bootcamp personal project.
+
 *1/03/2026* - **1.1 Release Notes**
+
 - Fixed several bugs related to aptitude calculations with size
 - Fixed an issue with removal of traits, abilities and items automatically affecting saved_adversaries when they shouldnt
+
 *1/03/2026* - **1.0 Release Highlights**
+
 - Restructured the UI Refresh so that Save/Load Adversary now works properly
 - Added feedback through Toast Messages for all sorts of user actions
 - Added Modal Confirm windows to Delete Actions
