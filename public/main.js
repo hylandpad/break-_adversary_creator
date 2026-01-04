@@ -22,8 +22,8 @@ var example_adversaries = {
             {
                 "id": "inv-1lcmiupo88u",
                 "name": "INERT JELLY",
-                "category": "yield",
-                "type": "reagent",
+                "category": "Yield",
+                "type": "Reagent",
                 "subtype": "Byproduct",
                 "description": "<p>Jellified remains are useful for salves, machine lubricant or -in some cultures- culinary application</p>",
                 "slots": "1",
@@ -38,9 +38,9 @@ var example_adversaries = {
             {
                 "id": "inv-i30ps1ygey",
                 "name": "PSEUDOPOD",
-                "category": "equipment",
-                "type": "weapon",
-                "subtype": "Standard Weapon",
+                "category": "Equipment",
+                "type": "Weapon",
+                "subtype": "Standard",
                 "description": "<p>On hit:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Deftness Check:</li><li data-list=\"bullet\" class=\"ql-indent-1\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On Fail: Become Disoriented for One Round</li></ol>",
                 "slots": "",
                 "denomination": "coins",
@@ -183,9 +183,9 @@ var example_adversaries = {
             {
                 "id": "inv-25pusfuyff6",
                 "name": "HUNTING LEATHERS",
-                "category": "equipment",
-                "type": "armor",
-                "subtype": "Light Armor",
+                "category": "Equipment",
+                "type": "Armor",
+                "subtype": "Light",
                 "description": "<p>Simple leather armor that provides the Wulfolk some protection without impeding their movement</p>",
                 "slots": "2",
                 "denomination": "coins",
@@ -199,8 +199,8 @@ var example_adversaries = {
             {
                 "id": "inv-1dk8928qhbh",
                 "name": "BAG OF ORNATE BONE DICE",
-                "category": "item",
-                "type": "curiosity",
+                "category": "Item",
+                "type": "Curiosity",
                 "subtype": "Dice",
                 "description": "<p>A velvet bag containing an assortment of dice fashioned from bones. The dice faces vary from bone to bone, with some having dots, others having roughly carved numbers and some having symbols. They are beautiful in a savage way, and would likely fetch a high price from a wealthy collector or travelling gambler.</p>",
                 "slots": "1",
@@ -342,9 +342,9 @@ var example_adversaries = {
             {
                 "id": "inv-ywuz44hnyw",
                 "name": "RADIANT GREATSWORD",
-                "category": "equipment",
-                "type": "weapon",
-                "subtype": "Mighty Weapon",
+                "category": "Equipment",
+                "type": "Weapon",
+                "subtype": "Mighty",
                 "description": "<p>This massive weapon glimmers with incorporeal light, and the Extrasolar swings it as if it weighs nothing. </p><p><br></p><p>This item dissolves into a useless golden hilt unless it is wielded by an Extrasolar</p>",
                 "slots": "2",
                 "denomination": "gems",
@@ -358,8 +358,8 @@ var example_adversaries = {
             {
                 "id": "inv-5kk02i2kkb6",
                 "name": "BRIGHT INFUSED DUST",
-                "category": "yield",
-                "type": "curiosity",
+                "category": "Yield",
+                "type": "Curiosity",
                 "subtype": "Byproduct",
                 "description": "<p>A slain Extrasolar loses its cohesion and form, its crystalline body reducing itself to fine, glowing sand. This sand retains a small amount of latent warmth and exudes a dim light, which grows in luminosity as it nears a shard of the Sun Machine.</p>",
                 "slots": ".5",
@@ -666,7 +666,7 @@ function confirm_prompt(id_or_name) {
 function show_hide_combat_modifiers(select_element) {
     const item_type_input = document.getElementById(select_element)
     const combat_modifiers = document.getElementById('equipment-combat-modifiers')
-    if (item_type_input.value == 'weapon' || item_type_input.value == 'armor' || item_type_input.value == 'shield' || item_type_input.value == 'mount' || item_type_input.value == 'artifact' || item_type_input.value == 'curiosity') {
+    if (item_type_input.value == 'Weapon' || item_type_input.value == 'Armor' || item_type_input.value == 'Shield' || item_type_input.value == 'Mount' || item_type_input.value == 'Artifact' || item_type_input.value == 'Curiosity') {
         combat_modifiers.classList.remove('hidden')
     } else {
         combat_modifiers.classList.add('hidden')
@@ -677,7 +677,7 @@ function show_hide_combat_modifiers(select_element) {
 function fill_subtypes(select_element) {
     const item_type = select_element
     const subtype_select = document.getElementById('inventory-item-subtype-container')
-    if (item_type.value == 'weapon') {
+    if (item_type.value == 'Weapon') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
@@ -698,29 +698,29 @@ function fill_subtypes(select_element) {
         </span>
         `
     }
-    else if (item_type.value == 'armor') {
+    else if (item_type.value == 'Armor') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
         <select class="dropdown" id="inventory-item-subtype">
-            <option value="Light Armor">Light</option>
-            <option value="Medium Armor">Medium</option>
-            <option value="Heavy Armor">Heavy</option>
-            <option value="Superheavy Armor">Superheavy</option>
-            <option value="Other Armor">Other</option>
+            <option value="Light">Light</option>
+            <option value="Medium">Medium</option>
+            <option value="Heavy">Heavy</option>
+            <option value="Superheavy">Superheavy</option>
+            <option value="Other">Other</option>
         </select>
         </span>
         `
     }
-    else if (item_type.value == 'shield') {
+    else if (item_type.value == 'Shield') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
         <select class="dropdown" id="inventory-item-subtype">
-            <option value="Small ">Small</option>
-            <option value="Standard Shield">Standard</option>
-            <option value="Large Shield">Large</option>
-            <option value="Other Shield">Other</option>
+            <option value="Small">Small</option>
+            <option value="Standard">Standard</option>
+            <option value="Large">Large</option>
+            <option value="Other">Other</option>
         </select>
         </span>
         `
@@ -1225,9 +1225,9 @@ function update_ui(adversary) {
         }
 
         const item_block = `
-            <div id="${item.category}-${item.id}" class="${item.category == 'equipment' ? 'equipment-card' : item.category == 'item' ? 'item-card' : item.category == 'yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
+            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
                 <div class="text-white"><span class="font-bold">${item.name}</span> (<span
-                        class="italic">${item.subtype}</span>)</div>
+                        class="italic">${item.type} - ${item.subtype}</span>) <span class="font-bold">${item.category}</span></div>
                 <div class="item-content bg-slate-200 p-1 rounded-md">
                     <div>
                         ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
