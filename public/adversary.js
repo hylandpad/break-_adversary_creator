@@ -35,7 +35,7 @@ class Adversary {
 
     // Add an ability to the abilities array
     _add_ability() {
-        const abilities = [...this.abilities]
+        
         const passives = [...this.passives]
         const id = `ab-${generate_id()}`
         const name = (document.getElementById('ability-name').value).toUpperCase()
@@ -93,6 +93,7 @@ class Adversary {
         }
         // create & add new ability object to abilities array in adversary
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
+        const abilities = [...this.abilities]
         abilities.push(new_ability)
         this.abilities = abilities
         update_ui(this)
@@ -181,7 +182,6 @@ class Adversary {
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
 
-    // Change allegiance by manipulating Bright and Dark point values
     _integrate_passive(passive_id){
         const passive = this.passives.find(passive => passive.id === passive_id)
         if (passive.type == 'ability') {
@@ -354,11 +354,33 @@ class Adversary {
         this.size = 'medium'
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
-                return
-            } else if (this_passive.modifiers.size) {
-                this.size = this_passive.modifiers.size
+                    return
+                } else if (this_passive.modifiers.size) {
+                    this.size = this_passive.modifiers.size
+                }
+            })
+            if (this.size == 'massive') {
+                const createAbility = (id, name, description, allegiance = 0, bound_passive, type = 'basic', magic = false) => ({
+                    'id': id,
+                    'name': name,
+                    'description': description,
+                    'allegiance': allegiance,
+                    'bound_passive': bound_passive,
+                    'type': type,
+                    'magic': magic
+
+                })
+                var abilities = [...this.abilities]
+                const sweep_ability = createAbility('ab-sweep-001', 'SWEEP ATTACK', 'This adversary can attack as with an Arc Weapon.', 0, false, 'basic', false);
+                const focus_ability = createAbility('ab-focus-001', 'FOCUS ATTACK', 'This adversary can attack as with an Mighty Weapon.', 0, false, 'basic', false);
+                abilities.push(sweep_ability, focus_ability)
+                this.abilities = abilities
+            } else {
+                //remove sweep and focus attack if size is changed away from massive
+                this._remove_ability('ab-sweep-001')
+                this._remove_ability('ab-focus-001')
+                update_ui(this)
             }
-        })
         this._calculate_aptitudes()
         this._calculate_defense()
     }
@@ -401,13 +423,6 @@ class Adversary {
     _calculate_atkbonus() {
         //set back to atkbonus based on rank
         this.atkbonus = rank_stats[this.rank][0]
-        
-        // Calculate atkbonus from gear, then from ability-based passives
-        //this.inventory.forEach(this_item => {
-        //    if (this_item.atkbonus > 0) {
-        //        this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
-        //    }
-        //})
 
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
@@ -479,7 +494,7 @@ class Adversary {
             aptitudes.might++
         }
         else if (this.size == 'massive') {
-            aptitudes.might = modified_aptitudes.might + 2
+            aptitudes.might = aptitudes.might + 2
         }
         this.aptitudes = aptitudes
         update_ui(this)
@@ -571,7 +586,7 @@ class Adversary {
     }
 
     _remove_ability(id) {
-        const abilities = [...this.abilities]
+        
         const passives = [...this.passives]
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance
@@ -613,6 +628,7 @@ class Adversary {
             this.bright_points = this.bright_points - points
             this._calculate_allegiance()
         }
+        const abilities = [...this.abilities]
         abilities.splice(abilities.indexOf(ability_to_remove), 1)
         this.abilities = abilities
         closeModal()
