@@ -586,7 +586,6 @@ class Adversary {
     }
 
     _remove_ability(id) {
-        
         const passives = [...this.passives]
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance

@@ -386,3 +386,32 @@ ul,ol{
     margin: 0 4px 4px;
     color: #ff6567;
 }
+
+.quill-action-blot {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 2px 4px;
+    background: #fff;
+    margin: 0 4px;
+    font-family: inherit;
+}
+
+.attr-chip {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-right: 8px;
+    border-right: 1px solid #ccc;
+    margin-right: 8px;
+}
+
+.blot-results-inline {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.res-pass strong, .res-fail strong {
+    color: #000;
+}
