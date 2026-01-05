@@ -280,7 +280,7 @@ input:checked+.slider:before {
   margin-bottom: 1rem;
 }
 
-.magic-icon{
+.magic-icon-ability{
     border: 2px #eee solid;
     background-color: #eee;
     border-radius: 5px;
@@ -354,3 +354,35 @@ ul,ol{
      scrollbar-color: #898a8c #e6e7eb;
 }
 
+.magic-icon-item{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: #2b7efe;
+}
+
+.magic-icon-equipment{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: #63748e;
+}
+
+.magic-icon-yield{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: #ff6567;
+}

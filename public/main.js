@@ -27,6 +27,7 @@ var example_adversaries = {
                 "subtype": "Byproduct",
                 "description": "<p>Jellified remains are useful for salves, machine lubricant or -in some cultures- culinary application</p>",
                 "slots": "1",
+                "magic": false,
                 "denomination": "coins",
                 "value": "20",
                 "defense": null,
@@ -43,6 +44,7 @@ var example_adversaries = {
                 "subtype": "Standard",
                 "description": "<p>On hit:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Deftness Check:</li><li data-list=\"bullet\" class=\"ql-indent-1\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On Fail: Become Disoriented for One Round</li></ol>",
                 "slots": "",
+                "magic": false,
                 "denomination": "coins",
                 "value": "",
                 "defense": null,
@@ -188,6 +190,7 @@ var example_adversaries = {
                 "subtype": "Light",
                 "description": "<p>Simple leather armor that provides the Wulfolk some protection without impeding their movement</p>",
                 "slots": "2",
+                "magic": false,
                 "denomination": "coins",
                 "value": "30",
                 "defense": 2,
@@ -204,6 +207,7 @@ var example_adversaries = {
                 "subtype": "Dice",
                 "description": "<p>A velvet bag containing an assortment of dice fashioned from bones. The dice faces vary from bone to bone, with some having dots, others having roughly carved numbers and some having symbols. They are beautiful in a savage way, and would likely fetch a high price from a wealthy collector or travelling gambler.</p>",
                 "slots": "1",
+                "magic": false,
                 "denomination": "coins",
                 "value": "70",
                 "defense": null,
@@ -345,15 +349,16 @@ var example_adversaries = {
                 "category": "Equipment",
                 "type": "Weapon",
                 "subtype": "Mighty",
-                "description": "<p>This massive weapon glimmers with incorporeal light, and the Extrasolar swings it as if it weighs nothing. </p><p><br></p><p>This item dissolves into a useless golden hilt unless it is wielded by an Extrasolar</p>",
+                "description": "<p>This massive weapon glimmers with incorporeal light, and the Extrasolar swings it as if it weighs nothing. </p><p><br></p><p>This item dissolves into a useless golden hilt unless it is wielded by a creature of Bright allegiance.</p>",
                 "slots": "2",
+                "magic": true,
                 "denomination": "gems",
                 "value": "1",
                 "defense": null,
                 "atkbonus": 3,
                 "speed": null,
                 "max_speed": null,
-                "allegiance": 2
+                "allegiance": 1
             },
             {
                 "id": "inv-5kk02i2kkb6",
@@ -363,6 +368,7 @@ var example_adversaries = {
                 "subtype": "Byproduct",
                 "description": "<p>A slain Extrasolar loses its cohesion and form, its crystalline body reducing itself to fine, glowing sand. This sand retains a small amount of latent warmth and exudes a dim light, which grows in luminosity as it nears a shard of the Sun Machine.</p>",
                 "slots": ".5",
+                "magic": true,
                 "denomination": "coins",
                 "value": "70",
                 "defense": null,
@@ -403,7 +409,7 @@ var example_adversaries = {
             },
             {
                 "id": "ab-passive-0jdnbd63aeqn",
-                "name": "TENSILE ARMOR",
+                "name": "TENSILE SHELL",
                 "modifiers": {
                     "defense": 2
                 },
@@ -439,7 +445,7 @@ var example_adversaries = {
             },
             {
                 "id": "ab-65so92xqg7",
-                "name": "TENSILE ARMOR",
+                "name": "TENSILE SHELL",
                 "description": "<p>The hardened crystal skin of the Extrasolar provides some basic protection against wounds from all but the most sure of strikes</p>",
                 "allegiance": 0,
                 "bound_passive": true,
@@ -450,7 +456,7 @@ var example_adversaries = {
                 "id": "ab-d6nnwu7erzs",
                 "name": "SUNBURST",
                 "description": "<p>Upon taking a Heart of Damage, all Players in the same combat area must make a <strong>Deftness Check:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On failure - Take 1 Heart of Damage</li></ol><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is Dark Damage.</p>",
-                "allegiance": 2,
+                "allegiance": 0,
                 "bound_passive": false,
                 "type": "Legendary",
                 "magic": false
@@ -617,6 +623,17 @@ const generate_id = () => {
     return Math.random().toString(36).slice(2)
 }
 
+function toggle_magic(item_or_ability) {
+    const magic_checkbox = document.getElementById(`${item_or_ability}-magic`);
+    if (magic_checkbox.checked) {
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.remove('hidden')
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.add('inline-flex');
+    } else {
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.add('hidden')
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.remove('inline-flex');
+    }
+}
+
 function confirm_prompt(id_or_name) {
     if (saved_adversaries[id_or_name]) {
         const obj_name = saved_adversaries[id_or_name].name;
@@ -681,7 +698,7 @@ function fill_subtypes(select_element) {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="inventory-item-subtype">
+        <select class="dropdown" data-required id="inventory-item-subtype">
             <option value="Standard Weapon">Standard</option>
             <option value="Quick Weapon">Quick</option>
             <option value="Master Weapon">Master</option>
@@ -702,7 +719,7 @@ function fill_subtypes(select_element) {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="inventory-item-subtype">
+        <select class="dropdown" data-required id="inventory-item-subtype">
             <option value="Light">Light</option>
             <option value="Medium">Medium</option>
             <option value="Heavy">Heavy</option>
@@ -716,7 +733,7 @@ function fill_subtypes(select_element) {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="inventory-item-subtype">
+        <select class="dropdown" data-required id="inventory-item-subtype">
             <option value="Small">Small</option>
             <option value="Standard">Standard</option>
             <option value="Large">Large</option>
@@ -726,7 +743,7 @@ function fill_subtypes(select_element) {
         `
     }
     else {
-        subtype_select.innerHTML = `<label>Subtype: </label><input id="inventory-item-subtype" class="text-input w-55" type="text" placeholder="Enter Subtype">`
+        subtype_select.innerHTML = `<label>Subtype: </label><input data-required id="inventory-item-subtype" class="text-input w-55" type="text" placeholder="Enter Subtype">`
     }
 }
 
@@ -1196,7 +1213,7 @@ function update_ui(adversary) {
         const id = ability.id
         const ability_block = `
         <div id="${id}" class="ability-card w-1/2">
-            <div class="text-white flex"><span class="font-bold">${name}</span><span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span>${magic ? '<span class="magic-icon">M</span>' : ''}</div>
+            <div class="text-white flex"><span class="font-bold">${name}</span><span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span>${magic ? '<span class="magic-icon-ability">M</span>' : ''}</div>
             <div class="ability-content bg-slate-200 p-1 rounded-md">
                 ${description != 'None' ? `<div id=description" class="italic">${description}</div>` : ''}
             </div>
@@ -1215,6 +1232,7 @@ function update_ui(adversary) {
     const inventory_container = document.getElementById('inventory-container')
     inventory_container.innerHTML = ''
     adversary.inventory.forEach(item => {
+        const magic = item.magic
         var max_speed_text = ''
         if (item.max_speed) {
             if (item.max_speed == 'veryfast') {
@@ -1226,11 +1244,11 @@ function update_ui(adversary) {
 
         const item_block = `
             <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
-                <div class="text-white"><span class="font-bold">${item.name}</span> (<span
-                        class="italic">${item.type} - ${item.subtype}</span>) <span class="font-bold">${item.category}</span></div>
-                <div class="item-content bg-slate-200 p-1 rounded-md">
+                <div class="text-white flex"><span class="font-bold">${item.name}</span> (<span
+                        class="italic">${item.type} - ${item.subtype}</span>)<span class="font-bold">: ${item.category}</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span></span>` : ''}</div>
+                <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">
                     <div>
-                        ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
+                        ${item.atkbonus > 0 ? `<label>Total Attack Bonus </label><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${parseInt(item.atkbonus) + parseInt(adversary.atkbonus)}</span>` : ''}
                         ${item.defense > 0 ? `<i class="fa-solid fa-shield"></i><span>+${item.defense}</span>` : ''}
                         ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
                         ${item.max_speed ? `<span class="font-bold"></span><i class="fa-solid fa-person-running"></i><span><strong>MAX: </strong>${max_speed_text}</span>` : ''}

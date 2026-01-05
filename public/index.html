@@ -84,7 +84,7 @@
 
                             <div class="stat-grid mx-2 my-4">
                                 <p class="Italic">Calculated Totals: </p>
-                                <div><label class="text-xl">Attack Bonus: </label><span class="stat-item"><img
+                                <div><label class="text-xl">Standard Attack Bonus: </label><span class="stat-item"><img
                                             class="svg-icon" src="images/sword-fill-svgrepo-com.svg">
                                         +<span id="atk-bonus" class="text-xl"></span></span></div>
                                 <div><label class="text-xl">Hearts: </label><span class="stat-item"><i
@@ -361,16 +361,6 @@
                         magical in
                         nature
                     </p>
-                    <hr class="faded-hr" />
-                    <div class="inline-flex">
-                        <label>Allegiance Points: </label><input onchange="set_ability_allegiance()"
-                            id="ability-allegiance" class="w-10 text-right " type="number" value="0">
-                        <div id="ability-allegiance-icon-box" class="inline-flex">
-                            <span><i id="ability-bright" class="material-icons text-stone-200">brightness_5</i><i
-                                    id="ability-unaligned" class="material-icons text-slate-400">circle</i><i
-                                    id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
-                        </div>
-                    </div>
                     <div>
                         <label for="ability-type">Ability Type: </label>
                         <input id="ability-basic" name="ability-type" type="radio" value="Basic" checked><label
@@ -381,12 +371,22 @@
                         <input id="ability-legendary" name="ability-type" type="radio" value="Legendary"
                             disabled="true"><label for="ability-legendary"> Legendary</label>
                     </div>
-                    <div class="flex text-center">
+                    <hr class="faded-hr"/>
+                    <div id="ability-magic-container" class="flex text-center">
                         <div><label for="ability-magic">Magic: </label></div>
                         <div><label class="switch switch-small ml-3">
-                                <input id="ability-magic" type="checkbox">
+                                <input id="ability-magic" type="checkbox" onclick="toggle_magic('ability')">
                                 <span class="slider round"></span>
                             </label>
+                        </div>
+                    </div>
+                    <div id="ability-allegiance-div" class="hidden pb-2">
+                        <label>Allegiance Points: </label><input onchange="set_ability_allegiance()"
+                            id="ability-allegiance" class="w-10 text-right input-text " type="number" value="0">
+                        <div id="ability-allegiance-icon-box" class="inline-flex">
+                            <span><i id="ability-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                    id="ability-unaligned" class="material-icons text-slate-400">circle</i><i
+                                    id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
                         </div>
                     </div>
                     <div class="editor"></div>
@@ -473,8 +473,6 @@
                         <span id="inventory-item-subtype-container"></span>
                     </div>
                     <div id="equipment-combat-modifiers" class="hidden mb-1" class="mb-2">
-                        <hr class="faded-hr" />
-                        <p class="italic">Combat Modifiers</p>
                         <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
                             id="inventory-item-atkbonus" type="number">
                         <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="inventory-item-defense"
@@ -492,27 +490,36 @@
                             </select>
                         </span>
                     </div>
+                    <hr class="faded-hr"/>
+                    <div id="inventory-item-magic-container" class="flex text-center">
+                        <div><label for="inventory-item-magic">Magic: </label></div>
+                        <div><label class="switch switch-small ml-3">
+                                <input id="inventory-item-magic" type="checkbox" onclick="toggle_magic('inventory-item')">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="inventory-item-allegiance-div" class="pb-2 hidden">
+                        <label for="inventory-item-allegiance">Allegiance Points: </label><input
+                            onchange="set_item_allegiance()" id="inventory-item-allegiance"
+                            class="w-10 text-right text-input " type="number" value="0">
+                        <span id="item-allegiance-icon-box" class="inline-flex">
+                            <span><i id="item-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                    id="item-unaligned" class="material-icons text-slate-400">circle</i><i
+                                    id="item-dark" class="material-icons text-stone-200">cyclone</i>
+                            </span>
+                        </span>
+                    </div>
                     <div class="editor"></div>
                     <div class="flex flew-row align-top">
                         <div id="inventory-item-slots-div" class="basis-2xs">
                             <label for="inventory-item-slots">Slots: </label>
                             <input min='0' class="text-input" id="inventory-item-slots" type="number">
                         </div>
-                        <div id="inventory-item-allegiance-div" class="basis-md">
-                            <label for="inventory-item-allegiance">Allegiance Points: </label><input
-                                onchange="set_item_allegiance()" id="inventory-item-allegiance"
-                                class="w-10 text-right text-input " type="number" value="0">
-                            <span id="item-allegiance-icon-box" class="inline-flex">
-                                <span><i id="item-bright" class="material-icons text-stone-200">brightness_5</i><i
-                                        id="item-unaligned" class="material-icons text-slate-400">circle</i><i
-                                        id="item-dark" class="material-icons text-stone-200">cyclone</i>
-                                </span>
-                            </span>
-                        </div>
-                        <div id="inventory-item-value-div" class="basis-sm">
+                        <div id="inventory-item-value-div" class="basis-md align-right">
                             <label for="inventory-item-value">Value: </label>
                             <input type="number" id="inventory-item-value" class="text-input">
-                            <div id="inventory-item-denomination-div">
+                            <span id="inventory-item-denomination-div">
                                 <input type="radio" id="inventory-item-stones" name="inventory-item-denomination"
                                     value="stones"><label for="inventory-item-stones"> Stones </label>
                                 <input type="radio" id="items-coins" name="inventory-item-denomination" value="coins"
@@ -520,7 +527,7 @@
                                 <input type="radio" id="items-gems" name="inventory-item-denomination"
                                     value="gems"><label for="inventory-item-gems">
                                     Gems </label>
-                            </div>
+                            </span>
                         </div>
                     </div>
                     <button id="btnAddItem" onclick="adversary._add_item()" disabled

@@ -89,24 +89,7 @@ class Adversary {
             })
             passives.push(createPassive(passive_id, name, ability_passives, type))
             this.passives = passives
-            // recalculate any affected stats
-
-            //if (passive_atkbonus){
-            //    this._calculate_atkbonus()
-            //}
-            //if (passive_defense){
-            //    this._calculate_defense()
-            //}
-            //if (passive_speed != ''){
-            //    this._calculate_speed()
-            //}
-            //if (passive_hearts){
-            //    this._calculate_hearts()
-            //}
-            //if (passive_size != ''){
-            //    this._adjust_size()
-            //}
-            this._integrate_passive(id)
+            this._integrate_passive(passive_id)
         }
         // create & add new ability object to abilities array in adversary
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
@@ -127,6 +110,7 @@ class Adversary {
         const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value
         const value = document.getElementById('inventory-item-value').value;
         const slots = document.getElementById('inventory-item-slots').value
+        const magic = document.getElementById('inventory-item-magic').checked
         const allegiance = parseInt(document.getElementById('inventory-item-allegiance').value)
         // optional gear attributes that may affect combat stats
         const defense = parseInt(document.getElementById('inventory-item-defense').value) ? parseInt(document.getElementById('inventory-item-defense').value) : null
@@ -142,6 +126,7 @@ class Adversary {
             subtype,
             description,
             slots,
+            magic,
             denomination,
             value,
             defense,
@@ -157,6 +142,7 @@ class Adversary {
                 'subtype': subtype,
                 'description': description,
                 'slots': slots,
+                'magic': magic,
                 'denomination': denomination,
                 'value': value,
                 'defense': defense,
@@ -166,13 +152,13 @@ class Adversary {
                 'allegiance': allegiance,
             });
 
-        if (allegiance > 0) {
+        if (magic && allegiance > 0) {
             this.bright_points = this.bright_points + allegiance
         } else if (allegiance < 0) {
             this.dark_points = this.dark_points + Math.abs(allegiance)
         }
 
-        inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
+        inventory.push(createItem(id, name, category, type, subtype, description, slots, magic, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
         this.inventory = inventory
 
         if (allegiance) {
@@ -417,11 +403,11 @@ class Adversary {
         this.atkbonus = rank_stats[this.rank][0]
         
         // Calculate atkbonus from gear, then from ability-based passives
-        this.inventory.forEach(this_item => {
-            if (this_item.atkbonus > 0) {
-                this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
-            }
-        })
+        //this.inventory.forEach(this_item => {
+        //    if (this_item.atkbonus > 0) {
+        //        this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
+        //    }
+        //})
 
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
