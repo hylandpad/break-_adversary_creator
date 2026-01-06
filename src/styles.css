@@ -391,7 +391,6 @@ ul,ol{
     font-weight: bold;
     text-transform: uppercase;
     padding-right: 4px;
-    margin-right: 4px;
     padding: 0 2px;
 }
 
@@ -411,23 +410,21 @@ ul,ol{
     color: #ae45ff
 }
 
-/* The root blot */
 .skill-action-blot {
     display: inline-block;
-    vertical-align: middle; /* Keeps it aligned with the text baseline */
+    vertical-align: middle; 
     margin: 0 2px;
-    background: #c0b6887a;
-    border: 1px solid #c0b6887a;
+    background: #9d9ea124;
+    border: 1px solid #9f9fa3b8;
     border-radius: 10px;
     padding: 0 15px;
-    line-height: 1.1; /* Crucial: Reduces the vertical footprint */
-    max-width: 100%; /* Prevents horizontal overflow */
+    line-height: 1.1; 
+    max-width: 100%; 
 }
 
-/* The internal wrapper */
 .blot-content {
     display: flex;
-    flex-direction: column; /* Stack header and results tightly */
+    flex-direction: column; /
     gap: 1px;
 }
 
@@ -438,9 +435,9 @@ ul,ol{
 
 .blot-results-inline {
     display: flex;
-    flex-wrap: wrap; /* Allows text to wrap if the pass/fail is very long */
+    flex-wrap: wrap;
     gap: 4px;
-    font-size: 0.75rem; /* Smaller text for the results saves vertical space */
+    font-size: 0.75rem;
 }
 
 .res-tag {

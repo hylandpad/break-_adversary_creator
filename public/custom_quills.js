@@ -20,8 +20,8 @@ const registerCustomBlots = () => {
             const theirAttrClass = (value.theirAttr || '').toLowerCase();
 
             const mainActionText = value.isContest 
-                ? `<strong>Contest:</strong> <span class="attr-chip attr-${yourAttrClass}">${value.yourAttr}</span> <sup>vs</sup> <span class="attr-chip attr-${theirAttrClass}">${value.theirAttr}</span>` 
-                : `<strong>Check:</strong> <span class="attr-chip attr-${yourAttrClass}">${value.yourAttr}</span>`;
+                ? `<strong>CONTEST: </strong> <span class="attr-chip attr-${yourAttrClass}">${value.yourAttr}</span> <sup>vs</sup> <span class="attr-chip attr-${theirAttrClass}">${value.theirAttr}</span>` 
+                : `<strong>CHECK: </strong> <span class="attr-chip attr-${yourAttrClass}">${value.yourAttr}</span>`;
 
             // Using a single wrapper for results to control the vertical flow
             node.innerHTML = `

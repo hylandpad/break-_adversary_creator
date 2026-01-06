@@ -35,7 +35,7 @@ class Adversary {
 
     // Add an ability to the abilities array
     _add_ability() {
-        
+
         const passives = [...this.passives]
         const id = `ab-${generate_id()}`
         const name = (document.getElementById('ability-name').value).toUpperCase()
@@ -112,6 +112,7 @@ class Adversary {
         const value = document.getElementById('inventory-item-value').value;
         const slots = document.getElementById('inventory-item-slots').value
         const magic = document.getElementById('inventory-item-magic').checked
+        const quantity = parseInt(document.getElementById('inventory-item-quantity').value)
         const allegiance = parseInt(document.getElementById('inventory-item-allegiance').value)
         // optional gear attributes that may affect combat stats
         const defense = parseInt(document.getElementById('inventory-item-defense').value) ? parseInt(document.getElementById('inventory-item-defense').value) : null
@@ -128,6 +129,7 @@ class Adversary {
             description,
             slots,
             magic,
+            quantity,
             denomination,
             value,
             defense,
@@ -144,6 +146,7 @@ class Adversary {
                 'description': description,
                 'slots': slots,
                 'magic': magic,
+                'quantity': quantity,
                 'denomination': denomination,
                 'value': value,
                 'defense': defense,
@@ -159,7 +162,7 @@ class Adversary {
             this.dark_points = this.dark_points + Math.abs(allegiance)
         }
 
-        inventory.push(createItem(id, name, category, type, subtype, description, slots, magic, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
+        inventory.push(createItem(id, name, category, type, subtype, description, slots, magic, quantity, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
         this.inventory = inventory
 
         if (allegiance) {
@@ -182,29 +185,29 @@ class Adversary {
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
 
-    _integrate_passive(passive_id){
+    _integrate_passive(passive_id) {
         const passive = this.passives.find(passive => passive.id === passive_id)
         if (passive.type == 'ability') {
-            if (passive.modifiers.atkbonus){
+            if (passive.modifiers.atkbonus) {
                 this._calculate_atkbonus()
             }
-            if (passive.modifiers.defense){
+            if (passive.modifiers.defense) {
                 this._calculate_defense()
             }
-            if (passive.modifiers.speed != undefined){
+            if (passive.modifiers.speed != undefined) {
                 this._calculate_speed()
             }
-            if (passive.modifiers.hearts){
+            if (passive.modifiers.hearts) {
                 this._calculate_hearts()
             }
-            if (passive.modifiers.size != undefined){
+            if (passive.modifiers.size != undefined) {
                 this._adjust_size()
             }
-        } else if(passive.type == "trait") {
+        } else if (passive.type == "trait") {
             this._calculate_aptitudes()
         }
     }
-    
+
     _calculate_allegiance() {
         const bright_points = parseInt(this.bright_points)
         const dark_points = parseInt(this.dark_points)
@@ -354,33 +357,43 @@ class Adversary {
         this.size = 'medium'
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
-                    return
-                } else if (this_passive.modifiers.size) {
-                    this.size = this_passive.modifiers.size
-                }
-            })
-            if (this.size == 'massive') {
-                const createAbility = (id, name, description, allegiance = 0, bound_passive, type = 'basic', magic = false) => ({
-                    'id': id,
-                    'name': name,
-                    'description': description,
-                    'allegiance': allegiance,
-                    'bound_passive': bound_passive,
-                    'type': type,
-                    'magic': magic
-
-                })
-                var abilities = [...this.abilities]
-                const sweep_ability = createAbility('ab-sweep-001', 'SWEEP ATTACK', 'This adversary can attack as with an Arc Weapon.', 0, false, 'basic', false);
-                const focus_ability = createAbility('ab-focus-001', 'FOCUS ATTACK', 'This adversary can attack as with an Mighty Weapon.', 0, false, 'basic', false);
-                abilities.push(sweep_ability, focus_ability)
-                this.abilities = abilities
-            } else {
-                //remove sweep and focus attack if size is changed away from massive
-                this._remove_ability('ab-sweep-001')
-                this._remove_ability('ab-focus-001')
-                update_ui(this)
+                return
+            } else if (this_passive.modifiers.size) {
+                this.size = this_passive.modifiers.size
             }
+        })
+        if (this.size == 'massive') {
+            const createAbility = (id, name, description, allegiance = 0, bound_passive, type = 'basic', magic = false) => ({
+                'id': id,
+                'name': name,
+                'description': description,
+                'allegiance': allegiance,
+                'bound_passive': bound_passive,
+                'type': type,
+                'magic': magic
+
+            })
+            var abilities = [...this.abilities]
+            if (abilities.find(ability => ability.id !== 'ab-sweep-001')) {
+                const sweep_ability = createAbility('ab-sweep-001', 'SWEEP ATTACK', 'This adversary can attack as with an Arc Weapon.', 0, false, 'basic', false);
+                abilities.push(sweep_ability)
+            }
+            if (abilities.find(ability => ability.id !== 'ab-focus-001')) {
+                const focus_ability = createAbility('ab-focus-001', 'FOCUS ATTACK', 'This adversary can attack as with an Mighty Weapon.', 0, false, 'basic', false);
+                abilities.push(focus_ability)
+            }
+            this.abilities = abilities
+        } else {
+            var abilities = [...this.abilities]
+            //remove sweep and focus attack if size is changed away from massive
+            if (abilities.find(ability => ability.id === 'ab-sweep-001')) {
+                this._remove_ability('ab-sweep-001')
+            }
+            if (abilities.find(ability => ability.id === 'ab-focus-001')) {
+                this._remove_ability('ab-focus-001')
+            }
+            update_ui(this)
+        }
         this._calculate_aptitudes()
         this._calculate_defense()
     }
@@ -543,7 +556,7 @@ class Adversary {
 
     // **Removals - undo the addition of a trait, loot, gear or ability
 
-    _remove_trait(id) { 
+    _remove_trait(id) {
         const passives = [...this.passives]
         const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.id === id && trait.type == 'trait'))
         passives.splice(trait_to_remove, 1)
@@ -617,7 +630,7 @@ class Adversary {
             if (size != null || size != undefined) {
                 this._adjust_size()
             }
-            
+
         }
         //offset bright or dark point values 
         if (points < 0) {

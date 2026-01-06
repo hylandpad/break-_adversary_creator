@@ -1351,7 +1351,6 @@ ul,ol {
   font-weight: bold;
   text-transform: uppercase;
   padding-right: 4px;
-  margin-right: 4px;
   padding: 0 2px;
 }
 .attr-might {
@@ -1373,8 +1372,8 @@ ul,ol {
   display: inline-block;
   vertical-align: middle;
   margin: 0 2px;
-  background: #c0b6887a;
-  border: 1px solid #c0b6887a;
+  background: #9d9ea124;
+  border: 1px solid #9f9fa3b8;
   border-radius: 10px;
   padding: 0 15px;
   line-height: 1.1;
@@ -1383,7 +1382,7 @@ ul,ol {
 .blot-content {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  / gap: 1px;
 }
 .blot-header {
   font-size: 0.85rem;
