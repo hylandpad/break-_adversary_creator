@@ -584,7 +584,7 @@ function initializeEditors(scope = document) {
                 const quill = new Quill(editorDiv, {
                     theme: 'snow',
                     modules: {
-                        toolbar: [['bold', 'italic'], [{ 'list': 'bullet' }]]
+                        toolbar: [['bold', 'italic'], [{ 'list': 'bullet' }, { 'list': 'ordered' }], ['blockquote']]
                     }
                 });
 
@@ -598,38 +598,43 @@ function initializeEditors(scope = document) {
                     const [line, offset] = quill.getLine(selection.index);
                     const text = line.domNode.textContent;
 
-                    // Matches [Aptitude | Pass: text | Fail: text]
-                    const checkRegex = /\[(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
+                    // Matches: [Might | Pass: x | Fail: y] with any amount of spacing
+                    const checkRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
 
-                    // Matches [Aptitude vs Aptitude | Pass: text | Fail: text]
-                    const contestRegex = /\[(Might|Deftness|Grit|Insight|Aura)\s+vs\s+(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
+                    // Matches: [Might vs Deftness | Pass: x | Fail: y] with any amount of spacing
+                    const contestRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s+vs\s+(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
 
                     let match;
                     if ((match = text.match(contestRegex))) {
-                        const [fullMatch, yourAttr, theirAttr, pass, fail] = match;
+                        let [fullMatch, yourAttr, theirAttr, pass, fail] = match;
+
                         const lineIndex = quill.getIndex(line);
                         const absoluteStartIndex = lineIndex + text.lastIndexOf(fullMatch);
 
                         if (absoluteStartIndex >= 0) {
                             quill.deleteText(absoluteStartIndex, fullMatch.length);
                             quill.insertEmbed(absoluteStartIndex, 'skillAction', {
-                                yourAttr, theirAttr, pass, fail, isContest: true
+                                yourAttr: yourAttr.trim(),
+                                theirAttr: theirAttr.trim(),
+                                pass: pass.trim(),
+                                fail: fail.trim(),
+                                isContest: true
                             });
                             quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);
                         }
                     }
                     else if ((match = text.match(checkRegex))) {
-                        // Note: attr is index 1, pass is index 2, fail is index 3
-                        const [fullMatch, attr, pass, fail] = match;
+                        let [fullMatch, attr, pass, fail] = match;
+
                         const lineIndex = quill.getIndex(line);
                         const absoluteStartIndex = lineIndex + text.lastIndexOf(fullMatch);
 
                         if (absoluteStartIndex >= 0) {
                             quill.deleteText(absoluteStartIndex, fullMatch.length);
                             quill.insertEmbed(absoluteStartIndex, 'skillAction', {
-                                yourAttr: attr,
-                                pass,
-                                fail,
+                                yourAttr: attr.trim(),
+                                pass: pass.trim(),
+                                fail: fail.trim(),
                                 isContest: false
                             });
                             quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);

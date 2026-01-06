@@ -1347,30 +1347,66 @@ ul,ol {
   margin: 0 4px 4px;
   color: #ff6567;
 }
-.quill-action-blot {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 2px 4px;
-  background: #fff;
-  margin: 0 4px;
-  font-family: inherit;
-}
 .attr-chip {
   font-weight: bold;
   text-transform: uppercase;
-  padding-right: 8px;
-  border-right: 1px solid #ccc;
-  margin-right: 8px;
+  padding-right: 4px;
+  margin-right: 4px;
+  padding: 0 2px;
+}
+.attr-might {
+  color: #fb2c36;
+}
+.attr-grit {
+  color: #00c94f;
+}
+.attr-deftness {
+  color: #ff6900;
+}
+.attr-insight {
+  color: #2b7efe;
+}
+.attr-aura {
+  color: #ae45ff;
+}
+.skill-action-blot {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 2px;
+  background: #c0b6887a;
+  border: 1px solid #c0b6887a;
+  border-radius: 10px;
+  padding: 0 15px;
+  line-height: 1.1;
+  max-width: 100%;
+}
+.blot-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.blot-header {
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 .blot-results-inline {
   display: flex;
-  gap: 10px;
-  font-size: 0.9em;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 0.75rem;
 }
-.res-pass strong, .res-fail strong {
-  color: #000;
+.res-tag {
+  display: inline-block;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+.res-pass {
+  color: #15803d;
+  background: #f0fdf4;
+}
+.res-fail {
+  color: #b91c1c;
+  background: #fef2f2;
 }
 @property --tw-border-spacing-x {
   syntax: "<length>";
