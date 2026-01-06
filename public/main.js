@@ -925,6 +925,10 @@ function render_saved_list() {
             </div>    
         </div>`
         container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
+        const saved_adversary_dropdown_item = `
+        <option value="${name}">${name}</option>
+        `
+        document.getElementById('saved-adversaries-dropdown').insertAdjacentHTML('beforeend', saved_adversary_dropdown_item)
     });
 }
 

@@ -17,8 +17,14 @@
             src="/images/breakcommunity.png"><i id="help-btn" data-target="help"  class="inline material-symbols-outlined text-white modal-trigger">help</i>
     </div>
     <div id="toast-container h-[40px] block"><p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center"></p></div>
-    <div class="container m-auto">
-        <div class="bg-gray-200 m-8 p-4 rounded-md overflow-auto inline-block w-3/4 align-top">
+    
+    <div class="container w-full m-auto">
+        <div class="w-full h-5 flex flex-row items-center bg-gray-200 mx-8 my-4 p-4 rounded-md">
+            <div class="w-1/4 text-left"><label>Current Adversary:</label><span>ADVERSARY</span></div>
+            <div class="w-1/2 text-center"><label>Saved Adversaries</label><select id="saved-adversaries-dropdown" class="dropdown"></select><button class="btn modal-trigger" data-target="filter">Filter</button></div>
+            <div class="w-1/4 text-right"><button class="btn">Import</button><button class="btn">Export</button></div>
+        </div>
+        <div class="bg-gray-200 mx-8 my-4 p-4 rounded-md overflow-auto inline-block md:w-full lg:w-3/4 align-top">
             <div class="header break-adversary-header mb-5">
                 <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
                         id="adversary-name" onchange="adversary._change_name()" placeholder="New Adversary" type="text"
@@ -293,8 +299,8 @@
                 </div>
             </div>
         </div>
-        <div class="sidebar inline-block align-top w-1/5">
-            <div class="bg-gray-200 mt-8 pt-4 m-2 p-2 rounded-md ">
+        <div class="hidden sidebar align-top w-1/4 lg:w-1/5">
+            <div class="bg-gray-200 lg:mt-8 lg:pt-4 lg:m-2 lg:p-2 rounded-md ">
                 <div id="current-adversary" class="h-1/8">
                     <div class="text-center">
                         <button id="new-adversary-btn" class="btn" onclick="create_new_adversary()">Create New Adversary</button>
@@ -556,6 +562,9 @@
                 <h2 class="text-xl font-bold">Break!! Adversary Creator v.<span id="version"></span></h2>
                 <div id="help-content"></div>
             </div>
+        </template>
+        <template id="filter">
+            <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example Adversaries</button></template>
         </template>
     </div>
     <div id="modal-overlay"
