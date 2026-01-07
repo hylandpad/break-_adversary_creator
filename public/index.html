@@ -28,7 +28,7 @@
             <div class="w-1/2 text-left"><label>Adversary:</label><select id="saved-adversaries-dropdown"
                     class="dropdown"></select><button class="btn ml-4" onclick="save_adversary()">Save</button><button class="btn"
                     onclick="load_adversary()">Load</button><button class="btn btn-hollow modal-trigger"
-                    data-target="filter">Filter</button></div>
+                    data-target="filter">Options</button></div>
             <div class="w-1/2 text-right"><button class="btn">New</button><button class="btn">Import</button><button
                     class="btn">Export</button></div>
         </div>
@@ -590,7 +590,8 @@
         </template>
         <template id="filter">
             <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example
-                Adversaries</button></template>
+                Adversaries</button>
+            <button class="btn" onclick="remove_saved_adversary()">Remove Adversary from Saved</button>
         </template>
     </div>
     <div id="modal-overlay"

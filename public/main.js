@@ -725,28 +725,27 @@ const generate_id = () => {
 }
 
 
-// tag logic
-var tag_set = new Set(
-    [
-        'Bright',
-        'Dark',
-        'Controller',
-        'Tank',
-        'Blaster',
-        'Striker',
-        'Support'
-    ]
-)
-
 function create_tag_list() {
+    var tag_set = new Set(
+        [
+            'Bright',
+            'Dark',
+            'Controller',
+            'Tank',
+            'Blaster',
+            'Striker',
+            'Support'
+        ]
+    )
+
     datalist = document.getElementById('tag-suggestions')
     datalist.innerHTML = '';
 
+    adversary.tags.forEach(tag => tag_set.add(tag))
+
     const adversaries = Object.keys(saved_adversaries)
     adversaries.forEach(adversary => {
-        saved_adversaries[adversary].tags.forEach(tag =>{
-            tag_set.add(tag)
-        })
+        saved_adversaries[adversary].tags.forEach(tag => tag_set.add(tag))
     })
 
     for (let tag of tag_set) {
@@ -755,6 +754,8 @@ function create_tag_list() {
         datalist.appendChild(option)
     }
 }
+
+
 
 function toggle_magic(item_or_ability) {
     const magic_checkbox = document.getElementById(`${item_or_ability}-magic`);
@@ -930,7 +931,8 @@ function create_new_adversary() {
     show_toast(toast_message, 2000);
 }
 
-function remove_saved_adversary(adv_name) {
+
+function remove_saved_adversary(adv_name = curr_adv) {
     delete saved_adversaries[adv_name];
     const toast_message = 'Adversary "' + adv_name + '" removed from saved list!';
     closeModal();
@@ -1168,6 +1170,7 @@ var adversary = new Adversary({
     primary_aptitudes: [],
     inventory: [],
     passives: [],
+    tags: [],
     abilities: [],
     facts: {
         'habitat': {
@@ -1294,11 +1297,11 @@ function update_ui(adversary) {
         const tags = adversary.tags
         const tags_container = document.getElementById('tags-container')
         tags_container.innerHTML = ''
-        for (let tag of tags) {
+        tags.forEach(tag => {
             tag_element = `<span class="tag-chip" onclick="adversary._remove_tag('${tag}')">${tag}</span>`
             tags_container.innerHTML += tag_element
-        }
-    }else{
+        })
+    } else {
         const tags_container = document.getElementById('tags-container')
         tags_container.innerHTML = ''
     }
@@ -1433,6 +1436,9 @@ function update_ui(adversary) {
     //update mood table on every refresh
     initialize_mood_table()
 
+    //reset curr_adv
+    curr_adv = adversary.name
+
     //get proper color for menace
     menace_color(adversary.menace)
 
@@ -1442,6 +1448,8 @@ function update_ui(adversary) {
         description_editor.root.innerHTML = adversary.description;
     }
 }
+
+var curr_adv = adversary.name
 
 const exportAdversariesJson = (data, filename = 'adversaries.json') => {
     const jsonString = JSON.stringify(data, null, 2)

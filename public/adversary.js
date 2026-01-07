@@ -10,6 +10,8 @@ class Adversary {
         var tag_name = document.getElementById('tag-search-add').value.toLowerCase()
         tag_name = tag_name.charAt(0).toUpperCase() + tag_name.slice(1).toLowerCase()
         var toast_message = ''
+        
+        
         if (this.tags && this.tags.length == max_tags) {
             toast_message = `Maximum number of tags reached (${max_tags})`;
             show_toast(toast_message, 3000)
@@ -29,6 +31,7 @@ class Adversary {
                 document.getElementById('tag-search-add').value = ''
             }
         }
+        create_tag_list()
         update_ui(adversary)
     }
 
@@ -587,6 +590,7 @@ class Adversary {
         const index = tags.indexOf(tag)
         tags.splice(index, 1)
         this.tags = tags
+        create_tag_list()
         update_ui(this)
     }
 
