@@ -24,7 +24,7 @@
 
     <div class="container w-full m-auto">
         <div id="adversary-nav"
-            class="w-full h-[25px] lg:h-[55px] flex flex-row items-center bg-gray-200 mx-8 my-4 p-4 rounded-md">
+            class="w-full h-[25px] lg:h-[55px] flex flex-row items-center bg-gray-200 my-4 p-4 rounded-md">
             <div class="w-1/2 text-left"><button class="btn ml-4" onclick="save_adversary()">Save</button><button
                     class="btn btn-hollow modal-trigger" data-target="load-menu">Load</button>
                 <button class="btn" onclick="remove_saved_adversary()">Delete Current</button>
@@ -32,7 +32,7 @@
             <div class="w-1/2 text-right"><button class="btn" onclick="create_new_adversary()">New</button><button
                     class="btn modal-trigger" data-target="export">Export</button></div>
         </div>
-        <div class="bg-gray-200 mx-8 my-4 p-4 rounded-md overflow-auto inline-block w-full align-top">
+        <div class="bg-gray-200 my-4 p-4 rounded-md overflow-auto inline-block w-full align-top">
             <div class="header break-adversary-header mb-5">
                 <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
                         id="adversary-name" onchange="adversary._change_name()" placeholder="New Adversary" type="text"
