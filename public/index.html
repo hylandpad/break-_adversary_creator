@@ -25,12 +25,12 @@
     <div class="container w-full m-auto">
         <div id="adversary-nav"
             class="w-full h-[25px] lg:h-[55px] flex flex-row items-center bg-gray-200 mx-8 my-4 p-4 rounded-md">
-            <div class="w-1/2 text-left"><label>Adversary:</label><select id="saved-adversaries-dropdown"
-                    class="dropdown"></select><button class="btn ml-4" onclick="save_adversary()">Save</button><button class="btn"
-                    onclick="load_adversary()">Load</button><button class="btn btn-hollow modal-trigger"
-                    data-target="filter">Options</button></div>
-            <div class="w-1/2 text-right"><button class="btn">New</button><button class="btn">Import</button><button
-                    class="btn">Export</button></div>
+            <div class="w-1/2 text-left"><button class="btn ml-4" onclick="save_adversary()">Save</button><button
+                    class="btn btn-hollow modal-trigger" data-target="load-menu">Load</button>
+                <button class="btn" onclick="remove_saved_adversary()">Delete Current</button>
+            </div>
+            <div class="w-1/2 text-right"><button class="btn" onclick="create_new_adversary()">New</button><button
+                    class="btn modal-trigger" data-target="export">Export</button></div>
         </div>
         <div class="bg-gray-200 mx-8 my-4 p-4 rounded-md overflow-auto inline-block w-full align-top">
             <div class="header break-adversary-header mb-5">
@@ -90,10 +90,10 @@
 
                         <div class="w-1/2 ml-5 pl-5 border-l border-stone-300" id="tags">
                             <label>Tag</label>
-                            <input id="tag-search-add" list="tag-suggestions" placeholder="Enter a tag" class="text-input mx-4 w-30">
+                            <input id="tag-search-add" list="tag-suggestions" placeholder="Enter a tag"
+                                class="text-input mx-4 w-30">
                             <datalist id="tag-suggestions"></datalist>
-                            <button
-                                class="btn btn-hollow" onclick="adversary._add_tag()">Add</button>
+                            <button class="btn btn-hollow" onclick="adversary._add_tag()">Add</button>
                             <div id="tags-container" class="inline-block"></div>
                         </div>
                     </div>
@@ -588,10 +588,24 @@
                 <div id="help-content"></div>
             </div>
         </template>
-        <template id="filter">
-            <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example
-                Adversaries</button>
-            <button class="btn" onclick="remove_saved_adversary()">Remove Adversary from Saved</button>
+        <template id="load-menu">
+            <div id="load-container">
+                <div id="btn-container" class="block">
+                    <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example
+                        Adversaries</button><button onclick="importAdversariesJson()" class="btn">Import</button>
+                </div>
+                <div id="filter-load" class="flex align-top">
+                    <div id="list-container" class="w-1/2 mr-4">
+                        <label for="saved-adversaries-dropdown" class="block">Adversary</label><select size="10" id="saved-adversaries-dropdown" class="dropdown w-full"></select>
+                    </div>
+                    <div id="tag-container" class="w-1/2 px-2">
+                        <label>Tags</label>
+                        <div id="filter-tags-list"></div>
+                    </div>
+                
+                </div>
+                <button id="load-adversary" class="btn" onclick="load_adversary()">Load</button>
+            </div>
         </template>
     </div>
     <div id="modal-overlay"

@@ -24,9 +24,14 @@ function openModal(targetId) {
     ability_types_access()
   }
 
-  if(document.getElementById('help-message')){
+  else if(document.getElementById('help-message')){
     fill_version_num()
     fill_help_text()
+  }
+
+  else if (document.getElementById('load-menu')){
+    render_saved_list(saved_adversaries);
+    render_tags_for_filter();
   }
 
   initializeEditors(modalBody);
