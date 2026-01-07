@@ -6,6 +6,32 @@ class Adversary {
         this.max_speed = data.max_speed || 'veryfast';
     }
 
+    _add_tag() {
+        var tag_name = document.getElementById('tag-search-add').value.toLowerCase()
+        tag_name = tag_name.charAt(0).toUpperCase() + tag_name.slice(1).toLowerCase()
+        var toast_message = ''
+        if (this.tags && this.tags.length == max_tags) {
+            toast_message = `Maximum number of tags reached (${max_tags})`;
+            show_toast(toast_message, 3000)
+        }
+        else if (tag_name.length < 1) {
+            toast_message = 'Tag must be at least one character long'
+            show_toast(toast_message, 3000)
+            return
+        } else {
+            if (this.tags == undefined || this.tags.length < 1) {
+                this.tags = [tag_name]
+                document.getElementById('tag-search-add').value = ''
+            } else {
+                var tags = new Set(adversary.tags)
+                tags.add(tag_name)
+                this.tags = [...tags]
+                document.getElementById('tag-search-add').value = ''
+            }
+        }
+        update_ui(adversary)
+    }
+
     // Add a trait to the passives primary
     _add_trait() {
         // create trait in adversary object
@@ -555,6 +581,14 @@ class Adversary {
     }
 
     // **Removals - undo the addition of a trait, loot, gear or ability
+
+    _remove_tag(tag) {
+        var tags = [...this.tags]
+        const index = tags.indexOf(tag)
+        tags.splice(index, 1)
+        this.tags = tags
+        update_ui(this)
+    }
 
     _remove_trait(id) {
         const passives = [...this.passives]

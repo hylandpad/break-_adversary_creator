@@ -692,6 +692,9 @@ window.onload = () => {
     } else {
         console.log("No saved data found.");
     }
+
+    // Create tag list
+    create_tag_list()
 };
 
 function load_example_adversaries() {
@@ -719,6 +722,38 @@ const show_toast = (message, duration = 3000) => {
 
 const generate_id = () => {
     return Math.random().toString(36).slice(2)
+}
+
+
+// tag logic
+var tag_set = new Set(
+    [
+        'Bright',
+        'Dark',
+        'Controller',
+        'Tank',
+        'Blaster',
+        'Striker',
+        'Support'
+    ]
+)
+
+function create_tag_list() {
+    datalist = document.getElementById('tag-suggestions')
+    datalist.innerHTML = '';
+
+    const adversaries = Object.keys(saved_adversaries)
+    adversaries.forEach(adversary => {
+        saved_adversaries[adversary].tags.forEach(tag =>{
+            tag_set.add(tag)
+        })
+    })
+
+    for (let tag of tag_set) {
+        option = document.createElement('option')
+        option.value = tag
+        datalist.appendChild(option)
+    }
 }
 
 function toggle_magic(item_or_ability) {
@@ -878,7 +913,8 @@ function save_adversary() {
     console.log("Adversaries saved locally!");
 }
 
-function load_adversary(adv_name) {
+function load_adversary() {
+    const adv_name = document.getElementById('saved-adversaries-dropdown').value;
     adversary = new Adversary({ ...saved_adversaries[adv_name] })
     const toast_message = 'Adversary "' + adv_name + '" loaded!';
 
@@ -908,27 +944,13 @@ function remove_saved_adversary(adv_name) {
 }
 
 function render_saved_list() {
-    const container = document.getElementById('adversaries-scrollable');
-    container.innerHTML = '';
-
+    const dropdown = document.getElementById('saved-adversaries-dropdown')
+    dropdown.innerHTML = ''
     Object.keys(saved_adversaries).forEach(name => {
-        const menace_class = saved_adversaries[name].menace
-        const subname = (`${saved_adversaries[name].size} Rank ${saved_adversaries[name].rank} ${saved_adversaries[name].creature_type}`).toUpperCase()
-        const adversary_sidebar_card = `
-        <div class="p-4 mb-2 text-center rounded-lg ${menace_class} text-white" id="load-${name}">
-            <div class="flex flex-row items-center">
-                <div class="basis-7/8 text-left hover:cursor-pointer" onclick="load_adversary('${name}')">
-                    <h4 class="font-bold adversary-list-name">${name.toUpperCase()}</h4>
-                    <p class="italic text-sm text-left adversary-list-subname">${subname}</p>
-                </div>
-                <button class="btn-hollow text-sm basis-1/8 text-center" onclick="confirm_prompt('${name}')">X</button>
-            </div>    
-        </div>`
-        container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
         const saved_adversary_dropdown_item = `
         <option value="${name}">${name}</option>
         `
-        document.getElementById('saved-adversaries-dropdown').insertAdjacentHTML('beforeend', saved_adversary_dropdown_item)
+        dropdown.insertAdjacentHTML('beforeend', saved_adversary_dropdown_item)
     });
 }
 
@@ -1265,6 +1287,20 @@ function update_ui(adversary) {
         document.getElementById('twilight').classList.remove('hidden')
         app_main_div.classList.add('twilight-allegiance')
         app_main_div.classList.remove('bright-allegiance', 'unaligned-allegiance', 'dark-allegiance')
+    }
+
+    // Display all the adversary's tags
+    if (adversary.tags) {
+        const tags = adversary.tags
+        const tags_container = document.getElementById('tags-container')
+        tags_container.innerHTML = ''
+        for (let tag of tags) {
+            tag_element = `<span class="tag-chip" onclick="adversary._remove_tag('${tag}')">${tag}</span>`
+            tags_container.innerHTML += tag_element
+        }
+    }else{
+        const tags_container = document.getElementById('tags-container')
+        tags_container.innerHTML = ''
     }
 
     // Make changes to trait container

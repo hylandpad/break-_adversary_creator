@@ -1,4 +1,5 @@
 const app_version_number = 1.1
+const max_tags = 5
 const help_text = `
     <p>This is a tool to easily put together and export Break Adversaries. It does the following:</p>
         <ul>

@@ -8,23 +8,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=tactic" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=help" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=help" />
     <title>Break!! Adversary Creator</title>
 </head>
 
 <body id="app-main" class="unaligned-allegiance transition ease-in-out delay-150 duration-2500">
     <div class="text-center header bg-gradient-to-r from-cyan-500 to-green-600 p-2"><img class="w-[250px] m-auto inline"
-            src="/images/breakcommunity.png"><i id="help-btn" data-target="help"  class="inline material-symbols-outlined text-white modal-trigger">help</i>
+            src="/images/breakcommunity.png"><i id="help-btn" data-target="help"
+            class="inline material-symbols-outlined text-white modal-trigger">help</i>
     </div>
-    <div id="toast-container h-[40px] block"><p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center"></p></div>
-    
+    <div id="toast-container h-[40px] block">
+        <p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center"></p>
+    </div>
+
     <div class="container w-full m-auto">
-        <div class="w-full h-5 flex flex-row items-center bg-gray-200 mx-8 my-4 p-4 rounded-md">
-            <div class="w-1/4 text-left"><label>Current Adversary:</label><span>ADVERSARY</span></div>
-            <div class="w-1/2 text-center"><label>Saved Adversaries</label><select id="saved-adversaries-dropdown" class="dropdown"></select><button class="btn modal-trigger" data-target="filter">Filter</button></div>
-            <div class="w-1/4 text-right"><button class="btn">Import</button><button class="btn">Export</button></div>
+        <div id="adversary-nav"
+            class="w-full h-[25px] lg:h-[55px] flex flex-row items-center bg-gray-200 mx-8 my-4 p-4 rounded-md">
+            <div class="w-1/2 text-left"><label>Adversary:</label><select id="saved-adversaries-dropdown"
+                    class="dropdown"></select><button class="btn ml-4" onclick="save_adversary()">Save</button><button class="btn"
+                    onclick="load_adversary()">Load</button><button class="btn btn-hollow modal-trigger"
+                    data-target="filter">Filter</button></div>
+            <div class="w-1/2 text-right"><button class="btn">New</button><button class="btn">Import</button><button
+                    class="btn">Export</button></div>
         </div>
-        <div class="bg-gray-200 mx-8 my-4 p-4 rounded-md overflow-auto inline-block md:w-full lg:w-3/4 align-top">
+        <div class="bg-gray-200 mx-8 my-4 p-4 rounded-md overflow-auto inline-block w-full align-top">
             <div class="header break-adversary-header mb-5">
                 <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
                         id="adversary-name" onchange="adversary._change_name()" placeholder="New Adversary" type="text"
@@ -47,34 +55,47 @@
             <div id="stats-card" class="main">
                 <div class="stats-card bg-gray-200">
                     <h3 class="section-header ">ADVERSARY INFO</h3>
-                    <div class="my-3 flex items-center"><label for="adversary-type">Type: </label><select
-                            id="adversary-type" class="dropdown" onchange="adversary._change_type_subtype()">
-                            <option value="beast">Beast</option>
-                            <option value="celestial">Celestial</option>
-                            <option value="folk">Folk</option>
-                            <option value="monster">Monster</option>
-                        </select><label for="adversary-subtype">Subtype: </label><input
-                            onchange="adversary._change_type_subtype()" id="adversary-subtype"
-                            class="text-input w-30 mr-2" type="text" placeholder="Subtype"> <label class="mr-1" for="size">Size:
-                        </label><select class="mr-2" id="size" disabled onchange="adversary._adjust_size()">
-                            <option value="tiny">Tiny</option>
-                            <option value="small">Small</option>
-                            <option value="medium">Medium</option>
-                            <option value="large">Large</option>
-                            <option value="massive">Massive</option>
-                        </select>
-                        <strong class="mr-2">Allegiance: </strong>
-                        <div class="inline-flex" id="allegiance">
-                            <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"
-                                    class="material-icons text-slate-400">circle</i></span>
-                            <span class="flex hidden" id="twilight">Twilight <i id="allegiance-twilight"
-                                    class="material-icons bg-gradient-to-r from-yellow-300 to-purple-700 text-transparent bg-clip-text">contrast</i></span>
-                            <span class="flex hidden" id="bright">Bright <i id="allegiance-bright"
-                                    class="material-icons text-yellow-500">brightness_5</i></span>
-                            <span class="flex hidden" id="dark">Dark <i id="allegiance-dark"
-                                    class="material-icons text-purple-900">cyclone</i></span>
+
+                    <div class="my-3 flex items-center">
+                        <div class="w-1/2">
+                            <label for="adversary-type">Type: </label><select id="adversary-type" class="dropdown"
+                                onchange="adversary._change_type_subtype()">
+                                <option value="beast">Beast</option>
+                                <option value="celestial">Celestial</option>
+                                <option value="folk">Folk</option>
+                                <option value="monster">Monster</option>
+                            </select><label for="adversary-subtype">Subtype: </label><input
+                                onchange="adversary._change_type_subtype()" id="adversary-subtype"
+                                class="text-input w-30 mr-2" type="text" placeholder="Subtype"> <label class="mr-1"
+                                for="size">Size:
+                            </label><select class="mr-2" id="size" disabled onchange="adversary._adjust_size()">
+                                <option value="tiny">Tiny</option>
+                                <option value="small">Small</option>
+                                <option value="medium">Medium</option>
+                                <option value="large">Large</option>
+                                <option value="massive">Massive</option>
+                            </select>
+                            <div class="inline-flex" id="allegiance">
+                                <strong class="mr-2">Allegiance: </strong>
+                                <span class="flex" id="unaligned">Unaligned <i id="allegiance-unaligned"
+                                        class="material-icons text-slate-400">circle</i></span>
+                                <span class="flex hidden" id="twilight">Twilight <i id="allegiance-twilight"
+                                        class="material-icons bg-gradient-to-r from-yellow-300 to-purple-700 text-transparent bg-clip-text">contrast</i></span>
+                                <span class="flex hidden" id="bright">Bright <i id="allegiance-bright"
+                                        class="material-icons text-yellow-500">brightness_5</i></span>
+                                <span class="flex hidden" id="dark">Dark <i id="allegiance-dark"
+                                        class="material-icons text-purple-900">cyclone</i></span>
+                            </div>
                         </div>
 
+                        <div class="w-1/2 ml-5 pl-5 border-l border-stone-300" id="tags">
+                            <label>Tag</label>
+                            <input id="tag-search-add" list="tag-suggestions" placeholder="Enter a tag" class="text-input mx-4 w-30">
+                            <datalist id="tag-suggestions"></datalist>
+                            <button
+                                class="btn btn-hollow" onclick="adversary._add_tag()">Add</button>
+                            <div id="tags-container" class="inline-block"></div>
+                        </div>
                     </div>
                     <hr class="faded-hr" />
                     <div id="description-container-div" class="item-container">
@@ -268,7 +289,8 @@
                                     class="material-icons text-white mr-2">theater_comedy</i>
                                 <h3>Role Playing Notes</h3>
                             </div>
-                            <textarea onchange="adversary._adjust_facts('role-playing-notes')" id='role-playing-notes'></textarea>
+                            <textarea onchange="adversary._adjust_facts('role-playing-notes')"
+                                id='role-playing-notes'></textarea>
                         </div>
                         <div id="customization-div" class="fact-card">
                             <div class="flex section-header "><i id="facts-customize"
@@ -303,13 +325,15 @@
             <div class="bg-gray-200 lg:mt-8 lg:pt-4 lg:m-2 lg:p-2 rounded-md ">
                 <div id="current-adversary" class="h-1/8">
                     <div class="text-center">
-                        <button id="new-adversary-btn" class="btn" onclick="create_new_adversary()">Create New Adversary</button>
+                        <button id="new-adversary-btn" class="btn" onclick="create_new_adversary()">Create New
+                            Adversary</button>
                     </div>
                     <div class="text-center">
                         <button id="save-adversary-btn" class="btn" onclick="save_adversary()">Save Adversary</button>
                     </div>
                     <div class="text-center">
-                        <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example Adversaries</button>
+                        <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load
+                            Example Adversaries</button>
                     </div>
                 </div>
                 <div id="adversaries-container" class="h-5/8">
@@ -377,7 +401,7 @@
                         <input id="ability-legendary" name="ability-type" type="radio" value="Legendary"
                             disabled="true"><label for="ability-legendary"> Legendary</label>
                     </div>
-                    <hr class="faded-hr"/>
+                    <hr class="faded-hr" />
                     <div id="ability-magic-container" class="flex text-center">
                         <div><label for="ability-magic">Magic: </label></div>
                         <div><label class="switch switch-small ml-3">
@@ -412,8 +436,8 @@
                             <option value="fast">Fast</option>
                             <option value="veryfast">Very Fast</option>
                         </select>
-                        <i class="fa-solid fa-person"></i><label> SIZE </label><select
-                            id="ability-size-override" class="dropdown">
+                        <i class="fa-solid fa-person"></i><label> SIZE </label><select id="ability-size-override"
+                            class="dropdown">
                             <option value=""></option>
                             <option value="tiny">Tiny</option>
                             <option value="small">Small</option>
@@ -496,11 +520,12 @@
                             </select>
                         </span>
                     </div>
-                    <hr class="faded-hr"/>
+                    <hr class="faded-hr" />
                     <div id="inventory-item-magic-container" class="flex text-center">
                         <div><label for="inventory-item-magic">Magic: </label></div>
                         <div><label class="switch switch-small ml-3">
-                                <input id="inventory-item-magic" type="checkbox" onclick="toggle_magic('inventory-item')">
+                                <input id="inventory-item-magic" type="checkbox"
+                                    onclick="toggle_magic('inventory-item')">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -564,7 +589,8 @@
             </div>
         </template>
         <template id="filter">
-            <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example Adversaries</button></template>
+            <button id="load-examples-btn" class="btn-light" onclick="load_example_adversaries()">Load Example
+                Adversaries</button></template>
         </template>
     </div>
     <div id="modal-overlay"
