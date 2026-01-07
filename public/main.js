@@ -201,7 +201,7 @@ function render_tags_for_filter(){
     filter_tag_container.innerHTML = ''
     tag_set = [...tag_set]
     tag_set.forEach(tag => {
-        const tag_html = `<input class="mx-1" id="tag-${tag}" name="tag-filter" type="checkbox" value="${tag}" onclick="update_filter()"><label class="mx-1 px-1" for="tag-${tag}">${tag}</label>`
+        const tag_html = `<div class="mx-1 inline-block"><input id="tag-${tag}" name="tag-filter" type="checkbox" value="${tag}" onclick="update_filter()"><label class="mx-1 px-1" for="tag-${tag}">${tag}</label></div>`
         filter_tag_container.innerHTML += tag_html
     })
 }

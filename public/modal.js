@@ -29,7 +29,7 @@ function openModal(targetId) {
     fill_help_text()
   }
 
-  else if (document.getElementById('load-menu')){
+  else if (document.getElementById('load-container')){
     render_saved_list(saved_adversaries);
     render_tags_for_filter();
   }
