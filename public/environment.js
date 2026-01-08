@@ -1,16 +1,30 @@
 const app_version_number = 1.5
 const max_tags = 5
 const help_text = `
-    <p>Update Notes:</p>
-        <ul>
-            <li>Aptitude Calculations are completely automated</li>
-            <li>All size and speed calculations are factored into Combat values and aptitudes</li>
-            <li>Adding traits, items and abilities can manipulate combat values and aptitudes</li>
-            <li>You can import and export your adversary list in the form of a JSON file - future enhancements will allow for print-friendly cards, and markdown exports</li>
+    
+<br />
+<p><strong>Update Notes:</strong></p>
+<hr class="faded-hr" />
+<div class="text-sm">        
+<ul>
+<li><strong>Markdown Exports</strong> - You can now export all your saved adversaries in a markdown format. In the future, I will enhance this to export one or several selected adversaries, but for now, the entire list gets converted. Go post your cool adversaries on the Break!! Discord!</li>            
+<li>Ability and Inventory Text descriptions now include support for formatted checks and challenges. Simply type your check or challenge as follows:
+                <ul>
+                    <li><code>[ATTRIBUTE|Pass: YOUR PASS TEXT HERE|Fail: YOUR FAIL TEXT HERE]</code></li>
+                    <li><code>[ATTRIBUTE vs ATTRIBUTE|Pass: YOUR PASS TEXT HERE|Fail: YOUR FAIL TEXT HERE]</code></li>
+                </ul>
+            </li>
+            <li>Massive Size automatically adds an ability for Sweep and Focus attacks. Removal of Massive Size removes these abilities automatically</li>
+            <li><strong>Adversaries now save to browser local storage automagically</strong>. No more exporting and reimporting necessary</li>
+            <li>Allegiance locked to magical items and abilities to be more in line with Core rules</li>
+            <li>Adversaries can now be assigned up to 5 tags. Choose from some predefined options or make your own</li>
+            <li>Adversary load bar reworked and now includes filtering using tags</li>
+            <li>Tons of visual modifications</li>
+            <li>Bug squashes</li>
         </ul>
+        <br /></div>
+        <p><em>Next Major Update</em>: The 2.0 <strong>Colossal</strong> Update</p>
         <br />
-        <p>You can remove any Trait, Inventory item or Ability by clicking on them.</p>
-        <p>Ability bound passives will be removed when the bound ability is removed.</p>
         <p class="font-bold">Please report bugs or request features on the <a class="underline text-blue-700" href="https://github.com/hylandpad/break-_adversary_creator/issues" target="_blank">Project Github</a></p>
 `
 var example_adversaries = {

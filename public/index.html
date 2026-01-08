@@ -27,10 +27,10 @@
             class="w-full h-[25px] lg:h-[55px] flex flex-row items-center bg-gray-200 my-4 p-4 rounded-md">
             <div class="w-1/2 text-left"><button class="btn ml-4" onclick="save_adversary()">Save</button><button
                     class="btn btn-hollow modal-trigger" data-target="load-menu">Load</button>
-                <button class="btn" onclick="remove_saved_adversary()">Delete Current</button>
+                <button class="btn" onclick="confirm_prompt(curr_adv)">Delete Current</button>
             </div>
             <div class="w-1/2 text-right"><button class="btn" onclick="create_new_adversary()">New</button><button
-                    class="btn modal-trigger" data-target="export">Export</button></div>
+                    class="btn btn-hollow modal-trigger" data-target="export">Export</button></div>
         </div>
         <div class="bg-gray-200 my-4 p-4 rounded-md overflow-auto inline-block w-full align-top">
             <div class="header break-adversary-header mb-5">
@@ -226,7 +226,7 @@
                         <div class="flex" id="trait-container">
                         </div>
                     </div>
-                    <button id="open-trait-modal" class="btn modal-trigger" data-target="trait-add">Add
+                    <button id="open-trait-modal" class="btn btn-hollow modal-trigger" data-target="trait-add">Add
                         Trait</button>
                 </div>
 
@@ -236,7 +236,7 @@
                         <div class="flex flex-wrap" id="inventory-container">
                         </div>
                     </div>
-                    <button id="open-item-modal" class="btn modal-trigger" data-target="item-add">Add
+                    <button id="open-item-modal" class="btn btn-hollow modal-trigger" data-target="item-add">Add
                         Item</button>
                 </div>
 
@@ -247,7 +247,7 @@
                         <div class="flex" id="ability-container">
                         </div>
                     </div>
-                    <button id="open-ability-modal" class="btn modal-trigger" data-target="ability-add">Add
+                    <button id="open-ability-modal" class="btn btn-hollow modal-trigger" data-target="ability-add">Add
                         Ability</button>
                 </div>
             </div>
@@ -343,7 +343,7 @@
                 </div>
                 <div id="control-button-group" class="block align-bottom text-center">
                     <button id="import-adversaries-btn" class="btn" onclick="importAdversariesJson()">Import</button>
-                    <button id="open-export-modal" class="btn modal-trigger" data-target="export">Export</button>
+                    <button id="open-export-modal" class="btn btn-hollow modal-trigger" data-target="export">Export</button>
                 </div>
             </div>
         </div>
@@ -574,13 +574,11 @@
         <template id="export">
             <div>
                 <h3>Choose your Export Format</h3>
-                <p class="italic text-slate-400">Currently only JSON export is supported. Print and Plain Text
-                    will be
-                    coming in the future</p>
+                <p class="italic text-slate-400">Currently raw JSON Exports and a Converted Markdown format are supported. Print format will come in a future update.</p>
                 <div class="flex">
                     <button id="export-json-btn" class="btn"
-                        onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button disabled
-                        class="btn">Text</button><button disabled class="btn">Print</button>
+                        onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button onclick="download_markdown_file(saved_adversaries)"
+                        class="btn">Markdown</button><button disabled class="btn">Print</button>
                 </div>
             </div>
         </template>
@@ -630,7 +628,7 @@
             <p>Break!! Adversary Creator is an independent product published under BREAK!! RPG's Non-Commercial
                 License
                 and is not affiliated with BREAK!!'s creators or publishers.</p>
-            <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator/issues"
+            <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator"
                 target="_blank">Report a Bug/Request a Feature</a>
         </div>
     </div>

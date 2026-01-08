@@ -354,6 +354,10 @@ ul,ol{
     list-style-position: inside;
 }
 
+ul > li, ol > li{
+    margin-left:1rem;
+}
+
 #adversaries-scrollable{
      scrollbar-color: #898a8c #e6e7eb;
 }

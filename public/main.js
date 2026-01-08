@@ -181,7 +181,7 @@ function create_tag_list() {
     }
 }
 
-function render_tags_for_filter(){
+function render_tags_for_filter() {
     var tag_set = new Set(
         [
             'Bright',
@@ -206,21 +206,21 @@ function render_tags_for_filter(){
     })
 }
 
-function update_filter(){
+function update_filter() {
     tag_list = []
-    document.querySelectorAll('input[name="tag-filter"]:checked').forEach(el => {tag_list.push(el.value)})
+    document.querySelectorAll('input[name="tag-filter"]:checked').forEach(el => { tag_list.push(el.value) })
     render_filtered_list(tag_list)
 }
 
-function render_filtered_list(tags){
-    if (tags.length == 0){
+function render_filtered_list(tags) {
+    if (tags.length == 0) {
         render_saved_list(saved_adversaries)
-    }else{
+    } else {
         const adversaries = Object.keys(saved_adversaries)
         var filtered_adversaries = {}
         tags.forEach(tag => {
-            adversaries.forEach(adversary =>{
-                if (saved_adversaries[adversary].tags.includes(tag)){
+            adversaries.forEach(adversary => {
+                if (saved_adversaries[adversary].tags.includes(tag)) {
                     filtered_adversaries[adversary] = saved_adversaries[adversary]
                 }
             })
@@ -413,13 +413,14 @@ function remove_saved_adversary(adv_name = curr_adv) {
     const stringData = JSON.stringify(saved_adversaries);
     localStorage.setItem('saved_adversaries', stringData);
 
+    create_new_adversary()
     show_toast(toast_message, 2000);
 }
 
 function render_saved_list(adversaries) {
     const dropdown = document.getElementById('saved-adversaries-dropdown')
     dropdown.innerHTML = ''
-    Object.keys(adversaries).forEach(name => {
+    Object.keys(adversaries).sort().forEach(name => {
         const saved_adversary_dropdown_item = `
         <option value="${name}">${name}</option>
         `
@@ -763,6 +764,11 @@ function update_ui(adversary) {
         app_main_div.classList.remove('bright-allegiance', 'unaligned-allegiance', 'dark-allegiance')
     }
 
+    //fill quill editor with description from adversary
+    const description_editor = document.querySelector('#description-container-div div.editor').__quill
+    description_editor.root.innerHTML = adversary.description;
+    
+
     // Display all the adversary's tags
     if (adversary.tags) {
         const tags = adversary.tags
@@ -812,6 +818,7 @@ function update_ui(adversary) {
                 passive_span.insertAdjacentHTML('beforeend', size_span)
             }
         }
+
     })
 
     // make changes to ability container
@@ -913,11 +920,7 @@ function update_ui(adversary) {
     //get proper color for menace
     menace_color(adversary.menace)
 
-    //fill quill editor with description from adversary
-    const description_editor = document.querySelector('#description-container-div div.editor').__quill
-    if (adversary.description != '') {
-        description_editor.root.innerHTML = adversary.description;
-    }
+
 }
 
 var curr_adv = adversary.name
@@ -964,3 +967,92 @@ const importAdversariesJson = () => {
     input.click();
 }
 
+function convert_to_markdown(adversaries) {
+  let output = "";
+  const clean = (str) => str ? str.replace(/<[^>]*>?/gm, '').trim() : "N/A";
+
+  Object.values(adversaries).forEach(adv => {
+    // 1. Header
+    output += `# ${adv.name}\n`;
+    output += `**Type:** ${adv.creature_type} (${adv.creature_subtype}) | **Rank:** ${adv.rank} | **Size:** ${adv.size}\n`;
+    output += `**Description:** ${clean(adv.description)}\n\n`;
+
+    // 2. Core Stats (Added ATK Bonus here)
+    output += `### Core Stats\n`;
+    output += `* **Hearts:** ${adv.hearts} | **Defense:** ${adv.defense} | **Atk Bonus:** +${adv.atkbonus || 0}\n`;
+    output += `* **Speed:** ${adv.speed} (Max: ${adv.max_speed}) | **Points:** B: ${adv.bright_points} / D: ${adv.dark_points}\n`;
+    output += `* **Aptitudes:** Mgt ${adv.aptitudes.might}, Def ${adv.aptitudes.deftness}, Grt ${adv.aptitudes.grit}, Ins ${adv.aptitudes.insight}, Aur ${adv.aptitudes.aura}\n\n`;
+
+    // 3. Special Rules (Traits + Abilities)
+    output += `### Traits and Abilities\n`;
+    const abilityNames = adv.abilities.map(a => a.name.toUpperCase());
+    const uniquePassives = adv.passives.filter(p => !abilityNames.includes(p.name.toUpperCase()));
+
+    [...uniquePassives, ...adv.abilities].forEach(p => {
+      let detail = "";
+      
+      if (p.description) {
+        detail = clean(p.description);
+      } else if (p.modifier && p.value) {
+        detail = `${p.modifier} ${p.value >= 0 ? '+' : ''}${p.value}`;
+      } else if (p.modifiers) { 
+        // Logic to catch nested "atkbonus" or "size" inside a passive modifier object
+        detail = Object.entries(p.modifiers)
+          .map(([key, val]) => `${key}: ${val >= 0 ? '+' : ''}${val}`)
+          .join(", ");
+      }
+
+      output += `* **${p.name}**: ${detail}\n`;
+    });
+
+    // 4. Quick Facts
+    if (adv.facts) {
+      output += `\n### Quick Facts\n`;
+      output += `| Category | Details |\n| :--- | :--- |\n`;
+      for (const [key, value] of Object.entries(adv.facts)) {
+        output += `| ${key.replace(/-/g, ' ').toUpperCase()} | ${clean(value.description)} |\n`;
+      }
+    }
+
+    // 5. Mood Table
+    if (adv.moods?.length > 0) {
+      output += `\n### Moods (1d20)\n`;
+      output += `| Roll | Mood | Behavior |\n| :--- | :--- | :--- |\n`;
+      adv.moods.forEach(m => {
+        output += `| ${m.rolls.start}-${m.rolls.stop} | ${m.mood} | ${clean(m.mood_text)} |\n`;
+      });
+    }
+
+    // 6. Inventory & Allegiance
+    if (adv.inventory?.length > 0) {
+      output += `\n### Inventory\n`;
+      adv.inventory.forEach(i => {
+        output += `* **${i.name}** (${i.category}): ${clean(i.description)} [Value: ${i.value} ${i.denomination}]\n`;
+      });
+      output += `\n**Allegiance Score:** ${adv.inventory[0].allegiance}\n`;
+    }
+
+    output += `\n---\n\n`;
+  });
+
+  return output;
+}
+
+function download_markdown_file(adversaries) {
+  const content = convert_to_markdown(adversaries);
+  
+  const blob = new Blob([content], { type: 'text/plain' });
+  
+  const link = document.createElement('a');
+  
+  link.download = 'adversary_markdown_export.txt';
+  link.href = window.URL.createObjectURL(blob);
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+ 
+  window.URL.revokeObjectURL(link.href);
+
+  closeModal()
+}
