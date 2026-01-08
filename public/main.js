@@ -2,6 +2,7 @@ var saved_adversaries = {}
 var current_quill_content = ''
 const app_version = parseFloat(app_version_number).toFixed(3)
 registerCustomBlots();
+
 function initializeEditors(scope = document) {
     const editorElements = scope.querySelectorAll('.editor');
 
@@ -30,6 +31,9 @@ function initializeEditors(scope = document) {
 
                     // Matches: [Might vs Deftness | Pass: x | Fail: y] with any amount of spacing
                     const contestRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s+vs\s+(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
+
+                    // Matches [Cold 1]
+                    const damageTypeRegex = '^\\[\\s*(Bright|Dark|Holy|Necrotic|Twilight|Caustic|Poison|Burn|Freeze)\\s+(\\d+)\\s*\\]$'
 
                     let match;
                     if ((match = text.match(contestRegex))) {
@@ -63,6 +67,22 @@ function initializeEditors(scope = document) {
                                 pass: pass.trim(),
                                 fail: fail.trim(),
                                 isContest: false
+                            });
+                            quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);
+                        }
+                    }
+                    else if ((match = text.match(damageTypeRegex))){
+
+                        let [fullMatch, damage_type, amount] = match;
+
+                        const lineIndex = quill.getIndex(line);
+                        const absoluteStartIndex = lineIndex + text.lastIndexOf(fullMatch);
+
+                        if (absoluteStartIndex >= 0) {
+                            quill.deleteText(absoluteStartIndex, fullMatch.length);
+                            quill.insertText(absoluteStartIndex, 'damage-type', {
+                                damage_type: damage_type.trim(),
+                                amount: amount.trim()
                             });
                             quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);
                         }

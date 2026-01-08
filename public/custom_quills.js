@@ -1,7 +1,21 @@
 const registerCustomBlots = () => {
     if (typeof Quill === 'undefined') return;
 
+    const Inline = Quill.import('blots/inline')
     const Embed = Quill.import('blots/embed');
+
+    class DamageTypeBlot extends Inline {
+        static create(dmg){
+            let node = super.create()
+
+            node.setAttribute('data-dmg-type', dmg.damage_type || '')
+            node.setAttribute('data-amount', dmg.amount || '')
+            
+            node.classListist.add('damage-type-blot')
+            node.innerHTML = `<span class="${dmg.damage_type}">${dmg.amount}</span>`
+            return node
+        }
+    }
 
     class SkillActionBlot extends Embed {
         static create(value) {
@@ -46,9 +60,19 @@ const registerCustomBlots = () => {
                 isContest: node.getAttribute('data-contest') === 'true'
             };
         }
+
+        static dmg(node) {
+            return {
+                damage_type: node.getAttribute('damage_type'),
+                amount: node.getAttribute('amount')
+            }
+        }
     }
 
+    DamageTypeBlot.blotName = 'damageType';
+    DamageTypeBlot.tagName = 'span';
     SkillActionBlot.blotName = 'skillAction';
     SkillActionBlot.tagName = 'span';
     Quill.register(SkillActionBlot);
+    Quill.register(DamageTypeBlot);
 };
