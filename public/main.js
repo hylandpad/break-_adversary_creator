@@ -127,10 +127,10 @@ function load_example_adversaries() {
     Object.keys(example_adversaries).forEach(name => {
         saved_adversaries[name] = example_adversaries[name];
     });
-    render_saved_list();
     // Save to localStorage
     const stringData = JSON.stringify(saved_adversaries);
     localStorage.setItem('saved_adversaries', stringData);
+    render_saved_list(saved_adversaries);
     console.log("Example Adversaries loaded and saved locally!");
     show_toast("Example Adversaries loaded!", 2000);
 }
@@ -857,7 +857,7 @@ function update_ui(adversary) {
 
         const item_block = `
             <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
-                <div class="text-white flex"><span class="font-bold">${item.name}</span> (<span
+                <div class="text-white flex"><span class="font-bold">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</span> (<span
                         class="italic">${item.type} - ${item.subtype}</span>)<span class="font-bold">: ${item.category}</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span></span>` : ''}</div>
                 <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">
                     <div>
@@ -869,8 +869,8 @@ function update_ui(adversary) {
                     ${item.description != 'None' ? `<div id=${item.id}-description" class="italic">${item.description}</div>` : ''}
                 </div>
                 <div class="text-stone-200 italic flex">
-                    <div id="${item.category}-${item.id}-slots" class="basis-xs">Slots : ${item.slots}</div>
-                    <div id="${item.category}-${item.id}-value" class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
+                    <div id="${item.category}-${item.id}-slots" class="basis-xs">Slots : ${item.slots * item.quantity}</div>
+                    <div id="${item.category}-${item.id}-value" class="basis-1/3 text-right">${item.value * item.quantity} ${item.denomination}</div>
                 </div>
             </div>
             `

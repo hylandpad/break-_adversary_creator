@@ -543,21 +543,23 @@
                     </div>
                     <div class="editor"></div>
                     <div class="flex flew-row align-top">
-                        <div id="inventory-item-slots-div" class="basis-2xs">
+                        <div id="inventory-item-slots-div" class="w-1/4">
                             <label for="inventory-item-slots">Slots: </label>
-                            <input min='0' class="text-input" id="inventory-item-slots" type="number">
+                            <input min='0' value="1" class="text-input" id="inventory-item-slots" type="number">
                         </div>
-                        <div id="inventory-item-value-div" class="basis-md align-right">
+                        <div id="inventory-item-quantity-div" class="w-1/4 text-center">
+                            <label>Quantity: </label><input id="inventory-item-quantity" type="number" min="1" value="1" class="text-input">
+                        </div>
+                        <div id="inventory-item-value-div" class="w-1/2 text-right">
                             <label for="inventory-item-value">Value: </label>
                             <input type="number" id="inventory-item-value" class="text-input">
                             <span id="inventory-item-denomination-div">
                                 <input type="radio" id="inventory-item-stones" name="inventory-item-denomination"
-                                    value="stones"><label for="inventory-item-stones"> Stones </label>
+                                    value="stones"><img class="svg-icon" src="images/zen-rocks-stack-svgrepo-com.svg">
                                 <input type="radio" id="items-coins" name="inventory-item-denomination" value="coins"
-                                    checked><label for="inventory-item-coins"> Coins </label>
+                                    checked><img class="svg-icon" src="images/coins-solid-svgrepo-com.svg">
                                 <input type="radio" id="items-gems" name="inventory-item-denomination"
-                                    value="gems"><label for="inventory-item-gems">
-                                    Gems </label>
+                                    value="gems"><img class="svg-icon" src="images/gem-svgrepo-com.svg">
                             </span>
                         </div>
                     </div>
