@@ -967,7 +967,8 @@ const importAdversariesJson = () => {
     input.click();
 }
 
-function convert_to_markdown(adversaries) {
+function convert_to_markdown(adversaries,con=false) {
+  condensed = con
   let output = "";
   const clean = (str) => str ? str.replace(/<[^>]*>?/gm, '').trim() : "N/A";
 
@@ -975,12 +976,12 @@ function convert_to_markdown(adversaries) {
     // 1. Header
     output += `# ${adv.name}\n`;
     output += `**Type:** ${adv.creature_type} (${adv.creature_subtype}) | **Rank:** ${adv.rank} | **Size:** ${adv.size}\n`;
-    output += `**Description:** ${clean(adv.description)}\n\n`;
+    if (condensed == false) {output += `**Description:** ${clean(adv.description)}\n\n`;}
 
-    // 2. Core Stats (Added ATK Bonus here)
+    // 2. Core Stats
     output += `### Core Stats\n`;
     output += `* **Hearts:** ${adv.hearts} | **Defense:** ${adv.defense} | **Atk Bonus:** +${adv.atkbonus || 0}\n`;
-    output += `* **Speed:** ${adv.speed} (Max: ${adv.max_speed}) | **Points:** B: ${adv.bright_points} / D: ${adv.dark_points}\n`;
+    output += `* **Speed:** ${adv.speed} (Max: ${adv.max_speed}) | **Allegiance Points:** B: ${adv.bright_points} / D: ${adv.dark_points}\n`;
     output += `* **Aptitudes:** Mgt ${adv.aptitudes.might}, Def ${adv.aptitudes.deftness}, Grt ${adv.aptitudes.grit}, Ins ${adv.aptitudes.insight}, Aur ${adv.aptitudes.aura}\n\n`;
 
     // 3. Special Rules (Traits + Abilities)
@@ -1006,7 +1007,7 @@ function convert_to_markdown(adversaries) {
     });
 
     // 4. Quick Facts
-    if (adv.facts) {
+    if (adv.facts && condensed == false) {
       output += `\n### Quick Facts\n`;
       output += `| Category | Details |\n| :--- | :--- |\n`;
       for (const [key, value] of Object.entries(adv.facts)) {
@@ -1015,7 +1016,7 @@ function convert_to_markdown(adversaries) {
     }
 
     // 5. Mood Table
-    if (adv.moods?.length > 0) {
+    if (adv.moods?.length > 0 && condensed == false) {
       output += `\n### Moods (1d20)\n`;
       output += `| Roll | Mood | Behavior |\n| :--- | :--- | :--- |\n`;
       adv.moods.forEach(m => {
@@ -1029,7 +1030,6 @@ function convert_to_markdown(adversaries) {
       adv.inventory.forEach(i => {
         output += `* **${i.name}** (${i.category}): ${clean(i.description)} [Value: ${i.value} ${i.denomination}]\n`;
       });
-      output += `\n**Allegiance Score:** ${adv.inventory[0].allegiance}\n`;
     }
 
     output += `\n---\n\n`;
@@ -1038,8 +1038,8 @@ function convert_to_markdown(adversaries) {
   return output;
 }
 
-function download_markdown_file(adversaries) {
-  const content = convert_to_markdown(adversaries);
+function download_markdown_file(adversaries,con=false) {
+  const content = convert_to_markdown(adversaries,con);
   
   const blob = new Blob([content], { type: 'text/plain' });
   
