@@ -468,7 +468,6 @@ ul > li, ol > li{
 .dmg-name {
     font-size: 0.75rem;
     text-transform: uppercase;
-    color: #444;
 }
 
 /* Styling the labels inside the toolbar dropdown */
@@ -496,7 +495,6 @@ ul > li, ol > li{
     font-weight: bold;
     padding: 0 4px;
     border-radius: 3px;
-    border: 1px solid #000;
     margin: 0 2px;
 }
 

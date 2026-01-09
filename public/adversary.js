@@ -40,7 +40,7 @@ class Adversary {
         // create trait in adversary object
         const passives = [...this.passives]
         const id = `tr-${generate_id()}`
-        const name = document.getElementById('trait-name').value
+        const name = (document.getElementById('trait-name').value).toUpperCase()
         const value = parseInt(document.getElementById('trait-value').value)
         const modifier = document.getElementById('trait-modifier').value
         const type = 'trait'

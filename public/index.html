@@ -343,7 +343,8 @@
                 </div>
                 <div id="control-button-group" class="block align-bottom text-center">
                     <button id="import-adversaries-btn" class="btn" onclick="importAdversariesJson()">Import</button>
-                    <button id="open-export-modal" class="btn btn-hollow modal-trigger" data-target="export">Export</button>
+                    <button id="open-export-modal" class="btn btn-hollow modal-trigger"
+                        data-target="export">Export</button>
                 </div>
             </div>
         </div>
@@ -548,19 +549,23 @@
                             <input min='0' value="1" class="text-input" id="inventory-item-slots" type="number">
                         </div>
                         <div id="inventory-item-quantity-div" class="w-1/4 text-center">
-                            <label>Quantity: </label><input id="inventory-item-quantity" type="number" min="1" value="1" class="text-input">
+                            <label>Quantity: </label><input id="inventory-item-quantity" type="number" min="1" value="1"
+                                class="text-input">
                         </div>
                         <div id="inventory-item-value-div" class="w-1/2 text-right">
                             <label for="inventory-item-value">Value: </label>
                             <input type="number" id="inventory-item-value" class="text-input">
-                            <span id="inventory-item-denomination-div">
-                                <input type="radio" id="inventory-item-stones" name="inventory-item-denomination"
-                                    value="stones"><img class="svg-icon" src="images/zen-rocks-stack-svgrepo-com.svg">
-                                <input type="radio" id="items-coins" name="inventory-item-denomination" value="coins"
-                                    checked><img class="svg-icon" src="images/coins-solid-svgrepo-com.svg">
-                                <input type="radio" id="items-gems" name="inventory-item-denomination"
-                                    value="gems"><img class="svg-icon" src="images/gem-svgrepo-com.svg">
-                            </span>
+                            <div>
+                                <span id="inventory-item-denomination-div">
+                                    <input class="mr-1" type="radio" id="inventory-item-stones" name="inventory-item-denomination"
+                                        value="stones"><img class="svg-icon mr-2" src="images/stone-pile-svgrepo-com.svg">
+                                    <input class="mr-1" type="radio" id="items-coins" name="inventory-item-denomination"
+                                        value="coins" checked><img class="svg-icon mr-2"
+                                        src="images/coins-svgrepo-com (2).svg">
+                                    <input class="mr-1" type="radio" id="items-gems" name="inventory-item-denomination"
+                                        value="gems"><img class="svg-icon mr-2" src="images/gem-svgrepo-com.svg">
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <button id="btnAddItem" onclick="adversary._add_item()" disabled
@@ -574,12 +579,14 @@
         <template id="export">
             <div>
                 <h3>Choose your Export Format</h3>
-                <p class="italic text-slate-400">Currently raw JSON Exports and a Converted Markdown format are supported. Print format will come in a future update.</p>
+                <p class="italic text-slate-400">Currently raw JSON Exports and a Converted Markdown format are
+                    supported. Print format will come in a future update.</p>
                 <div class="flex">
                     <button id="export-json-btn" class="btn"
-                        onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button onclick="download_markdown_file(saved_adversaries)"
-                        class="btn">Full Markdown</button><button onclick="download_markdown_file(saved_adversaries,true)"
-                        class="btn">Combat Cards</button><button disabled class="btn">Print</button>
+                        onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button
+                        onclick="download_markdown_file(saved_adversaries)" class="btn">Full Markdown</button><button
+                        onclick="download_markdown_file(saved_adversaries,true)" class="btn">Combat
+                        Cards</button><button disabled class="btn">Print</button>
                 </div>
             </div>
         </template>
@@ -597,13 +604,14 @@
                 </div>
                 <div id="filter-load" class="flex align-top">
                     <div id="list-container" class="w-1/2 mr-4">
-                        <label for="saved-adversaries-dropdown" class="block">Adversary</label><select size="10" id="saved-adversaries-dropdown" class="dropdown w-full"></select>
+                        <label for="saved-adversaries-dropdown" class="block">Adversary</label><select size="10"
+                            id="saved-adversaries-dropdown" class="dropdown w-full"></select>
                     </div>
                     <div id="tag-container" class="w-1/2 px-2">
                         <label>Tags</label>
                         <div id="filter-tags-list"></div>
                     </div>
-                
+
                 </div>
                 <button id="load-adversary" class="btn" onclick="load_adversary()">Load</button>
             </div>
@@ -629,8 +637,8 @@
             <p>Break!! Adversary Creator is an independent product published under BREAK!! RPG's Non-Commercial
                 License
                 and is not affiliated with BREAK!!'s creators or publishers.</p>
-            <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator"
-                target="_blank">Report a Bug/Request a Feature</a>
+            <a class="underline" href="https://github.com/hylandpad/break-_adversary_creator" target="_blank">Report a
+                Bug/Request a Feature</a>
         </div>
     </div>
 </body>

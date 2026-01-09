@@ -1451,7 +1451,6 @@ ul > li, ol > li {
 .dmg-name {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #444;
 }
 .ql-picker {
   width: 115px;
@@ -1490,7 +1489,6 @@ ul > li, ol > li {
   font-weight: bold;
   padding: 0 4px;
   border-radius: 3px;
-  border: 1px solid #000;
   margin: 0 2px;
 }
 span[data-dmg-type="burn"] {
