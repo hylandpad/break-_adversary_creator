@@ -12,8 +12,33 @@ function initializeEditors(scope = document) {
                 const quill = new Quill(editorDiv, {
                     theme: 'snow',
                     modules: {
-                        toolbar: [['bold', 'italic'], [{ 'list': 'bullet' }, { 'list': 'ordered' }], ['blockquote']]
-                    }
+                        toolbar: {
+                            container: [['bold', 'italic'], [{ 'list': 'bullet' }, { 'list': 'ordered' }], ['blockquote'], ['clean'], [{ 'damage': ['holy', 'burn', 'freeze', 'necrotic', 'caustic', 'poison', 'bright', 'dark', 'twilight'] }]],
+                            handlers: {
+                                'damage': function (value) {
+                                    if (!value) return;
+
+                                    const range = this.quill.getSelection();
+                                    if (range && range.length > 0) {
+                                        // 1. Get the highlighted text (the number)
+                                        const highlightedText = this.quill.getText(range.index, range.length);
+
+                                        // 2. Delete the raw text
+                                        this.quill.deleteText(range.index, range.length);
+
+                                        // 3. Insert the Blot with both pieces of data
+                                        this.quill.insertEmbed(range.index, 'damage', {
+                                            amount: highlightedText,
+                                            type: value
+                                        });
+
+                                        // 4. Move cursor past the new blot
+                                        this.quill.setSelection(range.index + 1);
+                                    }
+                                }
+                            }
+                        }
+                    },
                 });
 
                 // The Shorthand Listener
@@ -21,74 +46,56 @@ function initializeEditors(scope = document) {
                     if (source !== 'user') return;
 
                     const selection = quill.getSelection();
-                    if (!selection) return;
+                    // Only trigger if we have a cursor and it's not at the very start
+                    if (!selection || selection.index === 0) return;
 
-                    const [line, offset] = quill.getLine(selection.index);
-                    const text = line.domNode.textContent;
+                    // 1. Look back exactly 100 characters from the CURRENT cursor position
+                    const lookbackLimit = 100;
+                    const startIndex = Math.max(0, selection.index - lookbackLimit);
+                    const textToScan = quill.getText(startIndex, selection.index - startIndex);
 
-                    // Matches: [Might | Pass: x | Fail: y] with any amount of spacing
+                    // 2. Patterns (using $ to ensure we only match what was JUST typed)
                     const checkRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
-
-                    // Matches: [Might vs Deftness | Pass: x | Fail: y] with any amount of spacing
                     const contestRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s+vs\s+(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
 
-                    // Matches [Cold 1]
-                    const damageTypeRegex = '^\\[\\s*(Bright|Dark|Holy|Necrotic|Twilight|Caustic|Poison|Burn|Freeze)\\s+(\\d+)\\s*\\]$'
-
                     let match;
-                    if ((match = text.match(contestRegex))) {
-                        let [fullMatch, yourAttr, theirAttr, pass, fail] = match;
 
-                        const lineIndex = quill.getIndex(line);
-                        const absoluteStartIndex = lineIndex + text.lastIndexOf(fullMatch);
-
-                        if (absoluteStartIndex >= 0) {
-                            quill.deleteText(absoluteStartIndex, fullMatch.length);
-                            quill.insertEmbed(absoluteStartIndex, 'skillAction', {
-                                yourAttr: yourAttr.trim(),
-                                theirAttr: theirAttr.trim(),
-                                pass: pass.trim(),
-                                fail: fail.trim(),
-                                isContest: true
-                            });
-                            quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);
-                        }
+                    if ((match = textToScan.match(checkRegex))) {
+                        handleMatch('skillAction', match, startIndex, false);
+                    } else if ((match = textToScan.match(contestRegex))) {
+                        handleMatch('skillAction', match, startIndex, true);
                     }
-                    else if ((match = text.match(checkRegex))) {
-                        let [fullMatch, attr, pass, fail] = match;
 
-                        const lineIndex = quill.getIndex(line);
-                        const absoluteStartIndex = lineIndex + text.lastIndexOf(fullMatch);
+                    // Helper function to handle the deletion and insertion cleanly
+                    function handleMatch(type, match, baseIndex, isContest = false) {
+                        const fullMatch = match[0];
+                        // match.index is relative to the start of textToScan
+                        const absoluteMatchStart = baseIndex + match.index;
 
-                        if (absoluteStartIndex >= 0) {
-                            quill.deleteText(absoluteStartIndex, fullMatch.length);
-                            quill.insertEmbed(absoluteStartIndex, 'skillAction', {
-                                yourAttr: attr.trim(),
-                                pass: pass.trim(),
-                                fail: fail.trim(),
-                                isContest: false
-                            });
-                            quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);
+                        // PREVENT CANNIBALIZATION: 
+                        // We delete EXACTLY the length of the string found by regex
+                        quill.deleteText(absoluteMatchStart, fullMatch.length);
+
+                        let embedData = {};
+                        if (type === 'damage-type') {
+                            embedData = { damage_type: match[1].trim(), amount: match[2].trim() };
+                        } else {
+                            embedData = {
+                                yourAttr: match[1].trim(),
+                                pass: match[isContest ? 3 : 2].trim(),
+                                fail: match[isContest ? 4 : 3].trim(),
+                                isContest
+                            };
+                            if (isContest) embedData.theirAttr = match[2].trim();
                         }
-                    }
-                    else if ((match = text.match(damageTypeRegex))){
 
-                        let [fullMatch, damage_type, amount] = match;
+                        quill.insertEmbed(absoluteMatchStart, type, embedData);
 
-                        const lineIndex = quill.getIndex(line);
-                        const absoluteStartIndex = lineIndex + text.lastIndexOf(fullMatch);
-
-                        if (absoluteStartIndex >= 0) {
-                            quill.deleteText(absoluteStartIndex, fullMatch.length);
-                            quill.insertText(absoluteStartIndex, 'damage-type', {
-                                damage_type: damage_type.trim(),
-                                amount: amount.trim()
-                            });
-                            quill.setSelection(absoluteStartIndex + 1, Quill.sources.SILENT);
-                        }
+                        // Add a space after the blot and move cursor
+                        quill.insertText(absoluteMatchStart + 1, ' ');
+                        quill.setSelection(absoluteMatchStart + 2, Quill.sources.SILENT);
                     }
                 });
-
                 editorDiv.__quill = quill;
             } catch (e) {
                 console.error("Quill Init Error:", e);
@@ -787,7 +794,7 @@ function update_ui(adversary) {
     //fill quill editor with description from adversary
     const description_editor = document.querySelector('#description-container-div div.editor').__quill
     description_editor.root.innerHTML = adversary.description;
-    
+
 
     // Display all the adversary's tags
     if (adversary.tags) {
@@ -987,92 +994,92 @@ const importAdversariesJson = () => {
     input.click();
 }
 
-function convert_to_markdown(adversaries,con=false) {
-  condensed = con
-  let output = "";
-  const clean = (str) => str ? str.replace(/<[^>]*>?/gm, '').trim() : "N/A";
+function convert_to_markdown(adversaries, con = false) {
+    condensed = con
+    let output = "";
+    const clean = (str) => str ? str.replace(/<[^>]*>?/gm, '').trim() : "N/A";
 
-  Object.values(adversaries).forEach(adv => {
-    // 1. Header
-    output += `# ${adv.name}\n`;
-    output += `**Type:** ${adv.creature_type} (${adv.creature_subtype}) | **Rank:** ${adv.rank} | **Size:** ${adv.size}\n`;
-    if (condensed == false) {output += `**Description:** ${clean(adv.description)}\n\n`;}
+    Object.values(adversaries).forEach(adv => {
+        // 1. Header
+        output += `# ${adv.name}\n`;
+        output += `**Type:** ${adv.creature_type} (${adv.creature_subtype}) | **Rank:** ${adv.rank} | **Size:** ${adv.size}\n`;
+        if (condensed == false) { output += `**Description:** ${clean(adv.description)}\n\n`; }
 
-    // 2. Core Stats
-    output += `### Core Stats\n`;
-    output += `* **Hearts:** ${adv.hearts} | **Defense:** ${adv.defense} | **Atk Bonus:** +${adv.atkbonus || 0}\n`;
-    output += `* **Speed:** ${adv.speed} (Max: ${adv.max_speed}) | **Allegiance Points:** B: ${adv.bright_points} / D: ${adv.dark_points}\n`;
-    output += `* **Aptitudes:** Mgt ${adv.aptitudes.might}, Def ${adv.aptitudes.deftness}, Grt ${adv.aptitudes.grit}, Ins ${adv.aptitudes.insight}, Aur ${adv.aptitudes.aura}\n\n`;
+        // 2. Core Stats
+        output += `### Core Stats\n`;
+        output += `* **Hearts:** ${adv.hearts} | **Defense:** ${adv.defense} | **Atk Bonus:** +${adv.atkbonus || 0}\n`;
+        output += `* **Speed:** ${adv.speed} (Max: ${adv.max_speed}) | **Allegiance Points:** B: ${adv.bright_points} / D: ${adv.dark_points}\n`;
+        output += `* **Aptitudes:** Mgt ${adv.aptitudes.might}, Def ${adv.aptitudes.deftness}, Grt ${adv.aptitudes.grit}, Ins ${adv.aptitudes.insight}, Aur ${adv.aptitudes.aura}\n\n`;
 
-    // 3. Special Rules (Traits + Abilities)
-    output += `### Traits and Abilities\n`;
-    const abilityNames = adv.abilities.map(a => a.name.toUpperCase());
-    const uniquePassives = adv.passives.filter(p => !abilityNames.includes(p.name.toUpperCase()));
+        // 3. Special Rules (Traits + Abilities)
+        output += `### Traits and Abilities\n`;
+        const abilityNames = adv.abilities.map(a => a.name.toUpperCase());
+        const uniquePassives = adv.passives.filter(p => !abilityNames.includes(p.name.toUpperCase()));
 
-    [...uniquePassives, ...adv.abilities].forEach(p => {
-      let detail = "";
-      
-      if (p.description) {
-        detail = clean(p.description);
-      } else if (p.modifier && p.value) {
-        detail = `${p.modifier} ${p.value >= 0 ? '+' : ''}${p.value}`;
-      } else if (p.modifiers) { 
-        // Logic to catch nested "atkbonus" or "size" inside a passive modifier object
-        detail = Object.entries(p.modifiers)
-          .map(([key, val]) => `${key}: ${val >= 0 ? '+' : ''}${val}`)
-          .join(", ");
-      }
+        [...uniquePassives, ...adv.abilities].forEach(p => {
+            let detail = "";
 
-      output += `* **${p.name}**: ${detail}\n`;
+            if (p.description) {
+                detail = clean(p.description);
+            } else if (p.modifier && p.value) {
+                detail = `${p.modifier} ${p.value >= 0 ? '+' : ''}${p.value}`;
+            } else if (p.modifiers) {
+                // Logic to catch nested "atkbonus" or "size" inside a passive modifier object
+                detail = Object.entries(p.modifiers)
+                    .map(([key, val]) => `${key}: ${val >= 0 ? '+' : ''}${val}`)
+                    .join(", ");
+            }
+
+            output += `* **${p.name}**: ${detail}\n`;
+        });
+
+        // 4. Quick Facts
+        if (adv.facts && condensed == false) {
+            output += `\n### Quick Facts\n`;
+            output += `| Category | Details |\n| :--- | :--- |\n`;
+            for (const [key, value] of Object.entries(adv.facts)) {
+                output += `| ${key.replace(/-/g, ' ').toUpperCase()} | ${clean(value.description)} |\n`;
+            }
+        }
+
+        // 5. Mood Table
+        if (adv.moods?.length > 0 && condensed == false) {
+            output += `\n### Moods (1d20)\n`;
+            output += `| Roll | Mood | Behavior |\n| :--- | :--- | :--- |\n`;
+            adv.moods.forEach(m => {
+                output += `| ${m.rolls.start}-${m.rolls.stop} | ${m.mood} | ${clean(m.mood_text)} |\n`;
+            });
+        }
+
+        // 6. Inventory & Allegiance
+        if (adv.inventory?.length > 0) {
+            output += `\n### Inventory\n`;
+            adv.inventory.forEach(i => {
+                output += `* **${i.name}** (${i.category}): ${clean(i.description)} [Value: ${i.value} ${i.denomination}]\n`;
+            });
+        }
+
+        output += `\n---\n\n`;
     });
 
-    // 4. Quick Facts
-    if (adv.facts && condensed == false) {
-      output += `\n### Quick Facts\n`;
-      output += `| Category | Details |\n| :--- | :--- |\n`;
-      for (const [key, value] of Object.entries(adv.facts)) {
-        output += `| ${key.replace(/-/g, ' ').toUpperCase()} | ${clean(value.description)} |\n`;
-      }
-    }
-
-    // 5. Mood Table
-    if (adv.moods?.length > 0 && condensed == false) {
-      output += `\n### Moods (1d20)\n`;
-      output += `| Roll | Mood | Behavior |\n| :--- | :--- | :--- |\n`;
-      adv.moods.forEach(m => {
-        output += `| ${m.rolls.start}-${m.rolls.stop} | ${m.mood} | ${clean(m.mood_text)} |\n`;
-      });
-    }
-
-    // 6. Inventory & Allegiance
-    if (adv.inventory?.length > 0) {
-      output += `\n### Inventory\n`;
-      adv.inventory.forEach(i => {
-        output += `* **${i.name}** (${i.category}): ${clean(i.description)} [Value: ${i.value} ${i.denomination}]\n`;
-      });
-    }
-
-    output += `\n---\n\n`;
-  });
-
-  return output;
+    return output;
 }
 
-function download_markdown_file(adversaries,con=false) {
-  const content = convert_to_markdown(adversaries,con);
-  
-  const blob = new Blob([content], { type: 'text/plain' });
-  
-  const link = document.createElement('a');
-  
-  link.download = 'adversary_markdown_export.txt';
-  link.href = window.URL.createObjectURL(blob);
-  
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
- 
-  window.URL.revokeObjectURL(link.href);
+function download_markdown_file(adversaries, con = false) {
+    const content = convert_to_markdown(adversaries, con);
 
-  closeModal()
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const link = document.createElement('a');
+
+    link.download = 'adversary_markdown_export.txt';
+    link.href = window.URL.createObjectURL(blob);
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(link.href);
+
+    closeModal()
 }

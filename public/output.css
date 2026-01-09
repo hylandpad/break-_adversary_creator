@@ -1442,6 +1442,102 @@ ul > li, ol > li {
   color: #b91c1c;
   background: #fef2f2;
 }
+.dmg-val {
+  font-weight: bold;
+  padding-right: 4px;
+  border-right: 1px solid #ddd;
+  margin-right: 4px;
+}
+.dmg-name {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #444;
+}
+.ql-picker {
+  width: 115px;
+}
+.ql-picker.ql-damage .ql-picker-label::before, .ql-picker.ql-damage .ql-picker-item::before {
+  content: 'DMG Type';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="holy"]::before {
+  content: 'Holy';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="burn"]::before {
+  content: 'Burn';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="freeze"]::before {
+  content: 'Freeze';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="bright"]::before {
+  content: 'Bright';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="dark"]::before {
+  content: 'Dark';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="twilight"]::before {
+  content: 'Twilight';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="caustic"]::before {
+  content: 'Caustic';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="poison"]::before {
+  content: 'Poison';
+}
+.ql-picker.ql-damage .ql-picker-item[data-value="necrotic"]::before {
+  content: 'Necrotic';
+}
+.damage-type-blot {
+  font-weight: bold;
+  padding: 0 4px;
+  border-radius: 3px;
+  border: 1px solid #000;
+  margin: 0 2px;
+}
+span[data-dmg-type="burn"] {
+  background-color: #ff4500;
+  color: white;
+}
+span[data-dmg-type="holy"] {
+  background-color: #ffd700;
+  color: black;
+}
+span[data-dmg-type="freeze"] {
+  background-color: #2671e0;
+  color: white;
+}
+span[data-dmg-type="bright"] {
+  background-color: #f700ff;
+  color: white;
+}
+span[data-dmg-type="dark"] {
+  background-color: #3d0042;
+  color: white;
+}
+span[data-dmg-type="twilight"] {
+  background-color: #7e65ee;
+  color: white;
+}
+span[data-dmg-type="caustic"] {
+  background-color: #03e2ff;
+  color: black;
+}
+span[data-dmg-type="poison"] {
+  background-color: #00ff5e;
+  color: black;
+}
+span[data-dmg-type="necrotic"] {
+  background-color: #5d8f3f;
+  color: white;
+}
+.ql-editor .damage-type-blot.ql-selected {
+  outline: 2px solid #3b82f6;
+  border-color: #3b82f6;
+}
+.damage-type-blot {
+  display: inline-block;
+  vertical-align: middle;
+  user-select: none;
+}
 @property --tw-border-spacing-x {
   syntax: "<length>";
   inherits: false;
