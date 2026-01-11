@@ -13,89 +13,135 @@ function initializeEditors(scope = document) {
                     theme: 'snow',
                     modules: {
                         toolbar: {
-                            container: [['bold', 'italic'], [{ 'list': 'bullet' }, { 'list': 'ordered' }], ['blockquote'], ['clean'], [{ 'damage': ['holy', 'burn', 'freeze', 'necrotic', 'caustic', 'poison', 'bright', 'dark', 'twilight'] }]],
+                            container: [['bold', 'italic'], [{ 'list': 'bullet' }, { 'list': 'ordered' }], ['blockquote'], ['clean'], ['check-btn', 'contest-btn'], [{ 'damage': ['holy', 'burn', 'freeze', 'necrotic', 'caustic', 'poison', 'bright', 'dark', 'twilight'] }]],
                             handlers: {
                                 'damage': function (value) {
                                     if (!value) return;
-
                                     const range = this.quill.getSelection();
                                     if (range && range.length > 0) {
-                                        // 1. Get the highlighted text (the number)
                                         const highlightedText = this.quill.getText(range.index, range.length);
-
-                                        // 2. Delete the raw text
                                         this.quill.deleteText(range.index, range.length);
-
-                                        // 3. Insert the Blot with both pieces of data
                                         this.quill.insertEmbed(range.index, 'damage', {
                                             amount: highlightedText,
                                             type: value
                                         });
-
-                                        // 4. Move cursor past the new blot
                                         this.quill.setSelection(range.index + 1);
                                     }
+                                },
+                                'check-btn': function () {
+                                    const range = this.quill.getSelection(true);
+                                    const index = range ? range.index : 0;
+                                    this.quill.insertEmbed(index, 'skillAction', {
+                                        yourAttr: 'Might',
+                                        pass: 'Describe success here',
+                                        fail: 'Describe failure here',
+                                        isContest: false
+                                    });
+                                    this.quill.insertText(index + 1, '\n', Quill.sources.USER);
+                                    this.quill.setSelection(index + 2, Quill.sources.SILENT);
+                                },
+                                'contest-btn': function () {
+                                    const range = this.quill.getSelection(true);
+                                    const index = range ? range.index : 0;
+                                    this.quill.insertEmbed(index, 'skillAction', {
+                                        yourAttr: 'Might',
+                                        theirAttr: 'Grit',
+                                        pass: 'Describe success here',
+                                        fail: 'Describe failure here',
+                                        isContest: true
+                                    });
+                                    this.quill.insertText(index + 1, '\n', Quill.sources.USER);
+                                    this.quill.setSelection(index + 2, Quill.sources.SILENT);
                                 }
                             }
                         }
-                    },
+                    }
                 });
 
-                // The Shorthand Listener
-                quill.on('text-change', (delta, oldDelta, source) => {
-                    if (source !== 'user') return;
+                // --- THE CLICK LISTENER FOR EDITING BLOTS ---
+                editorDiv.addEventListener('click', (e) => {
+                    const blotNode = e.target.closest('.skill-action-blot');
+                    if (!blotNode) return;
 
-                    const selection = quill.getSelection();
-                    // Only trigger if we have a cursor and it's not at the very start
-                    if (!selection || selection.index === 0) return;
+                    const blotInstance = Quill.find(blotNode);
+                    if (!blotInstance) return;
 
-                    // 1. Look back exactly 100 characters from the CURRENT cursor position
-                    const lookbackLimit = 100;
-                    const startIndex = Math.max(0, selection.index - lookbackLimit);
-                    const textToScan = quill.getText(startIndex, selection.index - startIndex);
+                    const currentBlotData = blotInstance.statics.value(blotNode);
+                    const isContest = currentBlotData.isContest;
 
-                    // 2. Patterns (using $ to ensure we only match what was JUST typed)
-                    const checkRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
-                    const contestRegex = /\[\s*(Might|Deftness|Grit|Insight|Aura)\s+vs\s+(Might|Deftness|Grit|Insight|Aura)\s*\|\s*Pass:\s*(.*?)\s*\|\s*Fail:\s*(.*?)\]$/i;
+                    // Clear existing bars
+                    document.querySelectorAll('.blot-edit-bar').forEach(b => b.remove());
 
-                    let match;
+                    const editBar = document.createElement('div');
+                    editBar.className = 'blot-edit-bar';
+                    editBar.innerHTML = `
+                        <div class="edit-bar-row">
+                            <span>${isContest ? 'Your Attr:' : 'Attr:'}</span>
+                            <select class="attr-select" data-target="yourAttr">
+                                <option value="Might">Might</option>
+                                <option value="Deftness">Deftness</option>
+                                <option value="Grit">Grit</option>
+                                <option value="Insight">Insight</option>
+                                <option value="Aura">Aura</option>
+                            </select>
+                        </div>
+                        ${isContest ? `
+                        <div class="edit-bar-row">
+                            <span>Their Attr:</span>
+                            <select class="attr-select" data-target="theirAttr">
+                                <option value="Might">Might</option>
+                                <option value="Deftness">Deftness</option>
+                                <option value="Grit">Grit</option>
+                                <option value="Insight">Insight</option>
+                                <option value="Aura">Aura</option>
+                            </select>
+                        </div>` : ''}
+                        <button class="delete-blot">Delete</button>
+                    `;
 
-                    if ((match = textToScan.match(checkRegex))) {
-                        handleMatch('skillAction', match, startIndex, false);
-                    } else if ((match = textToScan.match(contestRegex))) {
-                        handleMatch('skillAction', match, startIndex, true);
-                    }
+                    // Hydrate dropdown values
+                    editBar.querySelectorAll('.attr-select').forEach(select => {
+                        const target = select.getAttribute('data-target');
+                        select.value = currentBlotData[target];
+                    });
 
-                    // Helper function to handle the deletion and insertion cleanly
-                    function handleMatch(type, match, baseIndex, isContest = false) {
-                        const fullMatch = match[0];
-                        // match.index is relative to the start of textToScan
-                        const absoluteMatchStart = baseIndex + match.index;
+                    // Position the bar
+                    const rect = blotNode.getBoundingClientRect();
+                    editBar.style.top = `${rect.top + window.scrollY - 35}px`;
+                    editBar.style.left = `${rect.left + window.scrollX}px`;
+                    document.body.appendChild(editBar);
 
-                        // PREVENT CANNIBALIZATION: 
-                        // We delete EXACTLY the length of the string found by regex
-                        quill.deleteText(absoluteMatchStart, fullMatch.length);
+                    // --- ONE MASTER CHANGE LISTENER FOR ALL DROPDOWNS ---
+                    editBar.querySelectorAll('.attr-select').forEach(select => {
+                        select.addEventListener('change', (ev) => {
+                            const newValue = ev.target.value;
+                            const targetField = ev.target.getAttribute('data-target');
+                            const index = quill.getIndex(blotInstance);
 
-                        let embedData = {};
-                        if (type === 'damage-type') {
-                            embedData = { damage_type: match[1].trim(), amount: match[2].trim() };
-                        } else {
-                            embedData = {
-                                yourAttr: match[1].trim(),
-                                pass: match[isContest ? 3 : 2].trim(),
-                                fail: match[isContest ? 4 : 3].trim(),
-                                isContest
+                            // Merge new value into existing data
+                            const updatedData = {
+                                ...currentBlotData,
+                                [targetField]: newValue
                             };
-                            if (isContest) embedData.theirAttr = match[2].trim();
-                        }
 
-                        quill.insertEmbed(absoluteMatchStart, type, embedData);
+                            requestAnimationFrame(() => {
+                                quill.deleteText(index, 1, Quill.sources.USER);
+                                quill.insertEmbed(index, 'skillAction', updatedData, Quill.sources.USER);
+                                editBar.remove();
+                                quill.setSelection(index + 1, Quill.sources.SILENT);
+                                quill.focus();
+                            });
+                        });
+                    });
 
-                        // Add a space after the blot and move cursor
-                        quill.insertText(absoluteMatchStart + 1, ' ');
-                        quill.setSelection(absoluteMatchStart + 2, Quill.sources.SILENT);
-                    }
+                    // Delete Button
+                    editBar.querySelector('.delete-blot').addEventListener('click', () => {
+                        const index = quill.getIndex(blotInstance);
+                        quill.deleteText(index, 1, Quill.sources.USER);
+                        editBar.remove();
+                    });
                 });
+
                 editorDiv.__quill = quill;
             } catch (e) {
                 console.error("Quill Init Error:", e);
@@ -1051,11 +1097,11 @@ function convert_to_markdown(adversaries, con = false) {
             });
         }
 
-        // 6. Inventory & Allegiance
+        // 6. Inventory
         if (adv.inventory?.length > 0) {
             output += `\n### Inventory\n`;
             adv.inventory.forEach(i => {
-                output += `* **${i.name}** (${i.category}): ${clean(i.description)} [Value: ${i.value} ${i.denomination}]\n`;
+                output += `* **${i.name}** (${i.category}): ${clean(i.description)} (x${i.quantity}) [Slots: ${i.slots * i.quantity}] [Value: ${i.value * i.quantity} ${i.denomination}]\n`;
             });
         }
 

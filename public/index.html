@@ -561,7 +561,7 @@
                                         value="stones"><img class="svg-icon mr-2" src="images/stone-pile-svgrepo-com.svg">
                                     <input class="mr-1" type="radio" id="items-coins" name="inventory-item-denomination"
                                         value="coins" checked><img class="svg-icon mr-2"
-                                        src="images/coins-svgrepo-com (2).svg">
+                                        src="images/coin-business-and-finance-svgrepo-com.svg">
                                     <input class="mr-1" type="radio" id="items-gems" name="inventory-item-denomination"
                                         value="gems"><img class="svg-icon mr-2" src="images/gem-svgrepo-com.svg">
                                 </span>
@@ -583,9 +583,9 @@
                     supported. Print format will come in a future update.</p>
                 <div class="flex">
                     <button id="export-json-btn" class="btn"
-                        onclick="exportAdversariesJson(saved_adversaries)">JSON</button><button
-                        onclick="download_markdown_file(saved_adversaries)" class="btn">Full Markdown</button><button
-                        onclick="download_markdown_file(saved_adversaries,true)" class="btn">Combat
+                        onclick="exportAdversariesJson({...saved_adversaries})">JSON</button><button
+                        onclick="download_markdown_file({...saved_adversaries})" class="btn">Full Markdown</button><button
+                        onclick="download_markdown_file({...saved_adversaries},true)" class="btn">Combat
                         Cards</button><button disabled class="btn">Print</button>
                 </div>
             </div>

@@ -1252,6 +1252,7 @@ input:checked+.slider:before {
 }
 .modal-overlay {
   display: none;
+  backdrop-filter: blur(4px);
   position: fixed;
   top: 0;
   left: 0;
@@ -1382,107 +1383,106 @@ ul > li, ol > li {
   margin: 0 4px 4px;
   color: #ff6567;
 }
-.attr-chip {
-  font-weight: bold;
-  text-transform: uppercase;
-  padding-right: 4px;
-  padding: 0 2px;
-}
-.attr-might {
-  color: #fb2c36;
-}
-.attr-grit {
-  color: #00c94f;
-}
-.attr-deftness {
-  color: #ff6900;
-}
-.attr-insight {
-  color: #2b7efe;
-}
-.attr-aura {
-  color: #ae45ff;
-}
 .skill-action-blot {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 2px;
-  background: #9d9ea124;
-  border: 1px solid #9f9fa3b8;
-  border-radius: 10px;
-  padding: 0 15px;
-  line-height: 1.1;
-  max-width: 100%;
-}
-.blot-content {
-  display: flex;
-  flex-direction: column;
-  / gap: 1px;
+  display: block;
+  margin: 15px 0;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  background: #f8fafc;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
 }
 .blot-header {
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-.blot-results-inline {
+  background: #1e293b;
+  color: white;
+  padding: 8px 12px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  align-items: center;
+  gap: 10px;
+}
+.action-label {
+  font-weight: 800;
   font-size: 0.75rem;
+  color: #94a3b8;
 }
-.res-tag {
-  display: inline-block;
-  padding: 1px 3px;
-  border-radius: 2px;
+.blot-body {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  background: #fff;
 }
-.res-pass {
-  color: #15803d;
-  background: #f0fdf4;
+.res-row {
+  display: block;
+  padding: 6px 12px;
+  border-bottom: 1px solid #edf2f7;
 }
-.res-fail {
-  color: #b91c1c;
-  background: #fef2f2;
+.res-row:last-child {
+  border-bottom: none;
+}
+.res-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.res-pass .res-label {
+  color: #16a34a;
+}
+.res-fail .res-label {
+  color: #dc2626;
+}
+.res-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #334155;
+  min-height: 1.2em;
+}
+.editable-field[contenteditable="true"]:hover {
+  background: rgba(0,0,0,0.05);
+  cursor: text;
 }
 .dmg-val {
   font-weight: bold;
-  padding-right: 4px;
-  border-right: 1px solid #ddd;
-  margin-right: 4px;
 }
 .dmg-name {
   font-size: 0.75rem;
   text-transform: uppercase;
+  border-right: 1px solid #ddd;
+  padding-right: 4px;
+  margin-right: 4px;
 }
 .ql-picker {
   width: 115px;
 }
-.ql-picker.ql-damage .ql-picker-label::before, .ql-picker.ql-damage .ql-picker-item::before {
-  content: 'DMG Type';
+.ql-picker.ql-damage .ql-picker-label::before {
+  content: 'Damage Type';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="holy"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="holy"]::after {
   content: 'Holy';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="burn"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="burn"]::after {
   content: 'Burn';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="freeze"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="freeze"]::after {
   content: 'Freeze';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="bright"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="bright"]::after {
   content: 'Bright';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="dark"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="dark"]::after {
   content: 'Dark';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="twilight"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="twilight"]::after {
   content: 'Twilight';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="caustic"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="caustic"]::after {
   content: 'Caustic';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="poison"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="poison"]::after {
   content: 'Poison';
 }
-.ql-picker.ql-damage .ql-picker-item[data-value="necrotic"]::before {
+.ql-picker.ql-damage .ql-picker-item[data-value="necrotic"]::after {
   content: 'Necrotic';
 }
 .damage-type-blot {
@@ -1535,6 +1535,61 @@ span[data-dmg-type="necrotic"] {
   display: inline-block;
   vertical-align: middle;
   user-select: none;
+}
+.ql-check-btn::after {
+  content: "Check+";
+  font-weight: bold;
+  font-size: 11px;
+}
+.ql-contest-btn::after {
+  content: "VS+";
+  font-weight: bold;
+  font-size: 11px;
+}
+.skill-action-blot .editable-field {
+  border-bottom: 1px dashed #666;
+  padding: 0 2px;
+  cursor: text;
+  min-width: 10px;
+  display: inline-block;
+}
+.skill-action-blot .editable-field:focus {
+  outline: none;
+  border-bottom: 1px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+.blot-edit-bar {
+  position: absolute;
+  background: #333;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 9999;
+  display: flex;
+  gap: 5px;
+}
+.skill-action-blot {
+  margin-top: 0 !important;
+  margin-bottom: 1rem;
+  display: block;
+  width: 100%;
+  clear: both;
+  white-space: pre-line;
+}
+.ql-editor .skill-action-blot + p, .ql-editor p + .skill-action-blot {
+  margin-top: 0;
+}
+.ql-editor .skill-action-blot {
+  line-height: normal;
+}
+.ql-editor p:empty + .skill-action-blot {
+  margin-top: -15px;
+}
+.ql-toolbar button, .ql-picker-label {
+  margin-right: 2rem;
+  color: #444;
+  font-size: 11px;
+  font-weight: bold;
 }
 @property --tw-border-spacing-x {
   syntax: "<length>";

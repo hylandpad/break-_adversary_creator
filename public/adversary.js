@@ -136,17 +136,17 @@ class Adversary {
         const category = (document.getElementById('inventory-item-category').value)
         const type = document.getElementById('inventory-item-type').value;
         const subtype = document.getElementById('inventory-item-subtype').value;
-        const description = document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML
-        const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value
-        const value = document.getElementById('inventory-item-value').value;
-        const slots = document.getElementById('inventory-item-slots').value
+        const description = document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML;
+        const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value;
+        const value = parseInt(document.getElementById('inventory-item-value').value);
+        const slots = parseFloat(document.getElementById('inventory-item-slots').value);
         const magic = document.getElementById('inventory-item-magic').checked
-        const quantity = parseInt(document.getElementById('inventory-item-quantity').value)
+        const quantity = parseInt(document.getElementById('inventory-item-quantity').value) || 1
         const allegiance = parseInt(document.getElementById('inventory-item-allegiance').value)
         // optional gear attributes that may affect combat stats
-        const defense = parseInt(document.getElementById('inventory-item-defense').value) ? parseInt(document.getElementById('inventory-item-defense').value) : null
-        const atkbonus = parseInt(document.getElementById('inventory-item-atkbonus').value) ? parseInt(document.getElementById('inventory-item-atkbonus').value) : null
-        const speed = parseInt(document.getElementById('inventory-item-speed').value) ? parseInt(document.getElementById('inventory-item-speed').value) : null
+        const defense = document.getElementById('inventory-item-defense').value ? parseInt(document.getElementById('inventory-item-defense').value) : null
+        const atkbonus = document.getElementById('inventory-item-atkbonus').value ? parseInt(document.getElementById('inventory-item-atkbonus').value) : null
+        const speed = document.getElementById('inventory-item-speed').value ? parseInt(document.getElementById('inventory-item-speed').value) : null
         const max_speed = document.getElementById('inventory-item-max-speed').value ? document.getElementById('inventory-item-max-speed').value : null
 
         const createItem = (
@@ -310,11 +310,11 @@ class Adversary {
         this.hearts = rank_stats[this.rank][1]
         this.atkbonus = rank_stats[this.rank][0]
         // change menace based on rank
-        if (parseInt(this.rank) < 1) {
+        if (this.rank < 1) {
             document.getElementById('menace').value = 'mook'
         } else if (this.menace == 'megaboss') {
             return
-        } else if (parseInt(this.rank) >= 1) {
+        } else if (this.rank >= 1) {
             document.getElementById('menace').value = 'boss'
         }
         this._change_menace()
@@ -443,8 +443,8 @@ class Adversary {
 
             row.querySelectorAll('input').forEach(input => data.push(input.value))
             const rolls = {
-                start: data[0],
-                stop: data[1]
+                start: parseInt(data[0]),
+                stop: parseInt(data[1])
             }
 
             const createMood = (rolls, mood, description) => ({
@@ -485,7 +485,7 @@ class Adversary {
             if (this_passive.type != 'ability') {
                 return
             } else if (this_passive.modifiers.hearts) {
-                this.hearts = parseInt(this.hearts) + this_passive.modifiers.hearts
+                this.hearts = this.hearts + this_passive.modifiers.hearts
             }
         })
     }
@@ -568,7 +568,7 @@ class Adversary {
 
         this.inventory.forEach(this_item => {
             if (this_item.defense > 0) {
-                this.defense = parseInt(this.defense) + parseInt(this_item.defense)
+                this.defense = this.defense + this_item.defense
             }
         })
 

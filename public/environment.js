@@ -14,6 +14,7 @@ const help_text = `
                     <li><code>[ATTRIBUTE vs ATTRIBUTE|Pass: YOUR PASS TEXT HERE|Fail: YOUR FAIL TEXT HERE]</code></li>
                 </ul>
             </li>
+            <li>Damage Types - In the editor, highlight some text and select from the DMG Type dropdown to color-code and automatically include some text to help draw attention to the Damage Type.</li>
             <li>Massive Size automatically adds an ability for Sweep and Focus attacks. Removal of Massive Size removes these abilities automatically</li>
             <li><strong>Adversaries now save to browser local storage automagically</strong>. No more exporting and reimporting necessary</li>
             <li>Allegiance locked to magical items and abilities to be more in line with Core rules</li>
@@ -44,7 +45,7 @@ var example_adversaries = {
     "size": "large",
     "hearts": 5,
     "atkbonus": 5,
-    "bright_points": 6,
+    "bright_points": 7,
     "dark_points": 0,
     "defense": 11,
     "speed": "average",
@@ -67,10 +68,10 @@ var example_adversaries = {
         "type": "Curiosity",
         "subtype": "Byproduct",
         "description": "<p>A slain Extrasolar loses its cohesion and form, its crystalline body reducing itself to fine, glowing sand. This sand retains a small amount of latent warmth and exudes a dim light, which grows in luminosity as it nears a shard of the Sun Machine.</p>",
-        "slots": ".5",
+        "slots": 0.5,
         "magic": true,
         "denomination": "coins",
-        "value": "70",
+        "value": 70,
         "quantity": 2,
         "defense": null,
         "atkbonus": null,
@@ -85,10 +86,10 @@ var example_adversaries = {
         "type": "Weapon",
         "subtype": "Standard Weapon",
         "description": "<p>This weapon does an extra Heart of damage to <strong>Dark</strong> Aligned creatures.</p><p><br></p><p>In the hands of creatures that are not <strong>Bright</strong> Aligned, the blade becomes dull, inert and harmless.</p>",
-        "slots": "2",
+        "slots": 2,
         "magic": true,
         "denomination": "gems",
-        "value": "1",
+        "value": 1,
         "quantity": 1,
         "defense": null,
         "atkbonus": 3,
@@ -163,15 +164,6 @@ var example_adversaries = {
         "magic": true
       },
       {
-        "id": "ab-d6nnwu7erzs",
-        "name": "SUNBURST",
-        "description": "<p>Upon taking a Heart of Damage, all Players in the same combat area must make a <strong>Deftness Check:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On failure - Take 1 Heart of Damage</li></ol><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is Dark Damage.</p>",
-        "allegiance": 0,
-        "bound_passive": false,
-        "type": "Legendary",
-        "magic": false
-      },
-      {
         "id": "ab-c9l0cmu95x",
         "name": "HERCULEAN",
         "description": "<p>The Extrasolar is <strong>Large</strong></p>",
@@ -188,6 +180,15 @@ var example_adversaries = {
         "bound_passive": true,
         "type": "Advanced",
         "magic": false
+      },
+      {
+        "id": "ab-24xg6w6zcy5",
+        "name": "SUNBURST",
+        "description": "<p>Upon the Extrasolar taking a Heart of Damage, all Players in the same combat area must make a <strong>Check</strong>:</p><p><br></p><p><span data-your-attr=\"Grit\" data-their-attr=\"\" data-pass=\"None\" data-fail=\"All non-Bright creatures in the same combat area take 1 Heart of damage\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\">﻿<span contenteditable=\"false\">\n                <span class=\"blot-content\"><span class=\"blot-header\"><strong>CHECK: </strong><span class=\"attr-chip attr-grit\">Grit</span></span><span class=\"blot-results-inline\"><span class=\"res-tag res-pass\"><strong>Pass:</strong> None</span><span class=\"res-tag res-fail\"><strong>Fail:</strong> All non-Bright creatures in the same combat area take 1 Heart of damage</span></span></span></span>﻿</span> </p><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is Dark Damage</p>",
+        "allegiance": 1,
+        "bound_passive": false,
+        "type": "Legendary",
+        "magic": true
       }
     ],
     "facts": {
@@ -213,24 +214,24 @@ var example_adversaries = {
     "moods": [
       {
         "rolls": {
-          "start": "1",
-          "stop": "5"
+          "start": 1,
+          "stop": 5
         },
         "mood": "Perimeter Secured",
         "mood_text": "The area around the Sun Shard is secure, and the Extrasolar is calmly watching over it"
       },
       {
         "rolls": {
-          "start": "6",
-          "stop": "14"
+          "start": 6,
+          "stop": 14
         },
         "mood": "Unthreatened but Watchful",
         "mood_text": "The Extrasolar is aware of your presence and watching, but feels no immediate threat to the Sun Shard"
       },
       {
         "rolls": {
-          "start": "15",
-          "stop": "20"
+          "start": 15,
+          "stop": 20
         },
         "mood": "Threat Identified",
         "mood_text": "The Extrasolar has identified you as a threat to the Sun Shard and is preparing to eliminate you"
@@ -280,7 +281,7 @@ var example_adversaries = {
         "slots": "2",
         "magic": false,
         "denomination": "coins",
-        "value": "30",
+        "value": 30,
         "quantity": 1,
         "defense": 2,
         "atkbonus": null,
@@ -298,7 +299,7 @@ var example_adversaries = {
         "slots": "1",
         "magic": false,
         "denomination": "coins",
-        "value": "70",
+        "value": 70,
         "quantity": 1,
         "defense": null,
         "atkbonus": null,
@@ -316,8 +317,8 @@ var example_adversaries = {
         "slots": ".5",
         "magic": false,
         "denomination": "coins",
-        "value": "20",
-        "quantity":2,
+        "value": 20,
+        "quantity": 2,
         "defense": null,
         "atkbonus": null,
         "speed": null,
@@ -376,9 +377,9 @@ var example_adversaries = {
         "magic": false
       },
       {
-        "id": "ab-tbillek579b",
+        "id": "ab-1qjhoi2kme3",
         "name": "BLOOD CURDLING HOWL",
-        "description": "<p>Force all enemies in the same combat zone to make a <strong>Grit Check</strong>:</p><p><strong>On Failure:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Player becomes <strong>Terrified</strong> for one round</li></ol>",
+        "description": "<p>Target one enemy up to one Combat Zone away. Make a contest against that target:</p><p><br></p><p><span data-your-attr=\"Aura\" data-their-attr=\"Grit\" data-pass=\"None\" data-fail=\"Target becomes Terrified for one Round\" data-contest=\"true\" class=\"skill-action-blot\" contenteditable=\"false\">﻿<span contenteditable=\"false\">\n                <span class=\"blot-content\"><span class=\"blot-header\"><strong>CONTEST: </strong><span class=\"attr-chip attr-aura\">Aura</span><sup>vs</sup><span class=\"attr-chip attr-grit\">Grit</span></span><span class=\"blot-results-inline\"><span class=\"res-tag res-pass\"><strong>Pass:</strong> None</span><span class=\"res-tag res-fail\"><strong>Fail:</strong> Target becomes Terrified for one Round</span></span></span></span>﻿</span> </p><p><br></p><p>This ability suffers a <strong>Snag</strong> if a Target has already been Terrified from Blood Curdling Howl this combat.</p>",
         "allegiance": 0,
         "bound_passive": false,
         "type": "Basic",
@@ -387,7 +388,7 @@ var example_adversaries = {
     ],
     "facts": {
       "habitat": {
-        "description": "Wulfolk are native to forested areas, and prefer to live there in packs. However, Lone Wulfolk hunters often find homes in cities where they can put their bounty hunting skills to use for coin."
+        "description": "Wulfolk are native to forested areas, and prefer to live there in packs. However, Lone Wulfolk hunters often find homes in cities where they can put their skills to use for coin aiding local law enforcement or acting as bodyguards for powerful individuals."
       },
       "communication": {
         "description": "Wulfolk communicate with each other via barks and snarls in a language that is largely unintelligible to non-canines. They also leave messages via pheromone marking that can be read by other canines for weeks."
@@ -408,24 +409,24 @@ var example_adversaries = {
     "moods": [
       {
         "rolls": {
-          "start": "1",
-          "stop": "5"
+          "start": 1,
+          "stop": 5
         },
         "mood": "Unthreatened",
         "mood_text": "The Wulfolk is aware of your presence, but is more interested in cooking its prey over a campfire"
       },
       {
         "rolls": {
-          "start": "6",
-          "stop": "14"
+          "start": 6,
+          "stop": 14
         },
         "mood": "Wary",
         "mood_text": "This Wulfolk is carefully observing you, though not making any sudden moves"
       },
       {
         "rolls": {
-          "start": "15",
-          "stop": "20"
+          "start": 15,
+          "stop": 20
         },
         "mood": "Hunting",
         "mood_text": "The Wulfolk is circling you, snarling with teeth bared, looking for an opportunity to strike"
@@ -447,7 +448,7 @@ var example_adversaries = {
     "description": "<p>Jelly Monsters, or Jellies, are caustic amoebas that are largely harmless on their own. However, they can meld themselves together to create massive unicellular organisms that can take up entire corridors in deep, dark dungeons. Do not underestimate Jelly Monsters. If an infestation is left untreated, it grows - literally.</p>",
     "size": "small",
     "hearts": 1,
-    "atkbonus": 1,
+    "atkbonus": 0,
     "bright_points": 0,
     "dark_points": 0,
     "defense": 11,
@@ -470,10 +471,10 @@ var example_adversaries = {
         "type": "Reagent",
         "subtype": "Byproduct",
         "description": "<p>Jellified remains are useful for salves, machine lubricant or -in some cultures- culinary application</p>",
-        "slots": "1",
+        "slots": 1,
         "magic": false,
         "denomination": "coins",
-        "value": "20",
+        "value": 20,
         "quantity": 3,
         "defense": null,
         "atkbonus": null,
@@ -488,10 +489,10 @@ var example_adversaries = {
         "type": "Reagent",
         "subtype": "Bones",
         "description": "<p>The still-slimy, partially dissolved bones of a small creature consumed by the Jelly Monster. Usable only as the crudest components for primitive recipes.</p>",
-        "slots": "1",
+        "slots": 1,
         "magic": false,
         "denomination": "stones",
-        "value": "50",
+        "value": 50,
         "quantity": 1,
         "defense": null,
         "atkbonus": null,
@@ -520,14 +521,6 @@ var example_adversaries = {
         "name": "BLOBLET",
         "modifiers": {
           "size": "small"
-        },
-        "type": "ability"
-      },
-      {
-        "id": "ab-passive-tbipu6pwht",
-        "name": "STUNNING PSUEDOPOD",
-        "modifiers": {
-          "atkbonus": 1
         },
         "type": "ability"
       }
@@ -561,11 +554,11 @@ var example_adversaries = {
         "magic": false
       },
       {
-        "id": "ab-oyygwolruya",
-        "name": "STUNNING PSUEDOPOD",
-        "description": "<p>The Jelly Monster only has one weapon - a prehensile pseudopod that it can shoot out with great force and precision - especially impressive for a creature lacking any discernible sensory organs.</p><p><br></p><p>On hit:<strong> Deftness Check:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>On Failure</strong>: Target is Disoriented for one round</li></ol>",
+        "id": "ab-aorsk76xk0v",
+        "name": "STUNNING PSEUDOPOD",
+        "description": "<p>The Jelly Monster only has one weapon - a prehensile pseudopod that it can shoot out with great force and precision - especially impressive for a creature lacking any discernible sensory organs.</p><p><br></p><p><strong>On hit: </strong></p><p><span data-your-attr=\"Deftness\" data-their-attr=\"\" data-pass=\"Take 1 Damage\" data-fail=\"Take 1 Damage and become Disoriented for One Round\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\">﻿<span contenteditable=\"false\">\n                <span class=\"blot-content\"><span class=\"blot-header\"><strong>CHECK: </strong><span class=\"attr-chip attr-deftness\">Deftness</span></span><span class=\"blot-results-inline\"><span class=\"res-tag res-pass\"><strong>Pass:</strong> Take 1 Damage</span><span class=\"res-tag res-fail\"><strong>Fail:</strong> Take 1 Damage and become Disoriented for One Round</span></span></span></span>﻿</span> </p>",
         "allegiance": 0,
-        "bound_passive": true,
+        "bound_passive": false,
         "type": "Basic",
         "magic": false
       }
