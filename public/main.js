@@ -905,7 +905,7 @@ function update_ui(adversary) {
         const magic = ability.magic
         const id = ability.id
         const ability_block = `
-        <div id="${id}" class="ability-card w-1/2">
+        <div id="${id}" class="ability-card flex-auto">
             <div class="text-white flex"><span class="font-bold">${name}</span><span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span>${magic ? '<span class="magic-icon-ability">M</span>' : ''}</div>
             <div class="ability-content bg-slate-200 p-1 rounded-md">
                 ${description != 'None' ? `<div id=description" class="italic">${description}</div>` : ''}
@@ -936,7 +936,7 @@ function update_ui(adversary) {
         }
 
         const item_block = `
-            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
+            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} flex-auto mb-2" onclick="adversary._load_item_info(${item.id})">
                 <div class="text-white flex"><span class="font-bold">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</span> (<span
                         class="italic">${item.type} - ${item.subtype}</span>)<span class="font-bold">: ${item.category}</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span></span>` : ''}</div>
                 <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">
@@ -974,7 +974,7 @@ function update_ui(adversary) {
         }
 
         //Add confirm prompt to item div
-        item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
+        //item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
     })
 
     Object.keys(adversary.facts).forEach(fact_key => {

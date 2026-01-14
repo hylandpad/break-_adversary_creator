@@ -8,12 +8,7 @@ const help_text = `
 <div class="text-sm">        
 <ul>
 <li><strong>Markdown Exports</strong> - You can now export all your saved adversaries in a markdown format. In the future, I will enhance this to export one or several selected adversaries, but for now, the entire list gets converted. Go post your cool adversaries on the Break!! Discord!</li>            
-<li>Ability and Inventory Text descriptions now include support for formatted checks and challenges. Simply type your check or challenge as follows:
-                <ul>
-                    <li><code>[ATTRIBUTE|Pass: YOUR PASS TEXT HERE|Fail: YOUR FAIL TEXT HERE]</code></li>
-                    <li><code>[ATTRIBUTE vs ATTRIBUTE|Pass: YOUR PASS TEXT HERE|Fail: YOUR FAIL TEXT HERE]</code></li>
-                </ul>
-            </li>
+<li>Ability and Inventory Text descriptions now include support for formatted checks and challenges from the editor toolbar. Simply use the "Check" or "VS" button on the toolbar to create a new check or challenge.</li>
             <li>Damage Types - In the editor, highlight some text and select from the DMG Type dropdown to color-code and automatically include some text to help draw attention to the Damage Type.</li>
             <li>Massive Size automatically adds an ability for Sweep and Focus attacks. Removal of Massive Size removes these abilities automatically</li>
             <li><strong>Adversaries now save to browser local storage automagically</strong>. No more exporting and reimporting necessary</li>

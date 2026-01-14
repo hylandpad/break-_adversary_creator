@@ -212,6 +212,10 @@ class Adversary {
         update_ui(this)
     }
 
+    _load_item_info(item_id) {
+        const item = this.inventory.find(item => item.id === item_id)
+    }
+
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
 
     _integrate_passive(passive_id) {
