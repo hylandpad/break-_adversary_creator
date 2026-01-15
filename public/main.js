@@ -936,7 +936,7 @@ function update_ui(adversary) {
         }
 
         const item_block = `
-            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} flex-auto mb-2" onclick="adversary._load_item_info(${item.id})">
+            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} flex-auto mb-2" onclick="adversary._load_item('${item.id}')">
                 <div class="text-white flex"><span class="font-bold">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</span> (<span
                         class="italic">${item.type} - ${item.subtype}</span>)<span class="font-bold">: ${item.category}</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span></span>` : ''}</div>
                 <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">

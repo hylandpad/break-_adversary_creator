@@ -13,11 +13,16 @@ modalBody.addEventListener('click', (e) => {
 
 function openModal(targetId) {
   const temp = document.getElementById(targetId);
-  if (!temp) return;
+  //if (!temp) return;
 
   // Clear and Inject
   modalBody.innerHTML = '';
-  modalBody.appendChild(temp.content.cloneNode(true));
+  if(temp){
+    modalBody.appendChild(temp.content.cloneNode(true));
+  }else{
+    modalBody.appendChild(targetId);
+  }
+
 
   // Run necessary scipts from main.js that need to be run on any template load
   if(document.getElementById('ability-div')){
@@ -62,9 +67,9 @@ triggers.forEach(t => t.addEventListener('click', () => openModal(t.dataset.targ
 closeBtn.addEventListener('click', closeModal);
 
 // Click backdrop to close
-overlay.addEventListener('click', (e) => {
-  if (e.target === overlay) closeModal();
-});
+//overlay.addEventListener('click', (e) => {
+//  if (e.target === overlay) closeModal();
+//});
 
 // Esc to close
 document.addEventListener('keydown', (e) => {

@@ -212,8 +212,129 @@ class Adversary {
         update_ui(this)
     }
 
-    _load_item_info(item_id) {
-        const item = this.inventory.find(item => item.id === item_id)
+    _load_item(item_id) {
+        const item = this.inventory.find(this_item => this_item.id === item_id)
+        const html = `
+            <div id="inventory-edit-item-div">
+                <div class="item-container">
+                    <div class="header break-adversary-header">
+                        <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
+                                data-required id="inventory-item-name" class="basis-xl" value="${item.name}" type="text">
+                        </h3>
+                    </div>
+                    <div id="inventory-item-category-div" class="my-2">
+                        <label for="inventory-item-category">Category: </label>
+                        <span class="select-wrapper">
+                            <select class="dropdown" id="inventory-item-category">
+                                <option ${item.category === "Yield" ? "selected" : ""} value="Yield">Yield</option>
+                                <option ${item.category === "Equipment" ? "selected" : ""} value="Equipment">Equipment</option>
+                                <option ${item.category === "Item" ? "selected" : ""} value="Item">Item</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div id="inventory-item-type-subtype-div" class="mb-1">
+                        <label class="font-bold" for="inventory-item-type">Item Type: </label>
+                        <span class="select-wrapper mb-2">
+                            <select class="dropdown" data-required id="inventory-item-type">
+                                <option ${item.type === "Weapon" ? "selected" : ""} value="Weapon">Weapon</option>
+                                <option ${item.type === "Armor" ? "selected" : ""} value="Armor">Armor</option>
+                                <option ${item.type === "Shield" ? "selected" : ""} value="Shield">Shield</option>
+                                <option ${item.type === "Outfit" ? "selected" : ""} value="Outfit">Outfit</option>
+                                <option ${item.type === "Mount" ? "selected" : ""} value="Mount">Mount</option>
+                                <option ${item.type === "Accessories" ? "selected" : ""} value="Accessories">Accessories</option>
+                                <option ${item.type === "Wayfinding" ? "selected" : ""} value="Wayfinding">Wayfinding</option>
+                                <option ${item.type === "Illumination" ? "selected" : ""} value="Illumination">Illumination</option>
+                                <option ${item.type === "Kits" ? "selected" : ""} value="Kits">Specialist Kit</option>
+                                <option ${item.type === "Books" ? "selected" : ""} value="Books">Books</option>
+                                <option ${item.type === "Consumables" ? "selected" : ""} value="Consumables">Consumable</option>
+                                <option ${item.type === "Explosives" ? "selected" : ""} value="Explosives">Explosives</option>
+                                <option ${item.type === "Chemicals" ? "selected" : ""} value="Chemicals">Chemicals</option>
+                                <option ${item.type === "Reagent" ? "selected" : ""} value="Reagent">Crafting Reagent</option>
+                                <option ${item.type === "Misc" ? "selected" : ""} value="Misc">Miscellaneous</option>
+                                <option ${item.type === "Curiosity" ? "selected" : ""} value="Curiosity">Curiosity</option>
+                                <option ${item.type === "Gadget" ? "selected" : ""} value="Gadget">Gadget</option>
+                                <option ${item.type === "Artifact" ? "selected" : ""} value="Artifact">Artifact</option>
+                                <option ${item.type === "Otherworld" ? "selected" : ""} value="Otherworld">Otherworldy Items</option>
+                                <option ${item.type === "Vehicle" ? "selected" : ""} value="Vehicle">Vehicle</option>
+                                <option value="Companion">Companion</option>
+                            </select>
+                        </span>
+                        <span id="inventory-item-subtype-container"></span>
+                    </div>
+                    <div id="equipment-combat-modifiers" class="hidden mb-1" class="mb-2">
+                        <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
+                            id="inventory-item-atkbonus" type="number">
+                        <i class="fa-solid fa-shield"></i><input min='0' value="${item.defense?item.defense:0}" class="text-input" id="inventory-item-defense"
+                            type="number">
+                        <i class="fa-solid fa-person-running"></i><input value="${item.speed?item.speed:0}" class="text-input" id="inventory-item-speed"
+                            type="number">
+                        <i class="fa-solid fa-person-running"></i> <label> MAX </label>
+                        <span class="select-wrapper">
+                            <select class="dropdown font-bold" id="inventory-item-max-speed" >
+                                <option ${item.max_speed === "" ? "selected" : ""} value=""></option>
+                                <option ${item.max_speed === "slow" ? "selected" : ""} value='slow'>Slow</option>
+                                <option ${item.max_speed === "average" ? "selected" : ""} value='average'>Average</option>
+                                <option ${item.max_speed === "fast" ? "selected" : ""} value='fast'>Fast</option>
+                                <option ${item.max_speed === "veryfast" ? "selected" : ""} value='veryfast'>Very Fast</option>
+                            </select>
+                        </span>
+                    </div>
+                    <hr class="faded-hr" />
+                    <div id="inventory-item-magic-container" class="flex text-center">
+                        <div><label for="inventory-item-magic">Magic: </label></div>
+                        <div><label class="switch switch-small ml-3">
+                                <input id="inventory-item-magic" type="checkbox" ${item.magic ? 'checked' : ''}
+                                    onclick="toggle_magic('inventory-item')">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="inventory-item-allegiance-div" class="pb-2 hidden">
+                        <label for="inventory-item-allegiance">Allegiance Points: </label><input ${item.allegiance ? ` value="${item.allegiance}"` : ''} onchange="set_item_allegiance()" id="inventory-item-allegiance"
+                            onchange="set_item_allegiance()" id="inventory-item-allegiance"
+                            class="w-10 text-right text-input " type="number" value="0">
+                        <span id="item-allegiance-icon-box" class="inline-flex">
+                            <span><i id="item-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                    id="item-unaligned" class="material-icons text-slate-400">circle</i><i
+                                    id="item-dark" class="material-icons text-stone-200">cyclone</i>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="editor"></div>
+                    <div class="flex flew-row align-top">
+                        <div id="inventory-item-slots-div" class="w-1/4">
+                            <label for="inventory-item-slots">Slots: </label>
+                            <input min='0' value="${item.slots}" class="text-input" id="inventory-item-slots" type="number">
+                        </div>
+                        <div id="inventory-item-quantity-div" class="w-1/4 text-center">
+                            <label>Quantity: </label><input id="inventory-item-quantity" type="number" min="1" value="${item.quantity}"
+                                class="text-input">
+                        </div>
+                        <div id="inventory-item-value-div" class="w-1/2 text-right">
+                            <label for="inventory-item-value">Value: </label>
+                            <input type="number" ${item.value ? ` value="${item.value}"` : ''} id="inventory-item-value" class="text-input">
+                            <div>
+                                <span id="inventory-item-denomination-div">
+                                    <input class="mr-1" type="radio" id="inventory-item-stones" name="inventory-item-denomination"
+                                        value="stones" ${item.denomination === "stones" ? "checked" : ""}><img class="svg-icon mr-2" src="images/stone-pile-svgrepo-com.svg">
+                                    <input class="mr-1" type="radio" id="items-coins" name="inventory-item-denomination"
+                                        value="coins" ${item.denomination === "coins" ? "checked" : ""}><img class="svg-icon mr-2"
+                                        src="images/coin-business-and-finance-svgrepo-com.svg">
+                                    <input class="mr-1" type="radio" id="items-gems" name="inventory-item-denomination"
+                                        value="gems" ${item.denomination === "gems" ? "checked" : ""}><img class="svg-icon mr-2" src="images/gem-svgrepo-com.svg">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btnAddItem" onclick="adversary._add_item()" disabled
+                        class="btn close-modal submit-btn">Save</button>
+                </div>
+            </div>
+        `
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(html, 'text/html');
+        const editDiv = htmlDoc.getElementById('inventory-edit-item-div');
+        openModal(editDiv)
     }
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
