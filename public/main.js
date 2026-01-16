@@ -449,6 +449,10 @@ function save_adversary() {
     const name = adversary.name;
     const toast_message = 'Adversary "' + name + '" saved!';
 
+    // run save for description and mood tables
+    adversary.description = document.querySelector('#description-container-div .editor').__quill.root.innerHTML
+    adversary._adjust_mood_table()
+
     saved_adversaries[name] = JSON.parse(JSON.stringify(adversary));
     show_toast(toast_message, 2000);
 

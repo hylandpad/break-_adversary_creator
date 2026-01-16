@@ -512,7 +512,6 @@ class Adversary {
             this.moods.push(createMood(rolls, data[2], data[3]))
         }
         update_ui(this)
-        save_adversary()
     }
 
     // **Calculates - broader functions that integrate changes from a number of different sources to recalculate specific attributes
