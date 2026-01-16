@@ -18,19 +18,21 @@
             src="/images/breakcommunity.png"><i id="help-btn" data-target="help"
             class="inline material-symbols-outlined text-white modal-trigger">help</i>
     </div>
-    <div id="toast-container h-[40px] block">
-        <p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center"></p>
-    </div>
 
     <div class="container w-full m-auto">
-        <div id="adversary-nav"
-            class="w-full h-[25px] lg:h-[55px] flex flex-row items-center bg-gray-200 my-4 p-4 rounded-md">
-            <div class="w-1/2 text-left"><button class="btn ml-4" onclick="save_adversary()">Save</button><button
-                    class="btn btn-hollow modal-trigger" data-target="load-menu">Load</button>
-                <button class="btn" onclick="confirm_prompt(curr_adv)">Delete Current</button>
+        <div id="adversary-nav" class="sticky top-0 z-998 shadow-2xl">
+            <div class="flex flex-row items-center w-full h-[25px] lg:h-[55px]  bg-gray-200 my-4 p-4 rounded-md">
+                <div class="w-1/4 text-left"><button class="btn ml-4" onclick="save_adversary()">Save</button><button
+                        class="btn btn-hollow modal-trigger" data-target="load-menu">Load</button>
+                    <button class="btn" onclick="confirm_prompt(curr_adv)">Delete Current</button>
+                </div>
+                <div id="toast-container" class="w-1/2">
+                <p id="toast-content" class="bg-amber-600 text-white font-bold opacity-0 text-center rounded-2xl"></p>
             </div>
-            <div class="w-1/2 text-right"><button class="btn" onclick="create_new_adversary()">New</button><button
-                    class="btn btn-hollow modal-trigger" data-target="export">Export</button></div>
+                <div class="w-1/4 text-right"><button class="btn" onclick="create_new_adversary()">New</button><button
+                        class="btn btn-hollow modal-trigger" data-target="export">Export</button></div>
+
+            </div>
         </div>
         <div class="bg-gray-200 my-4 p-4 rounded-md overflow-auto inline-block w-full align-top">
             <div class="header break-adversary-header mb-5">
@@ -650,9 +652,10 @@
                         </div>
                     </div>
                     <div id="inventory-item-allegiance-div" class="pb-2 hidden">
-                        <label for="inventory-item-allegiance">Allegiance Points: </label><input onchange="set_item_allegiance()"
-                            id="inventory-item-allegiance" onchange="set_item_allegiance()"
-                            id="inventory-item-allegiance" class="w-10 text-right text-input " type="number" value="0">
+                        <label for="inventory-item-allegiance">Allegiance Points: </label><input
+                            onchange="set_item_allegiance()" id="inventory-item-allegiance"
+                            onchange="set_item_allegiance()" id="inventory-item-allegiance"
+                            class="w-10 text-right text-input " type="number" value="0">
                         <span id="item-allegiance-icon-box" class="inline-flex">
                             <span><i id="item-bright" class="material-icons text-stone-200">brightness_5</i><i
                                     id="item-unaligned" class="material-icons text-slate-400">circle</i><i
@@ -664,8 +667,7 @@
                     <div class="flex flew-row align-top">
                         <div id="inventory-item-slots-div" class="w-1/4">
                             <label for="inventory-item-slots">Slots: </label>
-                            <input min='0' class="text-input" id="inventory-item-slots"
-                                type="number">
+                            <input min='0' class="text-input" id="inventory-item-slots" type="number">
                         </div>
                         <div id="inventory-item-quantity-div" class="w-1/4 text-center">
                             <label>Quantity: </label><input id="inventory-item-quantity" type="number" min="1"
@@ -673,25 +675,22 @@
                         </div>
                         <div id="inventory-item-value-div" class="w-1/2 text-right">
                             <label for="inventory-item-value">Value: </label>
-                            <input type="number"
-                                id="inventory-item-value" class="text-input">
+                            <input type="number" id="inventory-item-value" class="text-input">
                             <div>
                                 <span id="inventory-item-denomination-div">
                                     <input class="mr-1" type="radio" id="inventory-item-stones"
                                         name="inventory-item-denomination" value="stones"><img class="svg-icon mr-2"
                                         src="images/stone-pile-svgrepo-com.svg">
                                     <input class="mr-1" type="radio" id="items-coins" name="inventory-item-denomination"
-                                        value="coins"><img
-                                        class="svg-icon mr-2" src="images/coin-business-and-finance-svgrepo-com.svg">
+                                        value="coins"><img class="svg-icon mr-2"
+                                        src="images/coin-business-and-finance-svgrepo-com.svg">
                                     <input class="mr-1" type="radio" id="items-gems" name="inventory-item-denomination"
-                                        value="gems"><img
-                                        class="svg-icon mr-2" src="images/gem-svgrepo-com.svg">
+                                        value="gems"><img class="svg-icon mr-2" src="images/gem-svgrepo-com.svg">
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <button id="btnAddItem" disabled
-                        class="btn close-modal submit-btn">Save</button>
+                    <button id="btnAddItem" disabled class="btn close-modal submit-btn">Save</button>
                 </div>
             </div>
         </template>
