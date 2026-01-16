@@ -20,7 +20,7 @@
     </div>
 
     <div class="container w-full m-auto">
-        <div id="adversary-nav" class="sticky top-0 z-998 shadow-2xl">
+        <div id="adversary-nav" class="sticky top-0 z-900 shadow-2xl">
             <div class="flex flex-row items-center w-full h-[25px] lg:h-[55px]  bg-gray-200 my-4 p-4 rounded-md">
                 <div class="w-1/4 text-left"><button class="btn ml-4" onclick="save_adversary()">Save</button><button
                         class="btn btn-hollow modal-trigger" data-target="load-menu">Load</button>
@@ -432,7 +432,7 @@
                         <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input"
                             id="ability-hearts" type="number">
                         <i class="fa-solid fa-person-running"></i><label> BASE </label><select
-                            id="ability-base-speed-override" class="dropdown">
+                            id="ability-base-speed" class="dropdown">
                             <option value=""></option>
                             <option value="slow">Slow</option>
                             <option value="average">Average</option>
@@ -499,7 +499,7 @@
                         <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input"
                             id="ability-hearts" type="number">
                         <i class="fa-solid fa-person-running"></i><label> BASE </label><select
-                            id="ability-base-speed-override" class="dropdown">
+                            id="ability-base-speed" class="dropdown">
                             <option value=""></option>
                             <option value="slow">Slow</option>
                             <option value="average">Average</option>
@@ -515,7 +515,7 @@
                             <option value="massive">Massive</option>
                         </select>
                     </div>
-                    <button id="btnAddAbility" onclick="adversary._add_ability()" disabled
+                    <button id="btnAddAbility"
                         class="btn close-modal submit-btn">Save</button>
                 </div>
             </div>
@@ -745,7 +745,7 @@
                             <input type="number" id="inventory-item-value" class="text-input">
                             <div>
                                 <span id="inventory-item-denomination-div">
-                                    <input class="mr-1" type="radio" id="inventory-item-stones"
+                                    <input class="mr-1" type="radio" id="items-stones"
                                         name="inventory-item-denomination" value="stones"><img class="svg-icon mr-2"
                                         src="images/stone-pile-svgrepo-com.svg">
                                     <input class="mr-1" type="radio" id="items-coins" name="inventory-item-denomination"
@@ -757,7 +757,7 @@
                             </div>
                         </div>
                     </div>
-                    <button id="btnAddItem" disabled class="btn close-modal submit-btn">Save</button>
+                    <button id="btnAddItem" class="btn close-modal submit-btn">Save</button>
                 </div>
             </div>
         </template>
@@ -807,7 +807,7 @@
         </template>
     </div>
     <div id="modal-overlay"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-all duration-300">
+        class="fixed inset-0 z-[999] flex items-center backdrop-blur-[4px] justify-center bg-black/60 opacity-0 pointer-events-none transition-all duration-300">
         <div id="modal-container"
             class="relative bg-white w-full max-w-2xl mx-4 rounded-xl shadow-2xl transform scale-90 transition-all duration-300">
 

@@ -204,7 +204,6 @@ function load_example_adversaries() {
     const stringData = JSON.stringify(saved_adversaries);
     localStorage.setItem('saved_adversaries', stringData);
     render_saved_list(saved_adversaries);
-    console.log("Example Adversaries loaded and saved locally!");
     show_toast("Example Adversaries loaded!", 2000);
 }
 
@@ -1010,6 +1009,14 @@ function update_ui(adversary) {
 
 }
 
+const clean_bad_chars = (content) => {
+  // \u200B - Zero Width Space
+  // \uFEFF - Zero Width No-Break Space (BOM)
+  // \u200C - Zero Width Non-Joiner
+  // \u200D - Zero Width Joiner
+  return content.replace(/[\u200B-\u200D\uFEFF]/g, '');
+};
+
 var curr_adv = adversary.name
 
 const exportAdversariesJson = (data, filename = 'adversaries.json') => {
@@ -1041,7 +1048,6 @@ const importAdversariesJson = () => {
                 for (const advName in importedData) {
                     saved_adversaries[advName] = importedData[advName];
                 }
-                console.log("Data imported successfully:", importedData);
             } catch (err) {
                 console.error("Error parsing JSON:", err);
             }
@@ -1050,6 +1056,8 @@ const importAdversariesJson = () => {
         // Save to localStorage
         const stringData = JSON.stringify(saved_adversaries);
         localStorage.setItem('saved_adversaries', stringData);
+        closeModal();
+        show_toast('Adversaries imported successfully!', 2000);
     };
     input.click();
 }

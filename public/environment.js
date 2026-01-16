@@ -6,30 +6,31 @@ const help_text = `
 <p><strong>Update Notes:</strong></p>
 <hr class="faded-hr" />
 <div class="text-sm">        
-<ul>
-<li><strong>Markdown Exports</strong> - You can now export all your saved adversaries in a markdown format. In the future, I will enhance this to export one or several selected adversaries, but for now, the entire list gets converted. Go post your cool adversaries on the Break!! Discord!</li>            
-<li>Ability and Inventory Text descriptions now include support for formatted checks and challenges from the editor toolbar. Simply use the "Check" or "VS" button on the toolbar to create a new check or challenge.</li>
-            <li>Damage Types - In the editor, highlight some text and select from the DMG Type dropdown to color-code and automatically include some text to help draw attention to the Damage Type.</li>
-            <li>Massive Size automatically adds an ability for Sweep and Focus attacks. Removal of Massive Size removes these abilities automatically</li>
-            <li><strong>Adversaries now save to browser local storage automagically</strong>. No more exporting and reimporting necessary</li>
-            <li>Allegiance locked to magical items and abilities to be more in line with Core rules</li>
-            <li>Adversaries can now be assigned up to 5 tags. Choose from some predefined options or make your own</li>
-            <li>Adversary load bar reworked and now includes filtering using tags</li>
-            <li>Tons of visual modifications</li>
-            <li>Bug squashes</li>
-        </ul>
-        <br /></div>
-        <p><em>Next Major Update</em>: The 2.0 <strong>Colossal</strong> Update</p>
-        
-        <div class="text-sm"><em>Including...</em>
-        <ul>
-        <li>Full Colossal Monster support, including dynamic monster part creation</li>
-        <li>The ability to edit Items, Abilities and Traits</li>
-        <li>And more...hopefully.</li>
-        </ul>
-        </div>
-        <br />
-        <p class="font-bold">Please report bugs or request features on the <a class="underline text-blue-700" href="https://github.com/hylandpad/break-_adversary_creator/issues" target="_blank">Project Github</a></p>
+  <ul>
+    <li><strong>Markdown Exports</strong> - You can now export all your saved adversaries in a markdown format. In the future, I will enhance this to export one or several selected adversaries, but for now, the entire list gets converted. Go post your cool adversaries on the Break!! Discord!</li>            
+    <li>Ability and Inventory Text descriptions now include support for formatted checks and challenges from the editor toolbar. Simply use the "Check" or "VS" button on the toolbar to create a new check or challenge.</li>
+    <li><strong>Ability and Items now support editing functionality.</strong>  Click on the name of an ability or item in the loadout list to open the edit modal for that ability or item.</li>            
+    <li>Damage Types - In the editor, highlight some text and select from the DMG Type dropdown to color-code and automatically include some text to help draw attention to the Damage Type.</li>
+    <li>Massive Size automatically adds an ability for Sweep and Focus attacks. Removal of Massive Size removes these abilities automatically</li>
+    <li><strong>Adversaries now save to browser local storage automagically</strong>. No more exporting and reimporting necessary</li>
+    <li>Allegiance locked to magical items and abilities to be more in line with Core rules</li>
+    <li>Adversaries can now be assigned up to 5 tags. Choose from some predefined options or make your own</li>
+    <li>Adversary load bar reworked and now includes filtering using tags</li>
+    <li>Numerous QOL improvements for better usability and readability</li>
+    <li>Tons of visual modifications</li>
+    <li>Bug squashes</li>
+  </ul>
+  <br />
+</div>
+<p><em>Next Major Update</em>: The 2.0 <strong>Colossal</strong> Update</p>
+<div class="text-sm"><em>Including...</em>
+  <ul>
+    <li>Full Colossal Monster support, including dynamic monster part creation</li>
+    <li>And more...hopefully.</li>
+  </ul>
+</div>
+<br />
+<p class="font-bold">Please report bugs or request features on the <a class="underline text-blue-700" href="https://github.com/hylandpad/break-_adversary_creator/issues" target="_blank">Project Github</a></p>
 `
 var example_adversaries = {
   "EXTRASOLAR": {
@@ -38,7 +39,7 @@ var example_adversaries = {
     "rank": "7",
     "description": "<p>Shards of the shattered sun machine, animated by highly volatile motes of Bright mana, these so-called Extrasolar are angelic in their appearance and stoic defenders of the Light. Their forms burn brilliantly, being to blindingly radiant for most people to look directly at, which makes them incredibly difficult to describe. Most who have witnessed them described them as humanoid-shaped, with wings that look like glowing shattered glass and halos of slowly-orbiting crystals. They abhor the Darkness, and seek out creatures of the Dark with a fury that is unmatched.</p>",
     "size": "large",
-    "hearts": 5,
+    "hearts": 7,
     "atkbonus": 5,
     "bright_points": 7,
     "dark_points": 0,
@@ -48,7 +49,8 @@ var example_adversaries = {
     "creature_subtype": "Shardbound",
     "tags": [
       "Bright",
-      "Wistful dark"
+      "Wistful dark",
+      "Example"
     ],
     "primary_aptitudes": [
       "might",
@@ -63,10 +65,10 @@ var example_adversaries = {
         "type": "Curiosity",
         "subtype": "Byproduct",
         "description": "<p>A slain Extrasolar loses its cohesion and form, its crystalline body reducing itself to fine, glowing sand. This sand retains a small amount of latent warmth and exudes a dim light, which grows in luminosity as it nears a shard of the Sun Machine.</p>",
-        "slots": 0.5,
+        "slots": ".5",
         "magic": true,
         "denomination": "coins",
-        "value": 70,
+        "value": "70",
         "quantity": 2,
         "defense": null,
         "atkbonus": null,
@@ -75,17 +77,17 @@ var example_adversaries = {
         "allegiance": 0
       },
       {
-        "id": "inv-zuyvp0xd6tg",
+        "id": "inv-7g6ylvejhgg",
         "name": "SERAPHIC BLADE",
         "category": "Equipment",
         "type": "Weapon",
         "subtype": "Standard Weapon",
-        "description": "<p>This weapon does an extra Heart of damage to <strong>Dark</strong> Aligned creatures.</p><p><br></p><p>In the hands of creatures that are not <strong>Bright</strong> Aligned, the blade becomes dull, inert and harmless.</p>",
+        "description": "<p>This weapon does an extra Heart of damage to <span data-amount=\"Aligned\" data-dmg-type=\"dark\" class=\"damage-type-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span class=\"dmg-name\"> dark </span><span class=\"dmg-val dark\">Aligned</span></span></span> creatures.</p><p><br></p><p>In the hands of creatures that are not <span data-amount=\"Aligned\" data-dmg-type=\"bright\" class=\"damage-type-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span class=\"dmg-name\"> bright </span><span class=\"dmg-val bright\">Aligned</span></span></span>, the blade becomes dull, inert and harmless.</p>",
         "slots": 2,
         "magic": true,
+        "quantity": 1,
         "denomination": "gems",
         "value": 1,
-        "quantity": 1,
         "defense": null,
         "atkbonus": 3,
         "speed": null,
@@ -123,50 +125,24 @@ var example_adversaries = {
         "value": -1
       },
       {
-        "id": "ab-passive-56wewoabzi3",
-        "name": "HERCULEAN",
-        "modifiers": {
-          "size": "large"
-        },
-        "type": "ability"
-      },
-      {
         "id": "ab-passive-nke0i7w5us",
         "name": "TENSILE SKIN",
         "modifiers": {
           "defense": 2
         },
         "type": "ability"
+      },
+      {
+        "id": "ab-passive-f34n1gpxp6l",
+        "name": "HERCULEAN",
+        "modifiers": {
+          "hearts": 2,
+          "size": "large"
+        },
+        "type": "ability"
       }
     ],
     "abilities": [
-      {
-        "id": "ab-zs3phdzz6j",
-        "name": "RADIANCE",
-        "description": "<p>At the start of their turn, any <strong>Non-Bright</strong> aligned Player in the same combat area as an Extrasolar must succeed an Aura Check or become <strong>Blinded</strong></p>",
-        "allegiance": 1,
-        "bound_passive": false,
-        "type": "Advanced",
-        "magic": true
-      },
-      {
-        "id": "ab-ul93khgtzlm",
-        "name": "BLAZING MARCH",
-        "description": "<p>The combat zone occupied by the Extrasolar is set alight by its radiance, turning the immediate area into a Burning Hazard. Characters without proper protection from Burning will take 1 Fire Damage every turn. The hazard remains in that combat zone for as long as the Extrasolar remains in the combat zone</p>",
-        "allegiance": 1,
-        "bound_passive": false,
-        "type": "Advanced",
-        "magic": true
-      },
-      {
-        "id": "ab-c9l0cmu95x",
-        "name": "HERCULEAN",
-        "description": "<p>The Extrasolar is <strong>Large</strong></p>",
-        "allegiance": 0,
-        "bound_passive": true,
-        "type": "Basic",
-        "magic": false
-      },
       {
         "id": "ab-gt27n002f07",
         "name": "TENSILE SKIN",
@@ -177,12 +153,39 @@ var example_adversaries = {
         "magic": false
       },
       {
-        "id": "ab-24xg6w6zcy5",
+        "id": "ab-rn4xb58j0gh",
         "name": "SUNBURST",
-        "description": "<p>Upon the Extrasolar taking a Heart of Damage, all Players in the same combat area must make a <strong>Check</strong>:</p><p><br></p><p><span data-your-attr=\"Grit\" data-their-attr=\"\" data-pass=\"None\" data-fail=\"All non-Bright creatures in the same combat area take 1 Heart of damage\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\">﻿<span contenteditable=\"false\">\n                <span class=\"blot-content\"><span class=\"blot-header\"><strong>CHECK: </strong><span class=\"attr-chip attr-grit\">Grit</span></span><span class=\"blot-results-inline\"><span class=\"res-tag res-pass\"><strong>Pass:</strong> None</span><span class=\"res-tag res-fail\"><strong>Fail:</strong> All non-Bright creatures in the same combat area take 1 Heart of damage</span></span></span></span>﻿</span> </p><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is Dark Damage</p>",
+        "description": "<p>Upon the Extrasolar taking a Heart of Damage, all Players in the same combat area must make a <strong>Check</strong>:</p><p><br></p><p><br></p><p><div data-your-attr=\"Grit\" data-their-attr=\"Grit\" data-pass=\"No Effect\" data-fail=\"You are Blinded for the remainder of the combat round\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\">\n        <div class=\"blot-container\"><div class=\"blot-header\"><span class=\"action-label\">CHECK</span><span class=\"editable-field attr-chip attr-grit\" data-field=\"yourAttr\" contenteditable=\"true\">Grit</span></div><div class=\"blot-body\"><div class=\"res-row res-pass\"><span class=\"res-label\">Pass:</span><span class=\"editable-field res-text\" data-field=\"pass\" contenteditable=\"true\">No Effect</span></div><div class=\"res-row res-fail\"><span class=\"res-label\">Fail:</span><span class=\"editable-field res-text\" data-field=\"fail\" contenteditable=\"true\">You are Disoriented for the remainder of the combat round</span></div></div></div></span></span></span></span></div></p><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is <span data-amount=\"Damage\" data-dmg-type=\"dark\" class=\"damage-type-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\"><span class=\"dmg-name\"> dark </span><span class=\"dmg-val dark\">Damage</span></span></span></span></span></span></p>",
         "allegiance": 1,
         "bound_passive": false,
         "type": "Legendary",
+        "magic": true
+      },
+      {
+        "id": "ab-p46xr46vi9n",
+        "name": "BLAZING MARCH",
+        "description": "<p>The combat zone occupied by the Extrasolar is set alight by its radiance, turning the immediate area into a Burning Hazard. Characters without proper protection from Burning will take <span data-amount=\"1\" data-dmg-type=\"burn\" class=\"damage-type-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span class=\"dmg-name\"> burn </span><span class=\"dmg-val burn\">1</span></span></span> every turn. The hazard remains in that combat zone for as long as the Extrasolar remains in the combat zone.</p>",
+        "allegiance": 1,
+        "bound_passive": false,
+        "type": "Advanced",
+        "magic": true
+      },
+      {
+        "id": "ab-2xzdhkmovgo",
+        "name": "HERCULEAN",
+        "description": "<p>The Extrasolar is <strong>Large </strong>and has <strong>+2 Maximum Hearts</strong></p>",
+        "allegiance": 0,
+        "bound_passive": true,
+        "type": "Basic",
+        "magic": false
+      },
+      {
+        "id": "ab-pr4l5y1yfo",
+        "name": "RADIANCE",
+        "description": "<p>At the start of their turn, any <strong>Non </strong><span data-amount=\"Aligned\" data-dmg-type=\"bright\" class=\"damage-type-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span class=\"dmg-name\"> bright </span><span class=\"dmg-val bright\">Aligned</span></span></span> Player in the same combat area as an Extrasolar must make a <strong>Check</strong>.</p><p><br></p><p><div data-your-attr=\"Aura\" data-their-attr=\"Grit\" data-pass=\"No effect\" data-fail=\"Become Blinded for the remainder of your turn\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\"><span contenteditable=\"false\"><span contenteditable=\"false\">\n        <div class=\"blot-container\"><div class=\"blot-header\"><span class=\"action-label\">CHECK</span><span class=\"editable-field attr-chip attr-aura\" data-field=\"yourAttr\" contenteditable=\"true\">Aura</span></div><div class=\"blot-body\"><div class=\"res-row res-pass\"><span class=\"res-label\">Pass:</span><span class=\"editable-field res-text\" data-field=\"pass\" contenteditable=\"true\">No effect</span></div><div class=\"res-row res-fail\"><span class=\"res-label\">Fail:</span><span class=\"editable-field res-text\" data-field=\"fail\" contenteditable=\"true\">Become Blinded for the remainder of your turn</span></div></div></div></span></span></div></p><p><br></p><p><br></p>",
+        "allegiance": 1,
+        "bound_passive": false,
+        "type": "Advanced",
         "magic": true
       }
     ],
@@ -258,12 +261,13 @@ var example_adversaries = {
     "creature_subtype": "Beastfolk",
     "tags": [
       "Canine",
-      "Pack hunter"
+      "Pack hunter",
+      "Example"
     ],
     "primary_aptitudes": [
       "deftness",
-      "might",
-      "insight"
+      "insight",
+      "might"
     ],
     "inventory": [
       {
@@ -276,7 +280,7 @@ var example_adversaries = {
         "slots": "2",
         "magic": false,
         "denomination": "coins",
-        "value": 30,
+        "value": "30",
         "quantity": 1,
         "defense": 2,
         "atkbonus": null,
@@ -294,7 +298,7 @@ var example_adversaries = {
         "slots": "1",
         "magic": false,
         "denomination": "coins",
-        "value": 70,
+        "value": "70",
         "quantity": 1,
         "defense": null,
         "atkbonus": null,
@@ -303,17 +307,17 @@ var example_adversaries = {
         "allegiance": 0
       },
       {
-        "id": "inv-qwsomss2h1",
+        "id": "inv-qrch8jt7x1s",
         "name": "RAZOR TOOTH",
         "category": "Yield",
         "type": "Reagent",
         "subtype": "Bone",
         "description": "<p>An adult  Wulfolk's canines are worth quite a bit on the black market. They are not easily acquired by outsiders. They make for excellent bone knives or tools once refined and sharpened, and keep an edge better than most other bone weaponry.</p>",
-        "slots": ".5",
+        "slots": 0.5,
         "magic": false,
+        "quantity": 2,
         "denomination": "coins",
         "value": 20,
-        "quantity": 2,
         "defense": null,
         "atkbonus": null,
         "speed": null,
@@ -344,7 +348,7 @@ var example_adversaries = {
         "value": -1
       },
       {
-        "id": "ab-passive-1qeo2zfummw",
+        "id": "ab-passive-9bdwimrw5g",
         "name": "WOODSPEED",
         "modifiers": {
           "speed": "fast"
@@ -354,29 +358,29 @@ var example_adversaries = {
     ],
     "abilities": [
       {
-        "id": "ab-8izs521pv8u",
+        "id": "ab-vibfoj5hul",
+        "name": "BLOOD CURDLING HOWL",
+        "description": "<p>Target one enemy up to one Combat Zone away. Make a <strong>Contest</strong> against that target:</p><p><br></p><p><br></p><p><div data-your-attr=\"Aura\" data-their-attr=\"Insight\" data-pass=\"The target is Terrified until the end of the round\" data-fail=\"The target suffers no effect\" data-contest=\"true\" class=\"skill-action-blot\" contenteditable=\"false\"><span contenteditable=\"false\">\n        <div class=\"blot-container\"><div class=\"blot-header\"><span class=\"action-label\">CONTEST</span><span class=\"editable-field attr-chip attr-aura\" data-field=\"yourAttr\" contenteditable=\"true\">Aura</span><span class=\"vs-label\">vs</span><span class=\"editable-field attr-chip attr-insight\" data-field=\"theirAttr\" contenteditable=\"true\">Insight</span></div><div class=\"blot-body\"><div class=\"res-row res-pass\"><span class=\"res-label\">Pass:</span><span class=\"editable-field res-text\" data-field=\"pass\" contenteditable=\"true\">The target is Terrified until the end of the round</span></div><div class=\"res-row res-fail\"><span class=\"res-label\">Fail:</span><span class=\"editable-field res-text\" data-field=\"fail\" contenteditable=\"true\">The target suffers no effect</span></div></div></div></span></div></p><p><br></p><p>This ability suffers a <strong>Snag</strong> if a Target has already been Terrified from<strong> Blood Curdling Howl</strong> this combat.</p>",
+        "allegiance": 0,
+        "bound_passive": false,
+        "type": "Basic",
+        "magic": false
+      },
+      {
+        "id": "ab-r8lo4wlp6m7",
+        "name": "HUNTED",
+        "description": "<p>At the start of Combat, choose one player character. This player character becomes <strong>Hunted</strong> as the Wulfolk enter a state of extreme concentration and focus. All Wulfolk adversaries gain an <strong>Edge</strong> against any checks or contests imposed on them by that character, and an <strong>Edge</strong> on all checked targeting that character. However, they suffer a <strong>Snag</strong> on any checks or contests imposed upon them by other characters. If the Hunted character becomes unable to fight due to loss of consciousness or death, the Hunted status can be assigned to any other Player Character adjacent to any Wulfolk.</p>",
+        "allegiance": 0,
+        "bound_passive": false,
+        "type": "Basic",
+        "magic": false
+      },
+      {
+        "id": "ab-xr362mik8t",
         "name": "WOODSPEED",
-        "description": "<p>The Wulfolk's base speed is <strong>Fast</strong></p>",
+        "description": "<blockquote><em>It was probably just the wind.</em></blockquote><p><br></p><p>The Wulfolk's base speed is <strong>Fast</strong></p>",
         "allegiance": 0,
         "bound_passive": true,
-        "type": "Basic",
-        "magic": false
-      },
-      {
-        "id": "ab-7jckfy1piqw",
-        "name": "HUNTED",
-        "description": "<p>At the start of Combat, choose one player character. This player character becomes Hunted as the Wulfolk enter a state of extreme concentration and focus. All Wulfolk Adversaries gain an Edge against any checks or contests imposed on them by that character. However, they suffer a Snag on any checks or contested imposed upon them by other characters. If the Hunted character becomes unable to fight due to loss of consciousness or death, the Hunted status can be assigned to any other Player Character adjacent to any Wulfolk.</p>",
-        "allegiance": 0,
-        "bound_passive": false,
-        "type": "Basic",
-        "magic": false
-      },
-      {
-        "id": "ab-1qjhoi2kme3",
-        "name": "BLOOD CURDLING HOWL",
-        "description": "<p>Target one enemy up to one Combat Zone away. Make a contest against that target:</p><p><br></p><p><span data-your-attr=\"Aura\" data-their-attr=\"Grit\" data-pass=\"None\" data-fail=\"Target becomes Terrified for one Round\" data-contest=\"true\" class=\"skill-action-blot\" contenteditable=\"false\">﻿<span contenteditable=\"false\">\n                <span class=\"blot-content\"><span class=\"blot-header\"><strong>CONTEST: </strong><span class=\"attr-chip attr-aura\">Aura</span><sup>vs</sup><span class=\"attr-chip attr-grit\">Grit</span></span><span class=\"blot-results-inline\"><span class=\"res-tag res-pass\"><strong>Pass:</strong> None</span><span class=\"res-tag res-fail\"><strong>Fail:</strong> Target becomes Terrified for one Round</span></span></span></span>﻿</span> </p><p><br></p><p>This ability suffers a <strong>Snag</strong> if a Target has already been Terrified from Blood Curdling Howl this combat.</p>",
-        "allegiance": 0,
-        "bound_passive": false,
         "type": "Basic",
         "magic": false
       }
@@ -434,7 +438,8 @@ var example_adversaries = {
       "grit": 7,
       "insight": 9,
       "aura": 6
-    }
+    },
+    "allegiance": "unaligned"
   },
   "JELLY MONSTER": {
     "name": "JELLY MONSTER",
@@ -451,7 +456,8 @@ var example_adversaries = {
     "creature_type": "monster",
     "creature_subtype": "Abberation",
     "tags": [
-      "Caves"
+      "Caves",
+      "Example"
     ],
     "primary_aptitudes": [
       "grit",
@@ -466,10 +472,10 @@ var example_adversaries = {
         "type": "Reagent",
         "subtype": "Byproduct",
         "description": "<p>Jellified remains are useful for salves, machine lubricant or -in some cultures- culinary application</p>",
-        "slots": 1,
+        "slots": "1",
         "magic": false,
         "denomination": "coins",
-        "value": 20,
+        "value": "20",
         "quantity": 3,
         "defense": null,
         "atkbonus": null,
@@ -478,17 +484,17 @@ var example_adversaries = {
         "allegiance": 0
       },
       {
-        "id": "inv-kuyyphhkhdb",
+        "id": "inv-w7n62rx61aj",
         "name": "HALF DISSOLVED REMAINS",
         "category": "Item",
         "type": "Reagent",
         "subtype": "Bones",
-        "description": "<p>The still-slimy, partially dissolved bones of a small creature consumed by the Jelly Monster. Usable only as the crudest components for primitive recipes.</p>",
+        "description": "<p>The still-slimy, partially dissolved bones of a small creature consumed by the Jelly Monster.  No organic material remains. Usable only as the crudest components for primitive tools or weapons.</p>",
         "slots": 1,
         "magic": false,
+        "quantity": 1,
         "denomination": "stones",
         "value": 50,
-        "quantity": 1,
         "defense": null,
         "atkbonus": null,
         "speed": null,
@@ -549,9 +555,9 @@ var example_adversaries = {
         "magic": false
       },
       {
-        "id": "ab-aorsk76xk0v",
+        "id": "ab-ky1qgq1nw7k",
         "name": "STUNNING PSEUDOPOD",
-        "description": "<p>The Jelly Monster only has one weapon - a prehensile pseudopod that it can shoot out with great force and precision - especially impressive for a creature lacking any discernible sensory organs.</p><p><br></p><p><strong>On hit: </strong></p><p><span data-your-attr=\"Deftness\" data-their-attr=\"\" data-pass=\"Take 1 Damage\" data-fail=\"Take 1 Damage and become Disoriented for One Round\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\">﻿<span contenteditable=\"false\">\n                <span class=\"blot-content\"><span class=\"blot-header\"><strong>CHECK: </strong><span class=\"attr-chip attr-deftness\">Deftness</span></span><span class=\"blot-results-inline\"><span class=\"res-tag res-pass\"><strong>Pass:</strong> Take 1 Damage</span><span class=\"res-tag res-fail\"><strong>Fail:</strong> Take 1 Damage and become Disoriented for One Round</span></span></span></span>﻿</span> </p>",
+        "description": "<p>The Jelly Monster only has one weapon - a prehensile pseudopod that it can shoot out with great force and precision - especially impressive for a creature lacking any discernible sensory organs.</p><p><br></p><p><strong>On hit: </strong></p><p><div data-your-attr=\"Deftness\" data-their-attr=\"Grit\" data-pass=\"Take 1 Damage\" data-fail=\"Take 1 Damage and become Disoriented for one round\" data-contest=\"false\" class=\"skill-action-blot\" contenteditable=\"false\"><span contenteditable=\"false\">\n        <div class=\"blot-container\"><div class=\"blot-header\"><span class=\"action-label\">CHECK</span><span class=\"editable-field attr-chip attr-deftness\" data-field=\"yourAttr\" contenteditable=\"true\">Deftness</span></div><div class=\"blot-body\"><div class=\"res-row res-pass\"><span class=\"res-label\">Pass:</span><span class=\"editable-field res-text\" data-field=\"pass\" contenteditable=\"true\">Take 1 Damage</span></div><div class=\"res-row res-fail\"><span class=\"res-label\">Fail:</span><span class=\"editable-field res-text\" data-field=\"fail\" contenteditable=\"true\">Take 1 Damage and become Disoriented for one round</span></div></div></div></span></div></p><p><br></p>",
         "allegiance": 0,
         "bound_passive": false,
         "type": "Basic",

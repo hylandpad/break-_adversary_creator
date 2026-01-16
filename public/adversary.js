@@ -68,13 +68,13 @@ class Adversary {
         const passives = [...this.passives]
         const id = `ab-${generate_id()}`
         const name = (document.getElementById('ability-name').value).toUpperCase()
-        const description = document.querySelector('#ability-div .editor').__quill.root.innerHTML
+        const description = clean_bad_chars(document.querySelector('#ability-div .editor').__quill.root.innerHTML)
         const type = document.querySelector(`input[name='ability-type']:checked`).value
         const allegiance = parseInt(document.getElementById('ability-allegiance').value)
         const magic = document.getElementById('ability-magic').checked
         const passive_atkbonus = parseInt(document.getElementById('ability-atkbonus').value)
         const passive_defense = parseInt(document.getElementById('ability-defense').value)
-        const passive_speed = document.getElementById('ability-base-speed-override').value
+        const passive_speed = document.getElementById('ability-base-speed').value
         const passive_hearts = parseInt(document.getElementById('ability-hearts').value)
         const passive_size = document.getElementById('ability-size').value
         var bound_passive = false
@@ -142,7 +142,7 @@ class Adversary {
         const category = (document.getElementById('inventory-item-category').value)
         const type = document.getElementById('inventory-item-type').value;
         const subtype = document.getElementById('inventory-item-subtype').value;
-        const description = document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML;
+        const description = clean_bad_chars(document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML);
         const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value;
         const value = parseInt(document.getElementById('inventory-item-value').value);
         const slots = parseFloat(document.getElementById('inventory-item-slots').value);
@@ -271,7 +271,7 @@ class Adversary {
         }
 
         const description_editor = document.querySelector('#inventory-item-div div.editor').__quill
-        description_editor.root.innerHTML = item.description;
+        description_editor.root.innerHTML = clean_bad_chars(item.description);
         document.getElementById('btnAddItem').setAttribute('onclick', `adversary._add_item('${item.id}')`);
     }
 
@@ -306,7 +306,7 @@ class Adversary {
         }
 
         const description_editor = document.querySelector('#ability-div div.editor').__quill
-        description_editor.root.innerHTML = ability.description;
+        description_editor.root.innerHTML = clean_bad_chars(ability.description);
         document.getElementById('btnAddAbility').setAttribute('onclick', `adversary._add_ability('${ability.id}')`);
 
         const matching_passive = adversary.passives.find(passive => passive.name === ability.name && passive.type === 'ability')
@@ -322,7 +322,7 @@ class Adversary {
             document.getElementById('ability-hearts').value = matching_passive.modifiers.hearts;
         }
         if (matching_passive.modifiers.speed) {
-            document.getElementById('ability-speed').value = matching_passive.modifiers.speed;
+            document.getElementById('ability-base-speed').value = matching_passive.modifiers.speed;
         }
         if (matching_passive.modifiers.size) {
             document.getElementById('ability-size').value = matching_passive.modifiers.size;
