@@ -1,529 +1,7 @@
-var saved_adversaries = {
-    "JELLY MONSTER": {
-        "name": "JELLY MONSTER",
-        "menace": "mook",
-        "rank": "0",
-        "description": "<p>Jelly Monsters, or Jellies, are caustic amoebas that are largely harmless on their own. However, they can meld themselves together to create massive unicellular organisms that can take up entire corridors in deep, dark dungeons. Do not underestimate Jelly Monsters. If an infestation is left untreated, it grows - literally.</p>",
-        "size": "small",
-        "hearts": 1,
-        "atkbonus": 1,
-        "bright_points": 0,
-        "dark_points": 0,
-        "defense": 11,
-        "speed": "average",
-        "creature_type": "monster",
-        "creature_subtype": "Abberation",
-        "primary_aptitudes": [
-            "grit",
-            "deftness",
-            "might"
-        ],
-        "inventory": [
-            {
-                "id": "inv-1lcmiupo88u",
-                "name": "INERT JELLY",
-                "category": "yield",
-                "type": "reagent",
-                "subtype": "Byproduct",
-                "description": "<p>Jellified remains are useful for salves, machine lubricant or -in some cultures- culinary application</p>",
-                "slots": "1",
-                "denomination": "coins",
-                "value": "20",
-                "defense": null,
-                "atkbonus": null,
-                "speed": null,
-                "max_speed": null,
-                "allegiance": 0
-            },
-            {
-                "id": "inv-i30ps1ygey",
-                "name": "PSEUDOPOD",
-                "category": "equipment",
-                "type": "weapon",
-                "subtype": "Standard Weapon",
-                "description": "<p>On hit:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Deftness Check:</li><li data-list=\"bullet\" class=\"ql-indent-1\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On Fail: Become Disoriented for One Round</li></ol>",
-                "slots": "",
-                "denomination": "coins",
-                "value": "",
-                "defense": null,
-                "atkbonus": 1,
-                "speed": null,
-                "max_speed": null,
-                "allegiance": 0
-            }
-        ],
-        "passives": [
-            {
-                "id": "tr-339a59jjmjq",
-                "name": "Resilient",
-                "type": "trait",
-                "modifier": "grit",
-                "value": 2
-            },
-            {
-                "id": "tr-a76sm3t58tw",
-                "name": "Primitive",
-                "type": "trait",
-                "modifier": "insight",
-                "value": -1
-            },
-            {
-                "id": "ab-passive-l2uazgkmn4i",
-                "name": "BLOBLET",
-                "modifiers": {
-                    "size": "small"
-                },
-                "type": "ability"
-            }
-        ],
-        "abilities": [
-            {
-                "id": "ab-8zlevun60rw",
-                "name": "BLOBBIFY",
-                "description": "<p>A Jelly Monster may spend its action to combine with another Jelly Monster of the same size in the same combat area. Doing so does the following:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Increases its Maximum Hearts by 1 (up to a maximum of 4)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Increases its Attack Bonus by 1 (up to a maximum of 3)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Increases its Size by 1 size category (up to a maximum of Large)</li></ol>",
-                "allegiance": 0,
-                "bound_passive": false,
-                "type": "Basic",
-                "magic": false
-            },
-            {
-                "id": "ab-3siv2n4nvlo",
-                "name": "CAUSTIC SLIME",
-                "description": "<p>All attacks that hit a character also do Sundering Damage to that character's shield. If they have no usable shield, or their shield has been sundered, the Damage is dealt to their Armor. If they have no armor, or their armor has been sundered, the Damage is dealt to their Weapon. </p>",
-                "allegiance": 0,
-                "bound_passive": false,
-                "type": "Basic",
-                "magic": false
-            },
-            {
-                "id": "ab-x9qt6pjd88k",
-                "name": "BLOBLET",
-                "description": "<p>The Jelly Monster's size is <strong>Small</strong>.</p>",
-                "allegiance": 0,
-                "bound_passive": true,
-                "type": "Basic",
-                "magic": false
-            }
-        ],
-        "facts": {
-            "habitat": {
-                "description": "Dank, dark subterranean corridors and old ruins are where Jellies are most likely to be found, but there are a number of subnautical species that live in tidal caves and grottos."
-            },
-            "communication": {
-                "description": "There is no known communication method by which Jelly Monsters can convey any sort of meaningful information"
-            },
-            "tactics": {
-                "description": "Lacking any discernable brainstem or central nervous system, the Jellies are driven by hunger and survival only. They will not endeavor to work together, but they will merge when threatened."
-            },
-            "indicators": {
-                "description": "Slime trails on walls, floors or ceilings - skeletal remains of rodents and small animals still covered in slightly steaming goop."
-            },
-            "role-playing-notes": {
-                "description": "Jelly Monsters do not have any orifices with which to make sounds, save for the sound of them squelching beneath doors or from the crevices of rock formations."
-            },
-            "customization": {
-                "description": "These can be reflavored to be more generic \"Slime Cube\" enemies by putting them in a pit or in a hallway, and upping the lethality of their Caustic Slime ability."
-            }
-        },
-        "moods": [
-            {
-                "rolls": {
-                    "start": 1,
-                    "stop": 5
-                },
-                "mood": "Benign",
-                "mood_text": "This creature has taken to dissolving a chunk of organic matter and doesn't seem to care about you."
-            },
-            {
-                "rolls": {
-                    "start": 6,
-                    "stop": 14
-                },
-                "mood": "Wary",
-                "mood_text": "The eyestalks of this creature are swiveling to keep you in view, but it hasn't made any aggressive moves yet."
-            },
-            {
-                "rolls": {
-                    "start": 15,
-                    "stop": 20
-                },
-                "mood": "Hungry",
-                "mood_text": "Pseudopods extend and retract as this creature prepares to attack you."
-            }
-        ],
-        "max_speed": "veryfast",
-        "aptitudes": {
-            "might": 6,
-            "deftness": 6,
-            "grit": 8,
-            "insight": 5,
-            "aura": 6
-        }
-    },
-    "WULFOLK": {
-        "name": "WULFOLK",
-        "menace": "boss",
-        "rank": "2",
-        "description": "<p>Primal ancestors of both Proudhounds and Mundymutts, Wulfolk are taller, broader and much more savage. Armed with sharp teeth, claws and an excellent sense of smell, Wulfolk are the ultimate predators. They have made a name for themselves as excellent bounty hunters, capable of tracking a single target a great many leagues on scent alone. While many prefer to stay to packs led by powerful alphas, some prefer to stay solitary.</p>",
-        "size": "medium",
-        "hearts": 2,
-        "atkbonus": 2,
-        "bright_points": 0,
-        "dark_points": 0,
-        "defense": 14,
-        "speed": "fast",
-        "creature_type": "folk",
-        "creature_subtype": "Beastfolk",
-        "primary_aptitudes": [
-            "deftness",
-            "might",
-            "insight"
-        ],
-        "inventory": [
-            {
-                "id": "inv-25pusfuyff6",
-                "name": "HUNTING LEATHERS",
-                "category": "equipment",
-                "type": "armor",
-                "subtype": "Light Armor",
-                "description": "<p>Simple leather armor that provides the Wulfolk some protection without impeding their movement</p>",
-                "slots": "2",
-                "denomination": "coins",
-                "value": "30",
-                "defense": 2,
-                "atkbonus": null,
-                "speed": null,
-                "max_speed": "veryfast",
-                "allegiance": 0
-            },
-            {
-                "id": "inv-1dk8928qhbh",
-                "name": "BAG OF ORNATE BONE DICE",
-                "category": "item",
-                "type": "curiosity",
-                "subtype": "Dice",
-                "description": "<p>A velvet bag containing an assortment of dice fashioned from bones. The dice faces vary from bone to bone, with some having dots, others having roughly carved numbers and some having symbols. They are beautiful in a savage way, and would likely fetch a high price from a wealthy collector or travelling gambler.</p>",
-                "slots": "1",
-                "denomination": "coins",
-                "value": "70",
-                "defense": null,
-                "atkbonus": null,
-                "speed": null,
-                "max_speed": null,
-                "allegiance": 0
-            }
-        ],
-        "passives": [
-            {
-                "id": "tr-b4x5oqccz9f",
-                "name": "Keen Nose",
-                "type": "trait",
-                "modifier": "insight",
-                "value": 1
-            },
-            {
-                "id": "tr-vpd2v9r67x8",
-                "name": "Lithe",
-                "type": "trait",
-                "modifier": "deftness",
-                "value": 1
-            },
-            {
-                "id": "tr-08iqlbe0asbr",
-                "name": "Savage Demeanor",
-                "type": "trait",
-                "modifier": "aura",
-                "value": -1
-            },
-            {
-                "id": "ab-passive-1qeo2zfummw",
-                "name": "WOODSPEED",
-                "modifiers": {
-                    "speed": "fast"
-                },
-                "type": "ability"
-            }
-        ],
-        "abilities": [
-            {
-                "id": "ab-8izs521pv8u",
-                "name": "WOODSPEED",
-                "description": "<p>The Wulfolk's base speed is <strong>Fast</strong></p>",
-                "allegiance": 0,
-                "bound_passive": true,
-                "type": "Basic",
-                "magic": false
-            },
-            {
-                "id": "ab-7jckfy1piqw",
-                "name": "HUNTED",
-                "description": "<p>At the start of Combat, choose one player character. This player character becomes Hunted as the Wulfolk enter a state of extreme concentration and focus. All Wulfolk Adversaries gain an Edge against any checks or contests imposed on them by that character. However, they suffer a Snag on any checks or contested imposed upon them by other characters. If the Hunted character becomes unable to fight due to loss of consciousness or death, the Hunted status can be assigned to any other Player Character adjacent to any Wulfolk.</p>",
-                "allegiance": 0,
-                "bound_passive": false,
-                "type": "Basic",
-                "magic": false
-            }
-        ],
-        "facts": {
-            "habitat": {
-                "description": "Wulfolk are native to forested areas, and prefer to live there in packs. However, Lone Wulfolk hunters often find homes in cities where they can put their bounty hunting skills to use for coin."
-            },
-            "communication": {
-                "description": "Wulfolk communicate with each other via barks and snarls in a language that is largely unintelligible to non-canines. They also leave messages via pheromone marking that can be read by other canines for weeks."
-            },
-            "tactics": {
-                "description": "In packs, Wulfolk will corral and harry their prey. They are opportunists rather than brutes, and will attempt to use numbers to subdue one target. Lone Wulfolk will use stealth and subterfuge to get the upper hand on a target they have been stalking"
-            },
-            "indicators": {
-                "description": "Howling in the distance, glowing eyes in the dark, snapping and snarling and panting"
-            },
-            "role-playing-notes": {
-                "description": "Wulfolk are more reserved than Mundymutts, but much more intense. They are not known to have a sense of humor or good manners, and are much less likely to bond with characters outside of their immediate pack."
-            },
-            "customization": {
-                "description": "If you need a stronger solo encounter, bump up the rank and use this as a stronger Boss character"
-            }
-        },
-        "moods": [
-            {
-                "rolls": {
-                    "start": "1",
-                    "stop": "5"
-                },
-                "mood": "Unthreatened",
-                "mood_text": "The Wulfolk is aware of your presence, but is more interested in cooking its prey over a campfire"
-            },
-            {
-                "rolls": {
-                    "start": "6",
-                    "stop": "14"
-                },
-                "mood": "Wary",
-                "mood_text": "This Wulfolk is carefully observing you, though not making any sudden moves"
-            },
-            {
-                "rolls": {
-                    "start": "15",
-                    "stop": "20"
-                },
-                "mood": "Hunting",
-                "mood_text": "The Wulfolk is circling you, snarling with teeth bared, looking for an opportunity to strike"
-            }
-        ],
-        "max_speed": "veryfast",
-        "aptitudes": {
-            "might": 8,
-            "deftness": 9,
-            "grit": 7,
-            "insight": 9,
-            "aura": 6
-        }
-    },
-    "EXTRASOLAR": {
-        "name": "EXTRASOLAR",
-        "menace": "megaboss",
-        "rank": "7",
-        "description": "<p>Shards of the shattered sun machine, animated by highly volatile motes of Bright mana, these so-called Extrasolar are angelic in their appearance and stoic defenders of the Light. Their forms burn brilliantly, being to blindingly radiant for most people to look directly at, which makes them incredibly difficult to describe. Most who have witnessed them described them as humanoid-shaped, with wings that look like glowing shattered glass and halos of slowly-orbiting crystals. They abhor the Darkness, and seek out creatures of the Dark with a fury that is unmatched.</p>",
-        "size": "large",
-        "hearts": 5,
-        "atkbonus": 8,
-        "bright_points": 6,
-        "dark_points": 0,
-        "defense": 11,
-        "speed": "average",
-        "creature_type": "celestial",
-        "creature_subtype": "Shardbound",
-        "primary_aptitudes": [
-            "might",
-            "aura",
-            "deftness"
-        ],
-        "inventory": [
-            {
-                "id": "inv-ywuz44hnyw",
-                "name": "RADIANT GREATSWORD",
-                "category": "equipment",
-                "type": "weapon",
-                "subtype": "Mighty Weapon",
-                "description": "<p>This massive weapon glimmers with incorporeal light, and the Extrasolar swings it as if it weighs nothing. </p><p><br></p><p>This item dissolves into a useless golden hilt unless it is wielded by an Extrasolar</p>",
-                "slots": "2",
-                "denomination": "gems",
-                "value": "1",
-                "defense": null,
-                "atkbonus": 3,
-                "speed": null,
-                "max_speed": null,
-                "allegiance": 2
-            },
-            {
-                "id": "inv-5kk02i2kkb6",
-                "name": "BRIGHT INFUSED DUST",
-                "category": "yield",
-                "type": "curiosity",
-                "subtype": "Byproduct",
-                "description": "<p>A slain Extrasolar loses its cohesion and form, its crystalline body reducing itself to fine, glowing sand. This sand retains a small amount of latent warmth and exudes a dim light, which grows in luminosity as it nears a shard of the Sun Machine.</p>",
-                "slots": ".5",
-                "denomination": "coins",
-                "value": "70",
-                "defense": null,
-                "atkbonus": null,
-                "speed": null,
-                "max_speed": null,
-                "allegiance": 0
-            }
-        ],
-        "passives": [
-            {
-                "id": "tr-7qnpev3poby",
-                "name": "Might of the Sun",
-                "type": "trait",
-                "modifier": "might",
-                "value": 2
-            },
-            {
-                "id": "tr-tree1eslatr",
-                "name": "Commanding Aura",
-                "type": "trait",
-                "modifier": "aura",
-                "value": 2
-            },
-            {
-                "id": "tr-15c1057auh3",
-                "name": "Crystalline Structure",
-                "type": "trait",
-                "modifier": "grit",
-                "value": -1
-            },
-            {
-                "id": "tr-bevrwnn7ge4",
-                "name": "Single-Minded",
-                "type": "trait",
-                "modifier": "insight",
-                "value": -1
-            },
-            {
-                "id": "ab-passive-0jdnbd63aeqn",
-                "name": "TENSILE ARMOR",
-                "modifiers": {
-                    "defense": 2
-                },
-                "type": "ability"
-            },
-            {
-                "id": "ab-passive-o26msrn92oe",
-                "name": "HECULEAN",
-                "modifiers": {
-                    "size": "large"
-                },
-                "type": "ability"
-            }
-        ],
-        "abilities": [
-            {
-                "id": "ab-zs3phdzz6j",
-                "name": "RADIANCE",
-                "description": "<p>At the start of their turn, any <strong>Non-Bright</strong> aligned Player in the same combat area as an Extrasolar must succeed an Aura Check or become <strong>Blinded</strong></p>",
-                "allegiance": 1,
-                "bound_passive": false,
-                "type": "Advanced",
-                "magic": true
-            },
-            {
-                "id": "ab-ul93khgtzlm",
-                "name": "BLAZING MARCH",
-                "description": "<p>The combat zone occupied by the Extrasolar is set alight by its radiance, turning the immediate area into a Burning Hazard. Characters without proper protection from Burning will take 1 Fire Damage every turn. The hazard remains in that combat zone for as long as the Extrasolar remains in the combat zone</p>",
-                "allegiance": 1,
-                "bound_passive": false,
-                "type": "Advanced",
-                "magic": true
-            },
-            {
-                "id": "ab-65so92xqg7",
-                "name": "TENSILE ARMOR",
-                "description": "<p>The hardened crystal skin of the Extrasolar provides some basic protection against wounds from all but the most sure of strikes</p>",
-                "allegiance": 0,
-                "bound_passive": true,
-                "type": "Basic",
-                "magic": false
-            },
-            {
-                "id": "ab-d6nnwu7erzs",
-                "name": "SUNBURST",
-                "description": "<p>Upon taking a Heart of Damage, all Players in the same combat area must make a <strong>Deftness Check:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>On failure - Take 1 Heart of Damage</li></ol><p><br></p><p>This ability is negated if the Damage dealt to the Extrasolar is Dark Damage.</p>",
-                "allegiance": 2,
-                "bound_passive": false,
-                "type": "Legendary",
-                "magic": false
-            },
-            {
-                "id": "ab-asyothy63t",
-                "name": "HECULEAN",
-                "description": "<p>The Extrasolar is a <strong>Large</strong> creature</p>",
-                "allegiance": 0,
-                "bound_passive": true,
-                "type": "Basic",
-                "magic": false
-            }
-        ],
-        "facts": {
-            "habitat": {
-                "description": "Extrasolar generally coalesce around small, isolated Shards of the Sunmachine, and jealously guard its periphery.  They are permissive of visitors and worshippers of these shards, but they maintain authority over them."
-            },
-            "communication": {
-                "description": "Between Extrasolars, they communicate with crystalline tinkles in barely audible frequencies. They are capable of speech across many different languages, but are almost always of few words."
-            },
-            "tactics": {
-                "description": "Extrasolar will work together insofar as they need to guard their Shard. They are reticent to be led too far from it, and they are almost magnetically drawn back to it if there is an attempt to kite them away."
-            },
-            "indicators": {
-                "description": "A moving glow in the distant darkness, a sudden luminosity in the periphery of a Sun Shard."
-            },
-            "role-playing-notes": {
-                "description": "Extrasolar found in the wild will likely have seen their old Shard destroyed and be questing for a new Shard. They will work with anyone who help get them closer to a new Shard, and zealously endeavor to smite anyone they see as Dark aligned."
-            },
-            "customization": {
-                "description": "Changing around some descriptive text can turn an Extrasolar into a powerful Fire elemental or a more generic Seraphim-like angelic enemy."
-            }
-        },
-        "moods": [
-            {
-                "rolls": {
-                    "start": "1",
-                    "stop": "5"
-                },
-                "mood": "Perimeter Secured",
-                "mood_text": "The area around the Sun Shard is secure, and the Extrasolar is calmly watching over it"
-            },
-            {
-                "rolls": {
-                    "start": "6",
-                    "stop": "14"
-                },
-                "mood": "Unthreatened but Watchful",
-                "mood_text": "The Extrasolar is aware of your presence and watching, but feels no immediate threat to the Sun Shard"
-            },
-            {
-                "rolls": {
-                    "start": "15",
-                    "stop": "20"
-                },
-                "mood": "Threat Identified",
-                "mood_text": "The Extrasolar has identified you as a threat to the Sun Shard and is preparing to eliminate you"
-            }
-        ],
-        "max_speed": "veryfast",
-        "aptitudes": {
-            "might": 14,
-            "deftness": 11,
-            "grit": 9,
-            "insight": 9,
-            "aura": 13
-        },
-        "allegiance": "bright"
-    }
-}
+var saved_adversaries = {}
 var current_quill_content = ''
 const app_version = parseFloat(app_version_number).toFixed(3)
+registerCustomBlots();
 
 function initializeEditors(scope = document) {
     const editorElements = scope.querySelectorAll('.editor');
@@ -531,13 +9,140 @@ function initializeEditors(scope = document) {
     editorElements.forEach(editorDiv => {
         if (!editorDiv.classList.contains('ql-container')) {
             try {
-                const quillInstance = new Quill(editorDiv, {
+                const quill = new Quill(editorDiv, {
                     theme: 'snow',
                     modules: {
-                        toolbar: [['bold', 'italic'], [{ 'list': 'bullet' }]]
+                        toolbar: {
+                            container: [['bold', 'italic'], [{ 'list': 'bullet' }, { 'list': 'ordered' }], ['blockquote'], ['clean'], ['check-btn', 'contest-btn'], [{ 'damage': ['holy', 'burn', 'freeze', 'necrotic', 'caustic', 'poison', 'bright', 'dark', 'twilight'] }]],
+                            handlers: {
+                                'damage': function (value) {
+                                    if (!value) return;
+                                    const range = this.quill.getSelection();
+                                    if (range && range.length > 0) {
+                                        const highlightedText = this.quill.getText(range.index, range.length);
+                                        this.quill.deleteText(range.index, range.length);
+                                        this.quill.insertEmbed(range.index, 'damage', {
+                                            amount: highlightedText,
+                                            type: value
+                                        });
+                                        this.quill.setSelection(range.index + 1);
+                                    }
+                                },
+                                'check-btn': function () {
+                                    const range = this.quill.getSelection(true);
+                                    const index = range ? range.index : 0;
+                                    this.quill.insertEmbed(index, 'skillAction', {
+                                        yourAttr: 'Might',
+                                        pass: 'Describe success here',
+                                        fail: 'Describe failure here',
+                                        isContest: false
+                                    });
+                                    this.quill.insertText(index + 1, '\n', Quill.sources.USER);
+                                    this.quill.setSelection(index + 2, Quill.sources.SILENT);
+                                },
+                                'contest-btn': function () {
+                                    const range = this.quill.getSelection(true);
+                                    const index = range ? range.index : 0;
+                                    this.quill.insertEmbed(index, 'skillAction', {
+                                        yourAttr: 'Might',
+                                        theirAttr: 'Grit',
+                                        pass: 'Describe success here',
+                                        fail: 'Describe failure here',
+                                        isContest: true
+                                    });
+                                    this.quill.insertText(index + 1, '\n', Quill.sources.USER);
+                                    this.quill.setSelection(index + 2, Quill.sources.SILENT);
+                                }
+                            }
+                        }
                     }
                 });
-                editorDiv.__quill = quillInstance;
+
+                // --- THE CLICK LISTENER FOR EDITING BLOTS ---
+                editorDiv.addEventListener('click', (e) => {
+                    const blotNode = e.target.closest('.skill-action-blot');
+                    if (!blotNode) return;
+
+                    const blotInstance = Quill.find(blotNode);
+                    if (!blotInstance) return;
+
+                    const currentBlotData = blotInstance.statics.value(blotNode);
+                    const isContest = currentBlotData.isContest;
+
+                    // Clear existing bars
+                    document.querySelectorAll('.blot-edit-bar').forEach(b => b.remove());
+
+                    const editBar = document.createElement('div');
+                    editBar.className = 'blot-edit-bar';
+                    editBar.innerHTML = `
+                        <div class="edit-bar-row">
+                            <span>${isContest ? 'Your Attr:' : 'Attr:'}</span>
+                            <select class="attr-select" data-target="yourAttr">
+                                <option value="Might">Might</option>
+                                <option value="Deftness">Deftness</option>
+                                <option value="Grit">Grit</option>
+                                <option value="Insight">Insight</option>
+                                <option value="Aura">Aura</option>
+                            </select>
+                        </div>
+                        ${isContest ? `
+                        <div class="edit-bar-row">
+                            <span>Their Attr:</span>
+                            <select class="attr-select" data-target="theirAttr">
+                                <option value="Might">Might</option>
+                                <option value="Deftness">Deftness</option>
+                                <option value="Grit">Grit</option>
+                                <option value="Insight">Insight</option>
+                                <option value="Aura">Aura</option>
+                            </select>
+                        </div>` : ''}
+                        <button class="delete-blot">Delete</button>
+                    `;
+
+                    // Hydrate dropdown values
+                    editBar.querySelectorAll('.attr-select').forEach(select => {
+                        const target = select.getAttribute('data-target');
+                        select.value = currentBlotData[target];
+                    });
+
+                    // Position the bar
+                    const rect = blotNode.getBoundingClientRect();
+                    editBar.style.top = `${rect.top + window.scrollY - 35}px`;
+                    editBar.style.left = `${rect.left + window.scrollX}px`;
+                    document.body.appendChild(editBar);
+
+                    // --- ONE MASTER CHANGE LISTENER FOR ALL DROPDOWNS ---
+                    editBar.querySelectorAll('.attr-select').forEach(select => {
+                        select.addEventListener('change', (ev) => {
+                            const newValue = ev.target.value;
+                            const targetField = ev.target.getAttribute('data-target');
+                            const index = quill.getIndex(blotInstance);
+
+                            // Merge new value into existing data
+                            const updatedData = {
+                                ...currentBlotData,
+                                [targetField]: newValue
+                            };
+
+                            requestAnimationFrame(() => {
+                                quill.deleteText(index, 1, Quill.sources.USER);
+                                quill.insertEmbed(index, 'skillAction', updatedData, Quill.sources.USER);
+                                editBar.remove();
+                                quill.setSelection(index + 1, Quill.sources.SILENT);
+                                quill.focus();
+                            });
+                        });
+                    });
+
+                    // Delete Button
+                    editBar.querySelector('.delete-blot').addEventListener('click', () => {
+                        const index = quill.getIndex(blotInstance);
+                        quill.deleteText(index, 1, Quill.sources.USER);
+                        editBar.remove();
+                    });
+                });
+
+                editorDiv.__quill = quill;
             } catch (e) {
                 console.error("Quill Init Error:", e);
             }
@@ -549,7 +154,7 @@ function fill_version_num() {
     document.getElementById('version').innerText = app_version
 }
 
-function fill_help_text(){
+function fill_help_text() {
     document.getElementById('help-content').innerHTML = help_text
 }
 
@@ -571,7 +176,37 @@ window.addEventListener('load', function () {
     update_ui(adversary)
 });
 
-// Utility Functions
+// Utility Functions;
+
+window.onload = () => {
+    menace_color(document.getElementById('menace').value)
+    set_max_rank()
+
+    // Load saved adversaries from localStorage
+    const storedData = localStorage.getItem('saved_adversaries');
+
+    if (storedData) {
+        saved_adversaries = JSON.parse(storedData);
+        console.log("Adversaries loaded:", saved_adversaries);
+    } else {
+        console.log("No saved data found.");
+    }
+
+    // Create tag list
+    create_tag_list()
+};
+
+function load_example_adversaries() {
+    Object.keys(example_adversaries).forEach(name => {
+        saved_adversaries[name] = example_adversaries[name];
+    });
+    // Save to localStorage
+    const stringData = JSON.stringify(saved_adversaries);
+    localStorage.setItem('saved_adversaries', stringData);
+    render_saved_list(saved_adversaries);
+    show_toast("Example Adversaries loaded!", 2000);
+}
+
 const show_toast = (message, duration = 3000) => {
     const toast = document.getElementById('toast-content')
     toast.innerText = message
@@ -585,6 +220,96 @@ const show_toast = (message, duration = 3000) => {
 
 const generate_id = () => {
     return Math.random().toString(36).slice(2)
+}
+
+
+function create_tag_list() {
+    var tag_set = new Set(
+        [
+            'Bright',
+            'Dark',
+            'Controller',
+            'Tank',
+            'Blaster',
+            'Striker',
+            'Support'
+        ]
+    )
+
+    datalist = document.getElementById('tag-suggestions')
+    datalist.innerHTML = '';
+
+    adversary.tags.forEach(tag => tag_set.add(tag))
+
+    const adversaries = Object.keys(saved_adversaries)
+    adversaries.forEach(adversary => {
+        saved_adversaries[adversary].tags.forEach(tag => tag_set.add(tag))
+    })
+
+    for (let tag of tag_set) {
+        option = document.createElement('option')
+        option.value = tag
+        datalist.appendChild(option)
+    }
+}
+
+function render_tags_for_filter() {
+    var tag_set = new Set(
+        [
+            'Bright',
+            'Dark',
+            'Controller',
+            'Tank',
+            'Blaster',
+            'Striker',
+            'Support'
+        ]
+    )
+    const filter_tag_container = document.getElementById('filter-tags-list')
+    const adversaries = Object.keys(saved_adversaries)
+    adversaries.forEach(adversary => {
+        saved_adversaries[adversary].tags.forEach(tag => tag_set.add(tag))
+    })
+    filter_tag_container.innerHTML = ''
+    tag_set = [...tag_set]
+    tag_set.sort().forEach(tag => {
+        const tag_html = `<div class="mx-1 inline-block"><input id="tag-${tag}" name="tag-filter" type="checkbox" value="${tag}" onclick="update_filter()"><label class="mx-1 px-1" for="tag-${tag}">${tag}</label></div>`
+        filter_tag_container.innerHTML += tag_html
+    })
+}
+
+function update_filter() {
+    tag_list = []
+    document.querySelectorAll('input[name="tag-filter"]:checked').forEach(el => { tag_list.push(el.value) })
+    render_filtered_list(tag_list)
+}
+
+function render_filtered_list(tags) {
+    if (tags.length == 0) {
+        render_saved_list(saved_adversaries)
+    } else {
+        const adversaries = Object.keys(saved_adversaries)
+        var filtered_adversaries = {}
+        tags.forEach(tag => {
+            adversaries.forEach(adversary => {
+                if (saved_adversaries[adversary].tags.includes(tag)) {
+                    filtered_adversaries[adversary] = saved_adversaries[adversary]
+                }
+            })
+        })
+        render_saved_list(filtered_adversaries)
+    }
+}
+
+function toggle_magic(item_or_ability) {
+    const magic_checkbox = document.getElementById(`${item_or_ability}-magic`);
+    if (magic_checkbox.checked) {
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.remove('hidden')
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.add('inline-flex');
+    } else {
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.add('hidden')
+        document.getElementById(`${item_or_ability}-allegiance-div`).classList.remove('inline-flex');
+    }
 }
 
 function confirm_prompt(id_or_name) {
@@ -616,8 +341,9 @@ function confirm_prompt(id_or_name) {
         } else if (type_designator == 'inv') {
             type = 'inventory'
             type_friendly = 'Item'
-            remover = `_remove_item('${id_or_name}')`}
-        
+            remover = `_remove_item('${id_or_name}')`
+        }
+
         const obj_name = adversary[type].find(item => item.id == id_or_name).name
         const htmlbody = `
         <div>
@@ -636,7 +362,7 @@ function confirm_prompt(id_or_name) {
 function show_hide_combat_modifiers(select_element) {
     const item_type_input = document.getElementById(select_element)
     const combat_modifiers = document.getElementById('equipment-combat-modifiers')
-    if (item_type_input.value == 'weapon' || item_type_input.value == 'armor' || item_type_input.value == 'shield' || item_type_input.value == 'mount' || item_type_input.value == 'artifact' || item_type_input.value == 'curiosity') {
+    if (item_type_input.value == 'Weapon' || item_type_input.value == 'Armor' || item_type_input.value == 'Shield' || item_type_input.value == 'Mount' || item_type_input.value == 'Artifact' || item_type_input.value == 'Curiosity') {
         combat_modifiers.classList.remove('hidden')
     } else {
         combat_modifiers.classList.add('hidden')
@@ -647,11 +373,11 @@ function show_hide_combat_modifiers(select_element) {
 function fill_subtypes(select_element) {
     const item_type = select_element
     const subtype_select = document.getElementById('inventory-item-subtype-container')
-    if (item_type.value == 'weapon') {
+    if (item_type.value == 'Weapon') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="inventory-item-subtype">
+        <select class="dropdown" data-required id="inventory-item-subtype">
             <option value="Standard Weapon">Standard</option>
             <option value="Quick Weapon">Quick</option>
             <option value="Master Weapon">Master</option>
@@ -668,35 +394,35 @@ function fill_subtypes(select_element) {
         </span>
         `
     }
-    else if (item_type.value == 'armor') {
+    else if (item_type.value == 'Armor') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="inventory-item-subtype">
-            <option value="Light Armor">Light</option>
-            <option value="Medium Armor">Medium</option>
-            <option value="Heavy Armor">Heavy</option>
-            <option value="Superheavy Armor">Superheavy</option>
-            <option value="Other Armor">Other</option>
+        <select class="dropdown" data-required id="inventory-item-subtype">
+            <option value="Light">Light</option>
+            <option value="Medium">Medium</option>
+            <option value="Heavy">Heavy</option>
+            <option value="Superheavy">Superheavy</option>
+            <option value="Other">Other</option>
         </select>
         </span>
         `
     }
-    else if (item_type.value == 'shield') {
+    else if (item_type.value == 'Shield') {
         subtype_select.innerHTML = `
         <label>Subtype: </label>
         <span class="select-wrapper">
-        <select class="dropdown" id="inventory-item-subtype">
-            <option value="Small ">Small</option>
-            <option value="Standard Shield">Standard</option>
-            <option value="Large Shield">Large</option>
-            <option value="Other Shield">Other</option>
+        <select class="dropdown" data-required id="inventory-item-subtype">
+            <option value="Small">Small</option>
+            <option value="Standard">Standard</option>
+            <option value="Large">Large</option>
+            <option value="Other">Other</option>
         </select>
         </span>
         `
     }
     else {
-        subtype_select.innerHTML = `<label>Subtype: </label><input id="inventory-item-subtype" class="text-input w-55" type="text" placeholder="Enter Subtype">`
+        subtype_select.innerHTML = `<label>Subtype: </label><input data-required id="inventory-item-subtype" class="text-input w-55" type="text" placeholder="Enter Subtype">`
     }
 }
 
@@ -722,16 +448,26 @@ function save_adversary() {
     const name = adversary.name;
     const toast_message = 'Adversary "' + name + '" saved!';
 
+    // run save for description and mood tables
+    adversary.description = document.querySelector('#description-container-div .editor').__quill.root.innerHTML
+    adversary._adjust_mood_table()
+
     saved_adversaries[name] = JSON.parse(JSON.stringify(adversary));
-    render_saved_list();
     show_toast(toast_message, 2000);
+
+    // Save to localStorage
+    const stringData = JSON.stringify(saved_adversaries);
+    localStorage.setItem('saved_adversaries', stringData);
+    console.log("Adversaries saved locally!");
 }
 
-function load_adversary(adv_name) {
+function load_adversary() {
+    const adv_name = document.getElementById('saved-adversaries-dropdown').value;
     adversary = new Adversary({ ...saved_adversaries[adv_name] })
     const toast_message = 'Adversary "' + adv_name + '" loaded!';
 
     update_ui(adversary)
+    closeModal()
     show_toast(toast_message, 2000);
 }
 
@@ -743,32 +479,28 @@ function create_new_adversary() {
     show_toast(toast_message, 2000);
 }
 
-function remove_saved_adversary(adv_name) {
+
+function remove_saved_adversary(adv_name = curr_adv) {
     delete saved_adversaries[adv_name];
     const toast_message = 'Adversary "' + adv_name + '" removed from saved list!';
     closeModal();
-    render_saved_list();
+
+    // Save to localStorage
+    const stringData = JSON.stringify(saved_adversaries);
+    localStorage.setItem('saved_adversaries', stringData);
+
+    create_new_adversary()
     show_toast(toast_message, 2000);
 }
 
-function render_saved_list() {
-    const container = document.getElementById('adversaries-scrollable');
-    container.innerHTML = '';
-
-    Object.keys(saved_adversaries).forEach(name => {
-        const menace_class = saved_adversaries[name].menace
-        const subname = (`${saved_adversaries[name].size} Rank ${saved_adversaries[name].rank} ${saved_adversaries[name].creature_type}`).toUpperCase()
-        const adversary_sidebar_card = `
-        <div class="p-4 mb-2 text-center rounded-lg ${menace_class} text-white" id="load-${name}">
-            <div class="flex flex-row items-center">
-                <div class="basis-7/8 text-left hover:cursor-pointer" onclick="load_adversary('${name}')">
-                    <h4 class="font-bold adversary-list-name">${name.toUpperCase()}</h4>
-                    <p class="italic text-sm text-left adversary-list-subname">${subname}</p>
-                </div>
-                <button class="btn-hollow text-sm basis-1/8 text-center" onclick="confirm_prompt('${name}')">X</button>
-            </div>    
-        </div>`
-        container.insertAdjacentHTML('beforeend', adversary_sidebar_card)
+function render_saved_list(adversaries) {
+    const dropdown = document.getElementById('saved-adversaries-dropdown')
+    dropdown.innerHTML = ''
+    Object.keys(adversaries).sort().forEach(name => {
+        const saved_adversary_dropdown_item = `
+        <option value="${name}">${name}</option>
+        `
+        dropdown.insertAdjacentHTML('beforeend', saved_adversary_dropdown_item)
     });
 }
 
@@ -963,14 +695,14 @@ function set_max_rank() {
 
 // Load page with some preformatted adversary data
 var adversary = new Adversary({
-    name: 'New Adversary',
+    name: null,
     aptitudes: {
-            "might": 7,
-            "deftness": 7,
-            "grit": 7,
-            "insight": 7,
-            "aura": 7
-        },
+        "might": 7,
+        "deftness": 7,
+        "grit": 7,
+        "insight": 7,
+        "aura": 7
+    },
     menace: "",
     rank: 1,
     description: "",
@@ -986,6 +718,7 @@ var adversary = new Adversary({
     primary_aptitudes: [],
     inventory: [],
     passives: [],
+    tags: [],
     abilities: [],
     facts: {
         'habitat': {
@@ -1107,6 +840,25 @@ function update_ui(adversary) {
         app_main_div.classList.remove('bright-allegiance', 'unaligned-allegiance', 'dark-allegiance')
     }
 
+    //fill quill editor with description from adversary
+    const description_editor = document.querySelector('#description-container-div div.editor').__quill
+    description_editor.root.innerHTML = adversary.description;
+
+
+    // Display all the adversary's tags
+    if (adversary.tags) {
+        const tags = adversary.tags
+        const tags_container = document.getElementById('tags-container')
+        tags_container.innerHTML = ''
+        tags.forEach(tag => {
+            tag_element = `<span class="tag-chip" onclick="adversary._remove_tag('${tag}')">${tag}</span>`
+            tags_container.innerHTML += tag_element
+        })
+    } else {
+        const tags_container = document.getElementById('tags-container')
+        tags_container.innerHTML = ''
+    }
+
     // Make changes to trait container
     const trait_container = document.getElementById('trait-container')
     trait_container.innerHTML = ''
@@ -1142,6 +894,7 @@ function update_ui(adversary) {
                 passive_span.insertAdjacentHTML('beforeend', size_span)
             }
         }
+
     })
 
     // make changes to ability container
@@ -1155,16 +908,21 @@ function update_ui(adversary) {
         const magic = ability.magic
         const id = ability.id
         const ability_block = `
-        <div id="${id}" class="ability-card w-1/2">
-            <div class="text-white flex"><span class="font-bold">${name}</span><span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span>${magic ? '<span class="magic-icon">M</span>' : ''}</div>
-            <div class="ability-content bg-slate-200 p-1 rounded-md">
-                ${description != 'None' ? `<div id=description" class="italic">${description}</div>` : ''}
+        <div id="${id}" class="ability-card">
+            <div class="text-white flex items-center">
+                <p onclick="adversary._load_ability('${ability.id}')" class="font-bold w-3/4 cursor-pointer underline hover:text-stone-50 hover:text-shadow-lg/40">${name}</p>
+                <p class="text-right w-1/4"><button class="btn-small z-999" onclick="confirm_prompt('${ability.id}')">X</button></p>
+            </div>
+            <div class="flex text-white mb-2">
+                <span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span> ${magic ? '<span class="magic-icon-ability">M</span>' : ''}
+            </div>
+            <div class="ability-content bg-slate-200 p-1 rounded-md text-sm">
+                ${description != 'None' ? `<div id=description" class="text-sm">${description}</div>` : ''}
             </div>
         </div>
         `
         ability_container.insertAdjacentHTML('beforeend', ability_block)
         const ability_div = document.getElementById(id)
-        ability_div.setAttribute('onclick', `confirm_prompt('${ability.id}')`)
         if (ability.allegiance != 0) {
             const allegiance_box = `<div class="${allegiance > 0 ? 'ability-bright-allegiance' : allegiance < 0 ? 'ability-dark-allegiance' : ''}" id="allegiance-box-${name}-${type}">Adds ${Math.abs(allegiance)} ${allegiance > 0 ? 'Bright' : allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
             ability_div.insertAdjacentHTML('beforeend', allegiance_box)
@@ -1175,6 +933,7 @@ function update_ui(adversary) {
     const inventory_container = document.getElementById('inventory-container')
     inventory_container.innerHTML = ''
     adversary.inventory.forEach(item => {
+        const magic = item.magic
         var max_speed_text = ''
         if (item.max_speed) {
             if (item.max_speed == 'veryfast') {
@@ -1185,21 +944,26 @@ function update_ui(adversary) {
         }
 
         const item_block = `
-            <div id="${item.category}-${item.id}" class="${item.category == 'equipment' ? 'equipment-card' : item.category == 'item' ? 'item-card' : item.category == 'yield' ? 'yield-card' : ''} w-1/2 mb-2   ">
-                <div class="text-white"><span class="font-bold">${item.name}</span> (<span
-                        class="italic">${item.subtype}</span>)</div>
-                <div class="item-content bg-slate-200 p-1 rounded-md">
+            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} mb-2">
+                <div class="text-white">
+                    <div class="flex flex-auto">
+                        <p onclick="adversary._load_item('${item.id}')" class="font-bold w-3/4 cursor-pointer underline hover:text-stone-50 hover:text-shadow-lg/40">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</p>
+                        <p class="text-right w-1/4"><button class="btn-small z-999" onclick="confirm_prompt('${item.id}')">X</button></p>
+                        </div>
+                    <p class="flex"><span class="font-bold">${item.category}</span><span class="italic">( ${item.type} - ${item.subtype} )</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span>` : ''}</p>
+                    </div>
+                <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">
                     <div>
-                        ${item.atkbonus > 0 ? `<img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${item.atkbonus}</span>` : ''}
+                        ${item.atkbonus > 0 ? `<label>Total Attack Bonus </label><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${parseInt(item.atkbonus) + parseInt(adversary.atkbonus)}</span>` : ''}
                         ${item.defense > 0 ? `<i class="fa-solid fa-shield"></i><span>+${item.defense}</span>` : ''}
                         ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
                         ${item.max_speed ? `<span class="font-bold"></span><i class="fa-solid fa-person-running"></i><span><strong>MAX: </strong>${max_speed_text}</span>` : ''}
                     </div>
-                    ${item.description != 'None' ? `<div id=${item.id}-description" class="italic">${item.description}</div>` : ''}
+                    ${item.description != 'None' ? `<div id=${item.id}-description" class="text-sm">${item.description}</div>` : ''}
                 </div>
                 <div class="text-stone-200 italic flex">
-                    <div id="${item.category}-${item.id}-slots" class="basis-xs">Slots : ${item.slots}</div>
-                    <div id="${item.category}-${item.id}-value" class="basis-1/3 text-right">${item.value} ${item.denomination}</div>
+                    <div id="${item.category}-${item.id}-slots" class="basis-xs">Slots : ${item.slots * item.quantity}</div>
+                    <div id="${item.category}-${item.id}-value" class="basis-1/3 text-right">${item.value * item.quantity} ${item.denomination}</div>
                 </div>
             </div>
             `
@@ -1223,7 +987,7 @@ function update_ui(adversary) {
         }
 
         //Add confirm prompt to item div
-        item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
+        //item_div.setAttribute('onclick', `confirm_prompt('${item.id}')`)
     })
 
     Object.keys(adversary.facts).forEach(fact_key => {
@@ -1236,13 +1000,24 @@ function update_ui(adversary) {
     //update mood table on every refresh
     initialize_mood_table()
 
+    //reset curr_adv
+    curr_adv = adversary.name
+
     //get proper color for menace
     menace_color(adversary.menace)
 
-    //fill quill editor with description from adversary
-    const description_editor = document.querySelector('#description-container-div div.editor').__quill
-    description_editor.root.innerHTML = adversary.description;
+
 }
+
+const clean_bad_chars = (content) => {
+  // \u200B - Zero Width Space
+  // \uFEFF - Zero Width No-Break Space (BOM)
+  // \u200C - Zero Width Non-Joiner
+  // \u200D - Zero Width Joiner
+  return content.replace(/[\u200B-\u200D\uFEFF]/g, '');
+};
+
+var curr_adv = adversary.name
 
 const exportAdversariesJson = (data, filename = 'adversaries.json') => {
     const jsonString = JSON.stringify(data, null, 2)
@@ -1270,19 +1045,109 @@ const importAdversariesJson = () => {
         reader.onload = (e) => {
             try {
                 const importedData = JSON.parse(e.target.result);
-                console.log("Data imported successfully:", importedData);
-                saved_adversaries = importedData;
-                render_saved_list();
+                for (const advName in importedData) {
+                    saved_adversaries[advName] = importedData[advName];
+                }
             } catch (err) {
                 console.error("Error parsing JSON:", err);
             }
         };
         reader.readAsText(file);
+        // Save to localStorage
+        const stringData = JSON.stringify(saved_adversaries);
+        localStorage.setItem('saved_adversaries', stringData);
+        closeModal();
+        show_toast('Adversaries imported successfully!', 2000);
     };
     input.click();
 }
 
-// On page loads
-set_max_rank()
-menace_color(document.getElementById('menace').value)
-render_saved_list()
+function convert_to_markdown(adversaries, con = false) {
+    condensed = con
+    let output = "";
+    const clean = (str) => str ? str.replace(/<[^>]*>?/gm, '').trim() : "N/A";
+
+    Object.values(adversaries).forEach(adv => {
+        // 1. Header
+        output += `# ${adv.name}\n`;
+        output += `**Type:** ${adv.creature_type} (${adv.creature_subtype}) | **Rank:** ${adv.rank} | **Size:** ${adv.size}\n`;
+        if (condensed == false) { output += `**Description:** ${clean(adv.description)}\n\n`; }
+
+        // 2. Core Stats
+        output += `### Core Stats\n`;
+        output += `* **Hearts:** ${adv.hearts} | **Defense:** ${adv.defense} | **Atk Bonus:** +${adv.atkbonus || 0}\n`;
+        output += `* **Speed:** ${adv.speed} (Max: ${adv.max_speed}) | **Allegiance Points:** B: ${adv.bright_points} / D: ${adv.dark_points}\n`;
+        output += `* **Aptitudes:** Mgt ${adv.aptitudes.might}, Def ${adv.aptitudes.deftness}, Grt ${adv.aptitudes.grit}, Ins ${adv.aptitudes.insight}, Aur ${adv.aptitudes.aura}\n\n`;
+
+        // 3. Special Rules (Traits + Abilities)
+        output += `### Traits and Abilities\n`;
+        const abilityNames = adv.abilities.map(a => a.name.toUpperCase());
+        const uniquePassives = adv.passives.filter(p => !abilityNames.includes(p.name.toUpperCase()));
+
+        [...uniquePassives, ...adv.abilities].forEach(p => {
+            let detail = "";
+
+            if (p.description) {
+                detail = clean(p.description);
+            } else if (p.modifier && p.value) {
+                detail = `${p.modifier} ${p.value >= 0 ? '+' : ''}${p.value}`;
+            } else if (p.modifiers) {
+                // Logic to catch nested "atkbonus" or "size" inside a passive modifier object
+                detail = Object.entries(p.modifiers)
+                    .map(([key, val]) => `${key}: ${val >= 0 ? '+' : ''}${val}`)
+                    .join(", ");
+            }
+
+            output += `* **${p.name}**: ${detail}\n`;
+        });
+
+        // 4. Quick Facts
+        if (adv.facts && condensed == false) {
+            output += `\n### Quick Facts\n`;
+            output += `| Category | Details |\n| :--- | :--- |\n`;
+            for (const [key, value] of Object.entries(adv.facts)) {
+                output += `| ${key.replace(/-/g, ' ').toUpperCase()} | ${clean(value.description)} |\n`;
+            }
+        }
+
+        // 5. Mood Table
+        if (adv.moods?.length > 0 && condensed == false) {
+            output += `\n### Moods (1d20)\n`;
+            output += `| Roll | Mood | Behavior |\n| :--- | :--- | :--- |\n`;
+            adv.moods.forEach(m => {
+                output += `| ${m.rolls.start}-${m.rolls.stop} | ${m.mood} | ${clean(m.mood_text)} |\n`;
+            });
+        }
+
+        // 6. Inventory
+        if (adv.inventory?.length > 0) {
+            output += `\n### Inventory\n`;
+            adv.inventory.forEach(i => {
+                output += `* **${i.name}** (${i.category}): ${clean(i.description)} (x${i.quantity}) [Slots: ${i.slots * i.quantity}] [Value: ${i.value * i.quantity} ${i.denomination}]\n`;
+            });
+        }
+
+        output += `\n---\n\n`;
+    });
+
+    return output;
+}
+
+function download_markdown_file(adversaries, con = false) {
+    const content = convert_to_markdown(adversaries, con);
+
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const link = document.createElement('a');
+
+    link.download = 'adversary_markdown_export.txt';
+    link.href = window.URL.createObjectURL(blob);
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(link.href);
+
+    closeModal()
+}

@@ -1,8 +1,20 @@
 # break-_adversary_creator
 
-This is a personal project im working on to create a web-app capable of creating a break adversary card that can be customized, exported and printed for use physically or as a card on a VTT.
-Someday, it would be really cool to be able to export for a VTT importer.
-This will also be my submission for a code bootcamp personal project.
+*1/16/2026* - **1.5 Release Notes**
+- Markdown Exports added as an Export option. The Exports come as a full export of all Adversary data or a simplified combat card version that includes only combat-relevant info
+- Ability and Inventory descriptions now include formatted Checks, Contests and Damage types in the toolbar
+- Abilities and Items now support editing
+- Adversaries now load and save to localstorage (no more exporting and importing every time you open the tool)
+- Load interface changed for more room on the main app
+- Added tagging and filtering. Adversaries can have up to 5 tags each
+- Massive size enhancement to automatically add or remove Focus and Sweep abilities based on size
+- Allegiance traits now locked down to only magical abilities and items
+- Numerous QOL and Visual Improvements for a better user experience
+
+*1/03/2026* - **1.1 Release Notes**
+
+- Fixed several bugs related to aptitude calculations with size
+- Fixed an issue with removal of traits, abilities and items automatically affecting saved_adversaries when they shouldnt
 
 *1/03/2026* - **1.1 Release Notes**
 

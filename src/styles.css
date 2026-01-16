@@ -21,7 +21,7 @@
     }
 
     .trait-span {
-        @apply bg-slate-400 text-white rounded-md p-2 m-2 max-w-md font-bold
+        @apply bg-slate-400 text-white rounded-md p-2 m-2 max-w-md font-bold cursor-pointer underline hover:text-shadow-lg hover:text-stone-50 
     }
 
     .btn {
@@ -29,8 +29,12 @@
         @apply disabled:bg-gray-300
     }
 
+    .btn-light{
+        @apply text-white font-bold bg-blue-400 rounded-md px-3 py-1 my-2 mr-2 hover:bg-blue-800 cursor-pointer;
+    }
+
     .btn-hollow {
-        @apply text-white font-bold bg-transparent border-white border-2 rounded-md hover:bg-white hover:bg-white/50 cursor-pointer;
+        @apply text-blue-600 font-bold bg-transparent border-blue-600 border-2 rounded-md hover:bg-blue-600 hover:bg-white/50 cursor-pointer;
         @apply disabled:bg-gray-300
     }
 
@@ -62,7 +66,7 @@
     }
 
     .passive-span{
-        @apply bg-teal-500 text-white rounded-md p-2 m-2 max-w-md
+        @apply bg-teal-500 text-white rounded-md p-2 m-2 max-w-md cursor-not-allowed
     }
 
     .ability-card{
@@ -127,6 +131,14 @@
 
     #help-btn {
         @apply transition-all duration-1000 text-center cursor-pointer ease-in-out opacity-50 hover:opacity-100
+    }
+
+    .tag-chip{
+        @apply bg-amber-600 rounded-xl font-bold text-sm mx-2 px-2 py-1 text-white
+    }
+
+    .btn-small{
+        @apply text-sm px-2 py-1 border-2 border-white rounded-md font-bold hover:bg-white/50 cursor-pointer
     }
 }
 
@@ -238,6 +250,7 @@ input:checked+.slider:before {
 
 .modal-overlay {
   display: none; /* Hidden by default */
+  backdrop-filter: blur(4px);
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
@@ -276,7 +289,7 @@ input:checked+.slider:before {
   margin-bottom: 1rem;
 }
 
-.magic-icon{
+.magic-icon-ability{
     border: 2px #eee solid;
     background-color: #eee;
     border-radius: 5px;
@@ -346,7 +359,242 @@ ul,ol{
     list-style-position: inside;
 }
 
+ul > li, ol > li{
+    margin-left:1rem;
+}
+
 #adversaries-scrollable{
      scrollbar-color: #898a8c #e6e7eb;
 }
 
+.magic-icon-item{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: #2b7efe;
+}
+
+.magic-icon-equipment{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: #63748e;
+}
+
+.magic-icon-yield{
+    border: 2px #eee solid;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3px;
+    line-height: 1rem;
+    font-weight: bold;
+    margin: 0 4px 4px;
+    color: #ff6567;
+}
+
+/* The Main Blot Wrapper */
+.skill-action-blot {
+    display: block; /* Takes full width */
+    margin: 15px 0;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    background: #f8fafc;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header styling */
+.blot-header {
+    background: #1e293b;
+    color: white;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-label {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* Ensure the body rows stack vertically */
+.blot-body {
+    display: flex;
+    flex-direction: column; /* This forces Pass and Fail to stack */
+    padding: 8px 0;
+    background: #fff;
+}
+
+.res-row {
+    display: block; /* Ensure it takes full width */
+    padding: 6px 12px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.res-row:last-child {
+    border-bottom: none;
+}
+
+/* Make sure the Pass/Fail labels are distinct */
+.res-label {
+    display: block; /* Put the word "Pass:" on its own line above the text */
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+
+.res-pass .res-label { color: #16a34a; }
+.res-fail .res-label { color: #dc2626; }
+
+.res-text {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #334155;
+    min-height: 1.2em;
+}
+
+/* Editable Fields Hint */
+.editable-field[contenteditable="true"]:hover {
+    background: rgba(0,0,0,0.05);
+    cursor: text;
+}
+
+
+.dmg-val {
+    font-weight: bold;
+}
+
+.dmg-name {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border-right: 1px solid #ddd;
+    padding-right: 4px;
+    margin-right: 4px;
+}
+
+/* Styling the labels inside the toolbar dropdown */
+.ql-picker {
+    width:115px;
+}
+.ql-picker.ql-damage .ql-picker-label::before {
+  content: 'Damage Type';
+}
+
+.ql-picker.ql-damage .ql-picker-item[data-value="holy"]::after { content: 'Holy'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="burn"]::after { content: 'Burn'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="freeze"]::after { content: 'Freeze'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="bright"]::after { content: 'Bright'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="dark"]::after { content: 'Dark'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="twilight"]::after { content: 'Twilight'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="caustic"]::after { content: 'Caustic'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="poison"]::after { content: 'Poison'; }
+.ql-picker.ql-damage .ql-picker-item[data-value="necrotic"]::after { content: 'Necrotic'; }
+/* ... repeat for others ... */
+
+/* The actual Blot styling in the editor */
+.damage-type-blot {
+    font-weight: bold;
+    padding: 0 4px;
+    border-radius: 3px;
+    margin: 0 2px;
+}
+
+span[data-dmg-type="burn"] { background-color: #ff4500; color: white; }
+span[data-dmg-type="holy"] { background-color: #ffd700; color: black; }
+span[data-dmg-type="freeze"] { background-color: #2671e0; color: white; }
+span[data-dmg-type="bright"] { background-color: #f700ff; color: white; }
+span[data-dmg-type="dark"] { background-color: #3d0042; color: white; }
+span[data-dmg-type="twilight"] { background-color: #7e65ee; color: white; }
+span[data-dmg-type="caustic"] { background-color: #03e2ff; color: black; }
+span[data-dmg-type="poison"] { background-color: #00ff5e; color: black; }
+span[data-dmg-type="necrotic"] { background-color: #5d8f3f; color: white; }
+
+.ql-editor .damage-type-blot.ql-selected {
+    outline: 2px solid #3b82f6; /* Blue outline */
+    border-color: #3b82f6;
+}
+
+.damage-type-blot {
+    display: inline-block; /* More stable for cursor placement than inline-flex */
+    vertical-align: middle;
+    user-select: none;     /* Prevents the internal text from being highlighted */
+}
+
+/* Add labels to the custom toolbar buttons */
+.ql-check-btn::after {
+    content: "Check+";
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.ql-contest-btn::after {
+    content: "VS+";
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.skill-action-blot .editable-field {
+    border-bottom: 1px dashed #666;
+    padding: 0 2px;
+    cursor: text;
+    min-width: 10px;
+    display: inline-block;
+}
+
+.skill-action-blot .editable-field:focus {
+    outline: none;
+    border-bottom: 1px solid #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.blot-edit-bar {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+    z-index: 9999; /* Ensure it floats above your modals */
+    display: flex;
+    gap: 5px;
+}
+
+.skill-action-blot {
+    margin-top: 0 !important; /* Force the top margin to disappear */
+    margin-bottom: 1rem;
+    display: block;
+    width: 100%;
+    clear: both;
+    white-space: pre-line;
+}
+
+/* Ensure no empty paragraphs are creating "ghost" spacing above the block */
+.ql-editor .skill-action-blot + p, 
+.ql-editor p + .skill-action-blot {
+    margin-top: 0;
+}
+
+.ql-editor .skill-action-blot {
+    line-height: normal; 
+}
+
+.ql-editor p:empty + .skill-action-blot {
+    margin-top: -15px; /* Pulls the blot up to cover the empty line gap */
+}
+
+.ql-toolbar button, .ql-picker-label{
+    margin-right: 2rem;
+    color: #444;
+    font-size: 11px;
+    font-weight: bold;
+}

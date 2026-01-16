@@ -6,12 +6,41 @@ class Adversary {
         this.max_speed = data.max_speed || 'veryfast';
     }
 
+    _add_tag() {
+        var tag_name = document.getElementById('tag-search-add').value.toLowerCase()
+        tag_name = tag_name.charAt(0).toUpperCase() + tag_name.slice(1).toLowerCase()
+        var toast_message = ''
+
+
+        if (this.tags && this.tags.length == max_tags) {
+            toast_message = `Maximum number of tags reached (${max_tags})`;
+            show_toast(toast_message, 3000)
+        }
+        else if (tag_name.length < 1) {
+            toast_message = 'Tag must be at least one character long'
+            show_toast(toast_message, 3000)
+            return
+        } else {
+            if (this.tags == undefined || this.tags.length < 1) {
+                this.tags = [tag_name]
+                document.getElementById('tag-search-add').value = ''
+            } else {
+                var tags = new Set(adversary.tags)
+                tags.add(tag_name)
+                this.tags = [...tags]
+                document.getElementById('tag-search-add').value = ''
+            }
+        }
+        create_tag_list()
+        update_ui(adversary)
+    }
+
     // Add a trait to the passives primary
     _add_trait() {
         // create trait in adversary object
         const passives = [...this.passives]
         const id = `tr-${generate_id()}`
-        const name = document.getElementById('trait-name').value
+        const name = (document.getElementById('trait-name').value).toUpperCase()
         const value = parseInt(document.getElementById('trait-value').value)
         const modifier = document.getElementById('trait-modifier').value
         const type = 'trait'
@@ -34,20 +63,20 @@ class Adversary {
     }
 
     // Add an ability to the abilities array
-    _add_ability() {
-        const abilities = [...this.abilities]
+    _add_ability(existing_id = null) {
+
         const passives = [...this.passives]
         const id = `ab-${generate_id()}`
         const name = (document.getElementById('ability-name').value).toUpperCase()
-        const description = document.querySelector('#ability-div .editor').__quill.root.innerHTML
+        const description = clean_bad_chars(document.querySelector('#ability-div .editor').__quill.root.innerHTML)
         const type = document.querySelector(`input[name='ability-type']:checked`).value
         const allegiance = parseInt(document.getElementById('ability-allegiance').value)
         const magic = document.getElementById('ability-magic').checked
         const passive_atkbonus = parseInt(document.getElementById('ability-atkbonus').value)
         const passive_defense = parseInt(document.getElementById('ability-defense').value)
-        const passive_speed = document.getElementById('ability-base-speed-override').value
+        const passive_speed = document.getElementById('ability-base-speed').value
         const passive_hearts = parseInt(document.getElementById('ability-hearts').value)
-        const passive_size = document.getElementById('ability-size-override').value
+        const passive_size = document.getElementById('ability-size').value
         var bound_passive = false
 
         // first create a new ability
@@ -89,49 +118,41 @@ class Adversary {
             })
             passives.push(createPassive(passive_id, name, ability_passives, type))
             this.passives = passives
-            // recalculate any affected stats
-
-            //if (passive_atkbonus){
-            //    this._calculate_atkbonus()
-            //}
-            //if (passive_defense){
-            //    this._calculate_defense()
-            //}
-            //if (passive_speed != ''){
-            //    this._calculate_speed()
-            //}
-            //if (passive_hearts){
-            //    this._calculate_hearts()
-            //}
-            //if (passive_size != ''){
-            //    this._adjust_size()
-            //}
-            this._integrate_passive(id)
+            this._integrate_passive(passive_id)
         }
         // create & add new ability object to abilities array in adversary
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
+        const abilities = [...this.abilities]
+
         abilities.push(new_ability)
         this.abilities = abilities
+
+        if (abilities.find(ability => ability.id === existing_id)) {
+            adversary._remove_ability(existing_id)
+        }
+
         update_ui(this)
     }
 
     // Add items to the inventory array
-    _add_item() {
+    _add_item(existing_id = null) {
         const inventory = [...this.inventory]
-        const id = `inv-${generate_id()}`;
+        var id = `inv-${generate_id()}`
         const name = (document.getElementById('inventory-item-name').value).toUpperCase();
         const category = (document.getElementById('inventory-item-category').value)
         const type = document.getElementById('inventory-item-type').value;
         const subtype = document.getElementById('inventory-item-subtype').value;
-        const description = document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML
-        const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value
-        const value = document.getElementById('inventory-item-value').value;
-        const slots = document.getElementById('inventory-item-slots').value
+        const description = clean_bad_chars(document.querySelector('#inventory-item-div .editor').__quill.root.innerHTML);
+        const denomination = document.querySelector(`input[name='inventory-item-denomination']:checked`).value;
+        const value = parseInt(document.getElementById('inventory-item-value').value);
+        const slots = parseFloat(document.getElementById('inventory-item-slots').value);
+        const magic = document.getElementById('inventory-item-magic').checked
+        const quantity = parseInt(document.getElementById('inventory-item-quantity').value) || 1
         const allegiance = parseInt(document.getElementById('inventory-item-allegiance').value)
         // optional gear attributes that may affect combat stats
-        const defense = parseInt(document.getElementById('inventory-item-defense').value) ? parseInt(document.getElementById('inventory-item-defense').value) : null
-        const atkbonus = parseInt(document.getElementById('inventory-item-atkbonus').value) ? parseInt(document.getElementById('inventory-item-atkbonus').value) : null
-        const speed = parseInt(document.getElementById('inventory-item-speed').value) ? parseInt(document.getElementById('inventory-item-speed').value) : null
+        const defense = document.getElementById('inventory-item-defense').value ? parseInt(document.getElementById('inventory-item-defense').value) : null
+        const atkbonus = document.getElementById('inventory-item-atkbonus').value ? parseInt(document.getElementById('inventory-item-atkbonus').value) : null
+        const speed = document.getElementById('inventory-item-speed').value ? parseInt(document.getElementById('inventory-item-speed').value) : null
         const max_speed = document.getElementById('inventory-item-max-speed').value ? document.getElementById('inventory-item-max-speed').value : null
 
         const createItem = (
@@ -142,6 +163,8 @@ class Adversary {
             subtype,
             description,
             slots,
+            magic,
+            quantity,
             denomination,
             value,
             defense,
@@ -157,6 +180,8 @@ class Adversary {
                 'subtype': subtype,
                 'description': description,
                 'slots': slots,
+                'magic': magic,
+                'quantity': quantity,
                 'denomination': denomination,
                 'value': value,
                 'defense': defense,
@@ -166,13 +191,13 @@ class Adversary {
                 'allegiance': allegiance,
             });
 
-        if (allegiance > 0) {
+        if (magic && allegiance > 0) {
             this.bright_points = this.bright_points + allegiance
         } else if (allegiance < 0) {
             this.dark_points = this.dark_points + Math.abs(allegiance)
         }
 
-        inventory.push(createItem(id, name, category, type, subtype, description, slots, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
+        inventory.push(createItem(id, name, category, type, subtype, description, slots, magic, quantity, denomination, value, defense, atkbonus, speed, max_speed, allegiance))
         this.inventory = inventory
 
         if (allegiance) {
@@ -190,35 +215,147 @@ class Adversary {
         if (hearts) {
             this._calculate_hearts()
         }
+
+        if (inventory.find(item => item.id === existing_id)) {
+            adversary._remove_item(existing_id)
+        }
         update_ui(this)
+    }
+
+    _load_item(item_id) {
+        ['input', 'change'].forEach(eventType => {
+            document.addEventListener(eventType, (e) => {
+                const modal = e.target.closest('#modal-container');
+                if (modal) {
+                    validateModal(modal);
+                }
+            });
+        });
+
+        const item = this.inventory.find(this_item => this_item.id === item_id)
+        openModal('item-edit')
+        document.getElementById('inventory-item-name').value = item.name;
+        document.getElementById('inventory-item-category').value = item.category;
+        document.getElementById('inventory-item-type').value = item.type;
+        fill_subtypes('inventory-item-type');
+        document.getElementById('inventory-item-subtype').value = item.subtype;
+        document.getElementById('inventory-item-value').value = item.value;
+        document.getElementById('inventory-item-slots').value = item.slots;
+        document.getElementById('inventory-item-quantity').value = item.quantity;
+        show_hide_combat_modifiers('inventory-item-type');
+        document.getElementById('inventory-item-subtype').value = item.subtype;
+        if (item.magic) {
+            document.getElementById('inventory-item-magic').checked = true;
+            toggle_magic('inventory-item')
+            document.getElementById('inventory-item-allegiance').value = item.allegiance;
+            set_item_allegiance()
+        }
+        if (item.defense) {
+            document.getElementById('inventory-item-defense').value = item.defense;
+        }
+        if (item.atkbonus) {
+            document.getElementById('inventory-item-atkbonus').value = item.atkbonus;
+        }
+        if (item.speed) {
+            document.getElementById('inventory-item-speed').value = item.speed;
+        }
+        if (item.max_speed) {
+            document.getElementById('inventory-item-max-speed').value = item.max_speed;
+        }
+        if (item.denomination == 'stones') {
+            document.getElementById('items-stones').checked = true;
+        } else if (item.denomination == 'coins') {
+            document.getElementById('items-coins').checked = true;
+        } else if (item.denomination == 'gems') {
+            document.getElementById('items-gems').checked = true;
+        }
+
+        const description_editor = document.querySelector('#inventory-item-div div.editor').__quill
+        description_editor.root.innerHTML = clean_bad_chars(item.description);
+        document.getElementById('btnAddItem').setAttribute('onclick', `adversary._add_item('${item.id}')`);
+    }
+
+    _load_ability(ability_id) {
+        ['input', 'change'].forEach(eventType => {
+            document.addEventListener(eventType, (e) => {
+                const modal = e.target.closest('#modal-container');
+                if (modal) {
+                    validateModal(modal);
+                }
+            });
+        });
+
+        const ability = this.abilities.find(this_ability => this_ability.id === ability_id)
+        openModal('ability-edit')
+        document.getElementById('ability-name').value = ability.name;
+        if (ability.type == 'Basic') {
+            document.getElementById('ability-basic').checked = true;
+        } else if (ability.type == 'Advanced') {
+            document.getElementById('ability-advanced').checked = true;
+        } else if (ability.type == 'Legendary') {
+            document.getElementById('ability-legendary').checked = true;
+        }
+
+        if (ability.magic) {
+            document.getElementById('ability-magic').checked = true;
+            toggle_magic('ability')
+            document.getElementById('ability-allegiance').value = ability.allegiance;
+            set_ability_allegiance()
+        } else {
+            document.getElementById('ability-allegiance').value = 0;
+        }
+
+        const description_editor = document.querySelector('#ability-div div.editor').__quill
+        description_editor.root.innerHTML = clean_bad_chars(ability.description);
+        document.getElementById('btnAddAbility').setAttribute('onclick', `adversary._add_ability('${ability.id}')`);
+
+        const matching_passive = adversary.passives.find(passive => passive.name === ability.name && passive.type === 'ability')
+
+
+        if (matching_passive.modifiers.defense) {
+            document.getElementById('ability-defense').value = matching_passive.modifiers.defense;
+        }
+        if (matching_passive.modifiers.atkbonus) {
+            document.getElementById('ability-atkbonus').value = matching_passive.modifiers.atkbonus;
+        }
+        if (matching_passive.modifiers.hearts) {
+            document.getElementById('ability-hearts').value = matching_passive.modifiers.hearts;
+        }
+        if (matching_passive.modifiers.speed) {
+            document.getElementById('ability-base-speed').value = matching_passive.modifiers.speed;
+        }
+        if (matching_passive.modifiers.size) {
+            document.getElementById('ability-size').value = matching_passive.modifiers.size;
+        }
+
+        document.getElementById('btnAddItem').setAttribute('onclick', `adversary._add_ability('${ability.id}')`);
     }
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes
 
-    // Change allegiance by manipulating Bright and Dark point values
-    _integrate_passive(passive_id){
+    _integrate_passive(passive_id) {
         const passive = this.passives.find(passive => passive.id === passive_id)
         if (passive.type == 'ability') {
-            if (passive.modifiers.atkbonus){
+            if (passive.modifiers.atkbonus) {
                 this._calculate_atkbonus()
             }
-            if (passive.modifiers.defense){
+            if (passive.modifiers.defense) {
                 this._calculate_defense()
             }
-            if (passive.modifiers.speed != undefined){
+            if (passive.modifiers.speed != undefined) {
                 this._calculate_speed()
             }
-            if (passive.modifiers.hearts){
+            if (passive.modifiers.hearts) {
                 this._calculate_hearts()
             }
-            if (passive.modifiers.size != undefined){
+            if (passive.modifiers.size != undefined) {
                 this._adjust_size()
             }
-        } else if(passive.type == "trait") {
+        } else if (passive.type == "trait") {
             this._calculate_aptitudes()
         }
     }
-    
+
     _calculate_allegiance() {
         const bright_points = parseInt(this.bright_points)
         const dark_points = parseInt(this.dark_points)
@@ -292,11 +429,11 @@ class Adversary {
         this.hearts = rank_stats[this.rank][1]
         this.atkbonus = rank_stats[this.rank][0]
         // change menace based on rank
-        if (parseInt(this.rank) < 1) {
+        if (this.rank < 1) {
             document.getElementById('menace').value = 'mook'
         } else if (this.menace == 'megaboss') {
             return
-        } else if (parseInt(this.rank) >= 1) {
+        } else if (this.rank >= 1) {
             document.getElementById('menace').value = 'boss'
         }
         this._change_menace()
@@ -373,6 +510,38 @@ class Adversary {
                 this.size = this_passive.modifiers.size
             }
         })
+        if (this.size == 'massive') {
+            const createAbility = (id, name, description, allegiance = 0, bound_passive, type = 'basic', magic = false) => ({
+                'id': id,
+                'name': name,
+                'description': description,
+                'allegiance': allegiance,
+                'bound_passive': bound_passive,
+                'type': type,
+                'magic': magic
+
+            })
+            var abilities = [...this.abilities]
+            if (abilities.find(ability => ability.id !== 'ab-sweep-001')) {
+                const sweep_ability = createAbility('ab-sweep-001', 'SWEEP ATTACK', 'This adversary can attack as with an Arc Weapon.', 0, false, 'basic', false);
+                abilities.push(sweep_ability)
+            }
+            if (abilities.find(ability => ability.id !== 'ab-focus-001')) {
+                const focus_ability = createAbility('ab-focus-001', 'FOCUS ATTACK', 'This adversary can attack as with an Mighty Weapon.', 0, false, 'basic', false);
+                abilities.push(focus_ability)
+            }
+            this.abilities = abilities
+        } else {
+            var abilities = [...this.abilities]
+            //remove sweep and focus attack if size is changed away from massive
+            if (abilities.find(ability => ability.id === 'ab-sweep-001')) {
+                this._remove_ability('ab-sweep-001')
+            }
+            if (abilities.find(ability => ability.id === 'ab-focus-001')) {
+                this._remove_ability('ab-focus-001')
+            }
+            update_ui(this)
+        }
         this._calculate_aptitudes()
         this._calculate_defense()
     }
@@ -393,8 +562,8 @@ class Adversary {
 
             row.querySelectorAll('input').forEach(input => data.push(input.value))
             const rolls = {
-                start: data[0],
-                stop: data[1]
+                start: parseInt(data[0]),
+                stop: parseInt(data[1])
             }
 
             const createMood = (rolls, mood, description) => ({
@@ -406,7 +575,6 @@ class Adversary {
             this.moods.push(createMood(rolls, data[2], data[3]))
         }
         update_ui(this)
-        save_adversary()
     }
 
     // **Calculates - broader functions that integrate changes from a number of different sources to recalculate specific attributes
@@ -415,13 +583,6 @@ class Adversary {
     _calculate_atkbonus() {
         //set back to atkbonus based on rank
         this.atkbonus = rank_stats[this.rank][0]
-        
-        // Calculate atkbonus from gear, then from ability-based passives
-        this.inventory.forEach(this_item => {
-            if (this_item.atkbonus > 0) {
-                this.atkbonus = parseInt(this.atkbonus) + parseInt(this_item.atkbonus)
-            }
-        })
 
         this.passives.forEach(this_passive => {
             if (this_passive.type != 'ability') {
@@ -442,7 +603,7 @@ class Adversary {
             if (this_passive.type != 'ability') {
                 return
             } else if (this_passive.modifiers.hearts) {
-                this.hearts = parseInt(this.hearts) + this_passive.modifiers.hearts
+                this.hearts = this.hearts + this_passive.modifiers.hearts
             }
         })
     }
@@ -493,7 +654,7 @@ class Adversary {
             aptitudes.might++
         }
         else if (this.size == 'massive') {
-            aptitudes.might = modified_aptitudes.might + 2
+            aptitudes.might = aptitudes.might + 2
         }
         this.aptitudes = aptitudes
         update_ui(this)
@@ -525,7 +686,7 @@ class Adversary {
 
         this.inventory.forEach(this_item => {
             if (this_item.defense > 0) {
-                this.defense = parseInt(this.defense) + parseInt(this_item.defense)
+                this.defense = this.defense + this_item.defense
             }
         })
 
@@ -542,7 +703,16 @@ class Adversary {
 
     // **Removals - undo the addition of a trait, loot, gear or ability
 
-    _remove_trait(id) { 
+    _remove_tag(tag) {
+        var tags = [...this.tags]
+        const index = tags.indexOf(tag)
+        tags.splice(index, 1)
+        this.tags = tags
+        create_tag_list()
+        update_ui(this)
+    }
+
+    _remove_trait(id) {
         const passives = [...this.passives]
         const trait_to_remove = this.passives.indexOf(this.passives.find(trait => trait.id === id && trait.type == 'trait'))
         passives.splice(trait_to_remove, 1)
@@ -585,7 +755,6 @@ class Adversary {
     }
 
     _remove_ability(id) {
-        const abilities = [...this.abilities]
         const passives = [...this.passives]
         const ability_to_remove = this.abilities[this.abilities.indexOf(this.abilities.find(abilities => abilities.id === id))]
         const points = ability_to_remove.allegiance
@@ -617,7 +786,7 @@ class Adversary {
             if (size != null || size != undefined) {
                 this._adjust_size()
             }
-            
+
         }
         //offset bright or dark point values 
         if (points < 0) {
@@ -627,6 +796,7 @@ class Adversary {
             this.bright_points = this.bright_points - points
             this._calculate_allegiance()
         }
+        const abilities = [...this.abilities]
         abilities.splice(abilities.indexOf(ability_to_remove), 1)
         this.abilities = abilities
         closeModal()

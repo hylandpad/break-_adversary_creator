@@ -17,16 +17,24 @@ function openModal(targetId) {
 
   // Clear and Inject
   modalBody.innerHTML = '';
-  modalBody.appendChild(temp.content.cloneNode(true));
+  if(temp){
+    modalBody.appendChild(temp.content.cloneNode(true));
+  }
+
 
   // Run necessary scipts from main.js that need to be run on any template load
   if(document.getElementById('ability-div')){
     ability_types_access()
   }
 
-  if(document.getElementById('help-message')){
+  else if(document.getElementById('help-message')){
     fill_version_num()
     fill_help_text()
+  }
+
+  else if (document.getElementById('load-container')){
+    render_saved_list(saved_adversaries);
+    render_tags_for_filter();
   }
 
   initializeEditors(modalBody);
@@ -57,9 +65,9 @@ triggers.forEach(t => t.addEventListener('click', () => openModal(t.dataset.targ
 closeBtn.addEventListener('click', closeModal);
 
 // Click backdrop to close
-overlay.addEventListener('click', (e) => {
-  if (e.target === overlay) closeModal();
-});
+//overlay.addEventListener('click', (e) => {
+//  if (e.target === overlay) closeModal();
+//});
 
 // Esc to close
 document.addEventListener('keydown', (e) => {
