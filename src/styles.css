@@ -136,6 +136,10 @@
     .tag-chip{
         @apply bg-amber-600 rounded-xl font-bold text-sm mx-2 px-2 py-1 text-white
     }
+
+    .btn-small{
+        @apply text-sm px-2 py-1 border-2 border-white rounded-md font-bold hover:bg-white/50 cursor-pointer
+    }
 }
 
 #speed, #size{

@@ -129,9 +129,9 @@ class Adversary {
     }
 
     // Add items to the inventory array
-    _add_item() {
+    _add_item(existing_id = null) {
         const inventory = [...this.inventory]
-        const id = `inv-${generate_id()}`;
+        var id = `inv-${generate_id()}`
         const name = (document.getElementById('inventory-item-name').value).toUpperCase();
         const category = (document.getElementById('inventory-item-category').value)
         const type = document.getElementById('inventory-item-type').value;
@@ -209,6 +209,10 @@ class Adversary {
         if (hearts) {
             this._calculate_hearts()
         }
+
+        if (inventory.find(item => item.id === existing_id)) {
+            adversary._remove_item(existing_id)
+        }
         update_ui(this)
     }
 
@@ -236,11 +240,32 @@ class Adversary {
         if (item.atkbonus) {
             document.getElementById('inventory-item-atkbonus').value = item.atkbonus;
         }
-        if (item.speed) {}
-        
-        const description_editor = document.querySelector('#inventory-edit-item-div div.editor').__quill
+        if (item.speed) {
+            document.getElementById('inventory-item-speed').value = item.speed;
+        }
+        if (item.max_speed) {
+            document.getElementById('inventory-item-max-speed').value = item.max_speed;
+        }
+        if (item.denomination == 'stones') {
+            document.getElementById('items-stones').checked = true;
+        } else if (item.denomination == 'coins') {
+            document.getElementById('items-coins').checked = true;
+        } else if (item.denomination == 'gems') {
+            document.getElementById('items-gems').checked = true;
+        }
+
+        const description_editor = document.querySelector('#inventory-item-div div.editor').__quill
         description_editor.root.innerHTML = item.description;
-        validateModal(htmlDoc)
+        document.getElementById('btnAddItem').setAttribute('onclick', `adversary._add_item('${item.id}')`);
+
+        ['input', 'change'].forEach(eventType => {
+            document.addEventListener(eventType, (e) => {
+                const modal = e.target.closest('#modal-container');
+                if (modal) {
+                    validateModal(modal);
+                }
+            });
+        });
     }
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes

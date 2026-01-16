@@ -936,9 +936,14 @@ function update_ui(adversary) {
         }
 
         const item_block = `
-            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} flex-auto mb-2" onclick="adversary._load_item('${item.id}')">
-                <div class="text-white flex"><span class="font-bold">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</span> (<span
-                        class="italic">${item.type} - ${item.subtype}</span>)<span class="font-bold">: ${item.category}</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span></span>` : ''}</div>
+            <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} mb-2">
+                <div class="text-white">
+                    <div class="flex flex-auto">
+                        <p onclick="adversary._load_item('${item.id}')" class="font-bold w-3/4 cursor-pointer underline hover:text-bone-300 hover:text-shadow-lg/40">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</p>
+                        <p class="text-right w-1/4"><button class="btn-small z-999" onclick="confirm_prompt('${item.id}')">X</button></p>
+                        </div>
+                    <p><span class="font-bold">${item.category} : </span><span class="italic">(${item.type} - ${item.subtype})</span><span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span>` : ''}</span></p>
+                    </div>
                 <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">
                     <div>
                         ${item.atkbonus > 0 ? `<label>Total Attack Bonus </label><img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"></i><span>+${parseInt(item.atkbonus) + parseInt(adversary.atkbonus)}</span>` : ''}
