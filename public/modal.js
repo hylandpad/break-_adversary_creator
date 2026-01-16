@@ -13,14 +13,12 @@ modalBody.addEventListener('click', (e) => {
 
 function openModal(targetId) {
   const temp = document.getElementById(targetId);
-  //if (!temp) return;
+  if (!temp) return;
 
   // Clear and Inject
   modalBody.innerHTML = '';
   if(temp){
     modalBody.appendChild(temp.content.cloneNode(true));
-  }else{
-    modalBody.appendChild(targetId);
   }
 
 
