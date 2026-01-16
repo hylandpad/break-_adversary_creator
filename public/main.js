@@ -909,16 +909,21 @@ function update_ui(adversary) {
         const magic = ability.magic
         const id = ability.id
         const ability_block = `
-        <div id="${id}" class="ability-card flex-auto">
-            <div class="text-white flex"><span class="font-bold">${name}</span><span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span>${magic ? '<span class="magic-icon-ability">M</span>' : ''}</div>
-            <div class="ability-content bg-slate-200 p-1 rounded-md">
-                ${description != 'None' ? `<div id=description" class="italic">${description}</div>` : ''}
+        <div id="${id}" class="ability-card">
+            <div class="text-white flex items-center">
+                <p onclick="adversary._load_ability('${ability.id}')" class="font-bold w-3/4 cursor-pointer underline hover:text-stone-50 hover:text-shadow-lg/40">${name}</p>
+                <p class="text-right w-1/4"><button class="btn-small z-999" onclick="confirm_prompt('${ability.id}')">X</button></p>
+            </div>
+            <div class="flex text-white mb-2">
+                <span class="ability-icon">${type == 'Basic' ? 'B' : type == 'Advanced' ? 'A' : type == 'Legendary' ? 'L' : 'NA'}</span> ${magic ? '<span class="magic-icon-ability">M</span>' : ''}
+            </div>
+            <div class="ability-content bg-slate-200 p-1 rounded-md text-sm">
+                ${description != 'None' ? `<div id=description" class="text-sm">${description}</div>` : ''}
             </div>
         </div>
         `
         ability_container.insertAdjacentHTML('beforeend', ability_block)
         const ability_div = document.getElementById(id)
-        ability_div.setAttribute('onclick', `confirm_prompt('${ability.id}')`)
         if (ability.allegiance != 0) {
             const allegiance_box = `<div class="${allegiance > 0 ? 'ability-bright-allegiance' : allegiance < 0 ? 'ability-dark-allegiance' : ''}" id="allegiance-box-${name}-${type}">Adds ${Math.abs(allegiance)} ${allegiance > 0 ? 'Bright' : allegiance < 0 ? 'Dark' : ''} Allegiance Point(s)</div>`
             ability_div.insertAdjacentHTML('beforeend', allegiance_box)
@@ -943,10 +948,10 @@ function update_ui(adversary) {
             <div id="${item.category}-${item.id}" class="${item.category == 'Equipment' ? 'equipment-card' : item.category == 'Item' ? 'item-card' : item.category == 'Yield' ? 'yield-card' : ''} mb-2">
                 <div class="text-white">
                     <div class="flex flex-auto">
-                        <p onclick="adversary._load_item('${item.id}')" class="font-bold w-3/4 cursor-pointer underline hover:text-bone-300 hover:text-shadow-lg/40">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</p>
+                        <p onclick="adversary._load_item('${item.id}')" class="font-bold w-3/4 cursor-pointer underline hover:text-stone-50 hover:text-shadow-lg/40">${item.name}${item.quantity > 1 ? ' (x' + item.quantity + ')' : ''}</p>
                         <p class="text-right w-1/4"><button class="btn-small z-999" onclick="confirm_prompt('${item.id}')">X</button></p>
                         </div>
-                    <p><span class="font-bold">${item.category} : </span><span class="italic">(${item.type} - ${item.subtype})</span><span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span>` : ''}</span></p>
+                    <p class="flex"><span class="font-bold">${item.category}</span><span class="italic">( ${item.type} - ${item.subtype} )</span>${magic ? `<span class="magic-icon-${item.category.toLowerCase()}">M</span>` : ''}</p>
                     </div>
                 <div class="item-content bg-slate-200 p-1 mt-2 rounded-md">
                     <div>
@@ -955,7 +960,7 @@ function update_ui(adversary) {
                         ${item.speed > 0 || item.speed < 0 ? `<i class="fa-solid fa-person-running"></i><span>${item.speed}</span>` : ''}
                         ${item.max_speed ? `<span class="font-bold"></span><i class="fa-solid fa-person-running"></i><span><strong>MAX: </strong>${max_speed_text}</span>` : ''}
                     </div>
-                    ${item.description != 'None' ? `<div id=${item.id}-description" class="italic">${item.description}</div>` : ''}
+                    ${item.description != 'None' ? `<div id=${item.id}-description" class="text-sm">${item.description}</div>` : ''}
                 </div>
                 <div class="text-stone-200 italic flex">
                     <div id="${item.category}-${item.id}-slots" class="basis-xs">Slots : ${item.slots * item.quantity}</div>

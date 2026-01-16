@@ -63,7 +63,7 @@ class Adversary {
     }
 
     // Add an ability to the abilities array
-    _add_ability() {
+    _add_ability(existing_id = null) {
 
         const passives = [...this.passives]
         const id = `ab-${generate_id()}`
@@ -76,7 +76,7 @@ class Adversary {
         const passive_defense = parseInt(document.getElementById('ability-defense').value)
         const passive_speed = document.getElementById('ability-base-speed-override').value
         const passive_hearts = parseInt(document.getElementById('ability-hearts').value)
-        const passive_size = document.getElementById('ability-size-override').value
+        const passive_size = document.getElementById('ability-size').value
         var bound_passive = false
 
         // first create a new ability
@@ -123,8 +123,14 @@ class Adversary {
         // create & add new ability object to abilities array in adversary
         const new_ability = createAbility(id, name, description, allegiance, bound_passive, type, magic)
         const abilities = [...this.abilities]
+
         abilities.push(new_ability)
         this.abilities = abilities
+
+        if (abilities.find(ability => ability.id === existing_id)) {
+            adversary._remove_ability(existing_id)
+        }
+
         update_ui(this)
     }
 
@@ -217,6 +223,15 @@ class Adversary {
     }
 
     _load_item(item_id) {
+        ['input', 'change'].forEach(eventType => {
+            document.addEventListener(eventType, (e) => {
+                const modal = e.target.closest('#modal-container');
+                if (modal) {
+                    validateModal(modal);
+                }
+            });
+        });
+
         const item = this.inventory.find(this_item => this_item.id === item_id)
         openModal('item-edit')
         document.getElementById('inventory-item-name').value = item.name;
@@ -233,6 +248,7 @@ class Adversary {
             document.getElementById('inventory-item-magic').checked = true;
             toggle_magic('inventory-item')
             document.getElementById('inventory-item-allegiance').value = item.allegiance;
+            set_item_allegiance()
         }
         if (item.defense) {
             document.getElementById('inventory-item-defense').value = item.defense;
@@ -257,7 +273,9 @@ class Adversary {
         const description_editor = document.querySelector('#inventory-item-div div.editor').__quill
         description_editor.root.innerHTML = item.description;
         document.getElementById('btnAddItem').setAttribute('onclick', `adversary._add_item('${item.id}')`);
+    }
 
+    _load_ability(ability_id) {
         ['input', 'change'].forEach(eventType => {
             document.addEventListener(eventType, (e) => {
                 const modal = e.target.closest('#modal-container');
@@ -266,6 +284,51 @@ class Adversary {
                 }
             });
         });
+
+        const ability = this.abilities.find(this_ability => this_ability.id === ability_id)
+        openModal('ability-edit')
+        document.getElementById('ability-name').value = ability.name;
+        if (ability.type == 'Basic') {
+            document.getElementById('ability-basic').checked = true;
+        } else if (ability.type == 'Advanced') {
+            document.getElementById('ability-advanced').checked = true;
+        } else if (ability.type == 'Legendary') {
+            document.getElementById('ability-legendary').checked = true;
+        }
+
+        if (ability.magic) {
+            document.getElementById('ability-magic').checked = true;
+            toggle_magic('ability')
+            document.getElementById('ability-allegiance').value = ability.allegiance;
+            set_ability_allegiance()
+        } else {
+            document.getElementById('ability-allegiance').value = 0;
+        }
+
+        const description_editor = document.querySelector('#ability-div div.editor').__quill
+        description_editor.root.innerHTML = ability.description;
+        document.getElementById('btnAddAbility').setAttribute('onclick', `adversary._add_ability('${ability.id}')`);
+
+        const matching_passive = adversary.passives.find(passive => passive.name === ability.name && passive.type === 'ability')
+
+
+        if (matching_passive.modifiers.defense) {
+            document.getElementById('ability-defense').value = matching_passive.modifiers.defense;
+        }
+        if (matching_passive.modifiers.atkbonus) {
+            document.getElementById('ability-atkbonus').value = matching_passive.modifiers.atkbonus;
+        }
+        if (matching_passive.modifiers.hearts) {
+            document.getElementById('ability-hearts').value = matching_passive.modifiers.hearts;
+        }
+        if (matching_passive.modifiers.speed) {
+            document.getElementById('ability-speed').value = matching_passive.modifiers.speed;
+        }
+        if (matching_passive.modifiers.size) {
+            document.getElementById('ability-size').value = matching_passive.modifiers.size;
+        }
+
+        document.getElementById('btnAddItem').setAttribute('onclick', `adversary._add_ability('${ability.id}')`);
     }
 
     // **Adjusts - make changes to existing data and manipulate the DOM to reflect UI changes

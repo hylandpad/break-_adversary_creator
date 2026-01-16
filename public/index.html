@@ -439,7 +439,7 @@
                             <option value="fast">Fast</option>
                             <option value="veryfast">Very Fast</option>
                         </select>
-                        <i class="fa-solid fa-person"></i><label> SIZE </label><select id="ability-size-override"
+                        <i class="fa-solid fa-person"></i><label> SIZE </label><select id="ability-size"
                             class="dropdown">
                             <option value=""></option>
                             <option value="tiny">Tiny</option>
@@ -450,6 +450,73 @@
                     </div>
                     <button id="btnAddAbility" onclick="adversary._add_ability()" disabled
                         class="btn close-modal submit-btn">Add</button>
+                </div>
+            </div>
+        </template>
+        <template id="ability-edit" class="adversary-block bg-gray-200 m-8 p-4 rounded-md w-4xl">
+            <div id="ability-div">
+                <div class="item-container">
+                    <div class="header break-adversary-header">
+                        <h3 class="break-header-text"><i class="material-icons text-white mr-1">edit</i><input
+                                data-required id="ability-name" type="text" class="basis-xl">
+                        </h3>
+                    </div>
+                    <div>
+                        <label for="ability-type">Ability Type: </label>
+                        <input id="ability-basic" name="ability-type" type="radio" value="Basic"><label
+                            for="ability-basic">
+                            Basic</label>
+                        <input id="ability-advanced" name="ability-type" type="radio" value="Advanced"
+                            disabled="true"><label for="ability-advanced"> Advanced</label>
+                        <input id="ability-legendary" name="ability-type" type="radio" value="Legendary"
+                            disabled="true"><label for="ability-legendary"> Legendary</label>
+                    </div>
+                    <hr class="faded-hr" />
+                    <div id="ability-magic-container" class="flex text-center">
+                        <div><label for="ability-magic">Magic: </label></div>
+                        <div><label class="switch switch-small ml-3">
+                                <input id="ability-magic" type="checkbox" onclick="toggle_magic('ability')">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="ability-allegiance-div" class="hidden pb-2">
+                        <label>Allegiance Points: </label><input onchange="set_ability_allegiance()"
+                            id="ability-allegiance" class="w-10 text-right input-text " type="number">
+                        <div id="ability-allegiance-icon-box" class="inline-flex">
+                            <span><i id="ability-bright" class="material-icons text-stone-200">brightness_5</i><i
+                                    id="ability-unaligned" class="material-icons text-slate-400">circle</i><i
+                                    id="ability-dark" class="material-icons text-stone-200">cyclone</i></span>
+                        </div>
+                    </div>
+                    <div class="editor"></div>
+                    <h4 class="section-header from-slate-400 mb-2">Optional Passives</h4>
+                    <div class="mb-2">
+                        <img class="svg-icon" src="images/sword-fill-svgrepo-com.svg"><input min='0' class="text-input"
+                            id="ability-atkbonus" type="number">
+                        <i class="fa-solid fa-shield"></i><input min='0' class="text-input" id="ability-defense"
+                            type="number">
+                        <i class="text-red-600 fa-solid fa-heart"></i><input min='0' class="text-input"
+                            id="ability-hearts" type="number">
+                        <i class="fa-solid fa-person-running"></i><label> BASE </label><select
+                            id="ability-base-speed-override" class="dropdown">
+                            <option value=""></option>
+                            <option value="slow">Slow</option>
+                            <option value="average">Average</option>
+                            <option value="fast">Fast</option>
+                            <option value="veryfast">Very Fast</option>
+                        </select>
+                        <i class="fa-solid fa-person"></i><label> SIZE </label><select id="ability-size"
+                            class="dropdown">
+                            <option value=""></option>
+                            <option value="tiny">Tiny</option>
+                            <option value="small">Small</option>
+                            <option value="large">Large</option>
+                            <option value="massive">Massive</option>
+                        </select>
+                    </div>
+                    <button id="btnAddAbility" onclick="adversary._add_ability()" disabled
+                        class="btn close-modal submit-btn">Save</button>
                 </div>
             </div>
         </template>

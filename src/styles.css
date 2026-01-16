@@ -21,7 +21,7 @@
     }
 
     .trait-span {
-        @apply bg-slate-400 text-white rounded-md p-2 m-2 max-w-md font-bold
+        @apply bg-slate-400 text-white rounded-md p-2 m-2 max-w-md font-bold cursor-pointer underline hover:text-shadow-lg hover:text-stone-50 
     }
 
     .btn {
@@ -66,7 +66,7 @@
     }
 
     .passive-span{
-        @apply bg-teal-500 text-white rounded-md p-2 m-2 max-w-md
+        @apply bg-teal-500 text-white rounded-md p-2 m-2 max-w-md cursor-not-allowed
     }
 
     .ability-card{
