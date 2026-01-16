@@ -16,6 +16,11 @@
 - Fixed several bugs related to aptitude calculations with size
 - Fixed an issue with removal of traits, abilities and items automatically affecting saved_adversaries when they shouldnt
 
+*1/03/2026* - **1.1 Release Notes**
+
+- Fixed several bugs related to aptitude calculations with size
+- Fixed an issue with removal of traits, abilities and items automatically affecting saved_adversaries when they shouldnt
+
 *1/03/2026* - **1.0 Release Highlights**
 
 - Restructured the UI Refresh so that Save/Load Adversary now works properly
